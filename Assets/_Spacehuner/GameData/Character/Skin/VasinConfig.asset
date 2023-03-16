@@ -1,0 +1,154 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a187cb410a748d94b907c423d33841d3, type: 3}
+  m_Name: VasinConfig
+  m_EditorClassIdentifier: 
+  CharacterName: 5
+  TraitList:
+    Trait1:
+      Name: 13
+      Meshes:
+      - {fileID: 2157557887647289322, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 1407741269353727808, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 7225667994770947226, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 8821019131140242923, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 57487429239149417, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 5610026245116950213, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: -8729417182543960494, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      Materials:
+      - Payload:
+        - {fileID: 2100000, guid: 8b40d0ee088fec34bb427fd160b9539d, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: b41d403359dd0a0438c085f463b16e8e, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 2f186467d5232974a90dc85e253a3c09, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 50308e6c28ccfaa43966c07e655c1998, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 6b709e33b30ae8842aa5638d0651bbd6, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 4affa018a6dec6a4e88bd398f2fbaffe, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 216aeb26e65909f4e91a582438be7d7a, type: 2}
+    Trait2:
+      Name: 14
+      Meshes:
+      - {fileID: 4128422998031025193, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 1579078300173380127, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 1681788662312892272, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 7956070104747967388, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: -4685686077335414581, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: -5708936726081853930, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: -4967676424697753534, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      Materials:
+      - Payload:
+        - {fileID: 2100000, guid: 8b40d0ee088fec34bb427fd160b9539d, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: fbd6f99f281eec84d8d664b6ca13898c, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 0be33284e70a5ef439a8882000360308, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 6bebd424d8b2d514982fd5ade5b74171, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 6b709e33b30ae8842aa5638d0651bbd6, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 44162f815bd87bb41bd8c1812b5674a0, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 90e5779b74370ae4c9b3e7028d71f812, type: 2}
+    Trait3:
+      Name: 3
+      Meshes:
+      - {fileID: -7602559574380284527, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 51327594496851048, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: -3213633331865572512, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 1487296431105013103, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 9078872827363012776, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 2497401354344667322, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: -9098484855821407360, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      Materials:
+      - Payload:
+        - {fileID: 2100000, guid: 8b40d0ee088fec34bb427fd160b9539d, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: f9b5b4de69aa5ad42b06118340e3e5ca, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 781aab097c9a5684fb047f88dd4b0eae, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 540d31d1b13b38b429de68449d427e48, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 6b709e33b30ae8842aa5638d0651bbd6, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 52cd37329844f3d479c73b29f2514248, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 3b949a6b292b5de40a3a5411de89c6fd, type: 2}
+    Trait4:
+      Name: 4
+      Meshes:
+      - {fileID: -2659319654045167100, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 1285890872535851997, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: -2855800342475660323, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: -30416680950241396, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 5154585205035934890, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 8472341742328352298, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: -9187629165221285333, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      Materials:
+      - Payload:
+        - {fileID: 2100000, guid: 8b40d0ee088fec34bb427fd160b9539d, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 86498f76e0ce8754ea3043ebb4abfd31, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 9675ae20fefb06a45bdaa046f07770c1, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: f0e480721db65474796b402ad761eac4, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: a09f08a9c272de04b892c0dada5cf330, type: 2}
+        - {fileID: 2100000, guid: 6b709e33b30ae8842aa5638d0651bbd6, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: c9c48aba2451ca5468f6991e0a3f127c, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 34110cc22a7d6af4a94bc53ad3d1dc95, type: 2}
+    Trait5:
+      Name: 2
+      Meshes:
+      - {fileID: -5782455939078922399, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 8640758701624985510, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: -6287608122013393872, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: -5806899841395868961, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: 8595301449016550500, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: -6928676039619409265, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      - {fileID: -2277754463403653545, guid: 945686dcf36e2c241a9c83cf341b433c, type: 3}
+      Materials:
+      - Payload:
+        - {fileID: 2100000, guid: 8b40d0ee088fec34bb427fd160b9539d, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: b38e35d15e521e64587589369e4f3816, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: f41957724fc6a4243bb1a9567f13b688, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: c9d195d4b7524a3469e180a7fcb5cca4, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 6b709e33b30ae8842aa5638d0651bbd6, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 76707210c828a004f9b06d9b879b1026, type: 2}
+      - Payload:
+        - {fileID: 2100000, guid: 1dd6198e02527c84098fef0baff79c6b, type: 2}
+    Trait6:
+      Name: 5
+      Meshes: []
+      Materials: []
+    Trait7:
+      Name: 0
+      Meshes: []
+      Materials: []
+    Trait8:
+      Name: 0
+      Meshes: []
+      Materials: []
