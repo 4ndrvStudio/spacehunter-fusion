@@ -19,6 +19,7 @@ namespace SH.Multiplayer
         public float InterpolatedSpeed => _speedInterpolator.Value;
 
         // PRIVATE MEMBERS
+        [SerializeField] private Animator _anim;
         [SerializeField] private float _speed;
         [SerializeField] private float _jumpHeight = 5f;
         [SerializeField] private float _turnSmoothTime = 0.1f;
@@ -28,8 +29,6 @@ namespace SH.Multiplayer
         [SerializeField] private Transform _groundCheck;
         [SerializeField] private LayerMask _groundMask;
         [SerializeField] private NetworkRigidbody _rigid;
-        [SerializeField] private bool isSetCam;
-        [SerializeField] private GameObject _camera;
 
 
         // c# out
@@ -90,7 +89,7 @@ namespace SH.Multiplayer
 
             Speed = input.MoveDirection.magnitude * _speed;
 
-            if (moveDir != Vector2.zero)
+            if (moveDir != Vector2.zero && _anim.GetBool("canMove"))
             {
                 transform.Translate(transform.forward * Speed * Runner.DeltaTime, Space.World);
             }

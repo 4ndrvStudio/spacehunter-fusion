@@ -7,15 +7,19 @@ namespace SH.Multiplayer
 {
     public class Network_PlayerAnimation : NetworkBehaviour
     {
-        [SerializeField] private Network_PlayerMovement _playerMovement;
         [SerializeField] private Animator _anim;
+        [SerializeField] private Network_PlayerMovement _playerMovement;
+        [SerializeField] private Network_PlayerCombat _playerCombat;
+        
         private int _lastVisibleJump;
+        private int _lastVisibleAttack;
 
         // NetworkBehaviour INTERFACE
 
         public override void Spawned()
         {
             _lastVisibleJump = _playerMovement.JumpCount;
+            _lastVisibleAttack = _playerCombat.AttackCount;
 
         }
 
@@ -29,17 +33,33 @@ namespace SH.Multiplayer
 
         private void UpdateAnimations()
         {
-            if (_lastVisibleJump < _playerMovement.JumpCount)
+            // // Render Jump
+            // if (_lastVisibleJump < _playerMovement.JumpCount)
+			// {
+			// 	_anim.SetBool("onGround", _playerMovement.HasJumped);
+                
+			// }
+			// else if (_lastVisibleJump > _playerMovement.JumpCount)
+			// {
+			// 	_anim.SetBool("onGround", _playerMovement.HasJumped);
+			// }
+
+			// _lastVisibleJump = _playerMovement.JumpCount;
+
+
+            //Render Attack
+             if (_lastVisibleAttack < _playerCombat.AttackCount)
 			{
-				_anim.SetBool("onGround", _playerMovement.HasJumped);
+				_anim.SetTrigger(_playerCombat.AttackName[_playerCombat.LocalAttack]);
                 
 			}
-			else if (_lastVisibleJump > _playerMovement.JumpCount)
+			else if (_lastVisibleAttack > _playerCombat.AttackCount)
 			{
-				_anim.SetBool("onGround", _playerMovement.HasJumped);
+				//cancel attack
 			}
 
-			_lastVisibleJump = _playerMovement.JumpCount;
+            _lastVisibleAttack = _playerCombat.AttackCount;
+
 
             _anim.SetFloat("movement", _playerMovement.Speed);
    

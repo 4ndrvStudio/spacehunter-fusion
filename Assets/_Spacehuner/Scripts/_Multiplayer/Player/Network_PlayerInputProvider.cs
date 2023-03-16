@@ -8,6 +8,7 @@ namespace SH.Multiplayer
     public enum EInputButtons
     {
         Jump = 0,
+        Attack = 1,
     }
     public struct PlayerInput : INetworkInput
     {
@@ -18,6 +19,10 @@ namespace SH.Multiplayer
         {
             get { return Buttons.IsSet(EInputButtons.Jump); }
             set { Buttons.Set((int)EInputButtons.Jump, value); }
+        }
+        public bool Attack {
+            get { return Buttons.IsSet(EInputButtons.Attack); }
+            set { Buttons.Set((int)EInputButtons.Attack, value); }
         }
       
     }
@@ -83,18 +88,30 @@ namespace SH.Multiplayer
 
         private void ProcessKeyboardInput()
         {
+            //jump btn
             if (Input.GetKey(KeyCode.Space) == true)
             {
                 _cachedInput.Jump = true;
             }
 
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
+            //attack Btn 
+            if(Input.GetMouseButton(0) == true) {
+                _cachedInput.Attack = true;
+            }
+
+
+
+            //Movement 
+            //Joystick movementJoystick = UIControllerManager.Instance.GetMovementJoystick();
+        
+            float horizontal = Input.GetAxis("Horizontal") ;
+            float vertical = Input.GetAxis("Vertical") ;
 
             if (horizontal != 0f || vertical != 0f)
             {
                 _cachedInput.MoveDirection = new Vector2(horizontal, vertical);
             }
+            //camera euler
             _cachedInput.CameraEuler = Network_CameraManager.Instance.GetMainCamEuler();;
         }
 
