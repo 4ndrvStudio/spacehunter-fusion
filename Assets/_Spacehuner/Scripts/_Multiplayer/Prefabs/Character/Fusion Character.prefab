@@ -303,6 +303,7 @@ GameObject:
   - component: {fileID: 3305384433229917682}
   - component: {fileID: 1340977671037359871}
   - component: {fileID: 1340977671037359868}
+  - component: {fileID: 1993063673325556576}
   - component: {fileID: 1340977671037359870}
   - component: {fileID: 1340977671037359869}
   - component: {fileID: -2124915992710045192}
@@ -435,6 +436,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: -457075846428157549}
   - {fileID: 3305384433229917682}
+  - {fileID: 1993063673325556576}
   - {fileID: 1340977671037359870}
   - {fileID: 1340977671037359869}
   - {fileID: -2124915992710045192}
@@ -452,6 +454,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 327259e27a3701e42b8f4418d8aefc0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1993063673325556576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340977671037359865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d706f335f7aa084cbe0cb4164f34a58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  _anim: {fileID: 2294090069143819208}
+  _groundCheck: {fileID: 7432037656638004396}
+  _groundMask:
+    serializedVersion: 2
+    m_Bits: 128
+  _N_IsAction:
+    _value: 0
+  L_IsAction: 0
+  _N_IsGrounded:
+    _value: 0
+  L_IsGrounded: 0
 --- !u!114 &1340977671037359870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -466,6 +492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   _anim: {fileID: 2294090069143819208}
+  _playerState: {fileID: 1993063673325556576}
   _playerMovement: {fileID: 1340977671037359869}
   _playerCombat: {fileID: -2124915992710045192}
 --- !u!114 &1340977671037359869
@@ -481,9 +508,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  _playerState: {fileID: 1993063673325556576}
+  _rigid: {fileID: 3305384433229917682}
   _JumpCount: 0
   _Speed: 0
-  _anim: {fileID: 2294090069143819208}
   _speed: 4
   _jumpHeight: 5
   _turnSmoothTime: 500
@@ -494,7 +522,6 @@ MonoBehaviour:
   _groundMask:
     serializedVersion: 2
     m_Bits: 128
-  _rigid: {fileID: 3305384433229917682}
 --- !u!114 &-2124915992710045192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -508,6 +535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  _playerState: {fileID: 1993063673325556576}
   _AttackCount: 0
   AttackName:
   - attack1
@@ -1603,7 +1631,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2294090069143819208
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1620,7 +1648,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4873843082171189088
 GameObject:
   m_ObjectHideFlags: 0

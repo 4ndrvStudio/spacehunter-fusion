@@ -7,8 +7,13 @@ namespace SH.Multiplayer
 {
     public class Network_PlayerMovement : NetworkBehaviour, ISpawned
     {
-        // PUBLIC MEMBERS
+        
+        //Component
+        [SerializeField] private Network_PlayerState _playerState;
+        [SerializeField] private NetworkRigidbody _rigid;
 
+
+        //Network
         [Networked, HideInInspector]
         public int JumpCount { get; set; }
         [Networked, HideInInspector]
@@ -18,8 +23,8 @@ namespace SH.Multiplayer
 
         public float InterpolatedSpeed => _speedInterpolator.Value;
 
-        // PRIVATE MEMBERS
-        [SerializeField] private Animator _anim;
+ 
+        // config
         [SerializeField] private float _speed;
         [SerializeField] private float _jumpHeight = 5f;
         [SerializeField] private float _turnSmoothTime = 0.1f;
@@ -28,7 +33,7 @@ namespace SH.Multiplayer
         [SerializeField] private Transform _lookPoint;
         [SerializeField] private Transform _groundCheck;
         [SerializeField] private LayerMask _groundMask;
-        [SerializeField] private NetworkRigidbody _rigid;
+
 
 
         // c# out
@@ -89,7 +94,7 @@ namespace SH.Multiplayer
 
             Speed = input.MoveDirection.magnitude * _speed;
 
-            if (moveDir != Vector2.zero && _anim.GetBool("canMove"))
+            if (moveDir != Vector2.zero && !_playerState.L_IsAction)
             {
                 transform.Translate(transform.forward * Speed * Runner.DeltaTime, Space.World);
             }
@@ -97,7 +102,7 @@ namespace SH.Multiplayer
 
             if (input.Buttons.WasPressed(_lastButtonsInput, EInputButtons.Jump))
             {
-                if (GroundCheck())
+                if (_playerState.L_IsGrounded)
                 {
                     HasJumped = true;
                     JumpCount++;
@@ -110,14 +115,13 @@ namespace SH.Multiplayer
 
             }
 
-            HasJumped = !GroundCheck();
+            HasJumped = !_playerState.L_IsGrounded;
 
 
             _lastButtonsInput = input.Buttons;
 
         }
 
-        private bool GroundCheck() => Physics.CheckSphere(_groundCheck.position, 0.15f, _groundMask);
 
 
     }

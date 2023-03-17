@@ -20,11 +20,12 @@ namespace SH.Multiplayer
             get { return Buttons.IsSet(EInputButtons.Jump); }
             set { Buttons.Set((int)EInputButtons.Jump, value); }
         }
-        public bool Attack {
+        public bool Attack
+        {
             get { return Buttons.IsSet(EInputButtons.Attack); }
             set { Buttons.Set((int)EInputButtons.Attack, value); }
         }
-      
+
     }
     public class Network_PlayerInputProvider : SimulationBehaviour, ISpawned, IDespawned, IBeforeUpdate
     {
@@ -32,6 +33,8 @@ namespace SH.Multiplayer
 
         private PlayerInput _cachedInput;
         private bool _resetCachedInput;
+
+
 
         // NETWORK INTERFACES
 
@@ -43,10 +46,11 @@ namespace SH.Multiplayer
 
                 events.OnInput.RemoveListener(OnInput);
                 events.OnInput.AddListener(OnInput);
+         
             }
         }
 
-     
+
 
 
         void IDespawned.Despawned(NetworkRunner runner, bool hasState)
@@ -60,7 +64,7 @@ namespace SH.Multiplayer
             if (Object == null || Object.HasInputAuthority == false)
                 return;
 
-         
+
 
             if (_resetCachedInput == true)
             {
@@ -88,34 +92,40 @@ namespace SH.Multiplayer
 
         private void ProcessKeyboardInput()
         {
+
             //jump btn
             if (Input.GetKey(KeyCode.Space) == true)
             {
                 _cachedInput.Jump = true;
             }
 
-            //attack Btn 
-            if(Input.GetMouseButton(0) == true) {
-                _cachedInput.Attack = true;
-            }
+       
+                //attack Btn 
+                if (Input.GetMouseButton(0) == true)
+                {
+                    _cachedInput.Attack = true;
+                }
+        
+
+        
 
 
 
             //Movement 
             //Joystick movementJoystick = UIControllerManager.Instance.GetMovementJoystick();
-        
-            float horizontal = Input.GetAxis("Horizontal") ;
-            float vertical = Input.GetAxis("Vertical") ;
+
+            float horizontal = Input.GetAxis("Horizontal");
+            float vertical = Input.GetAxis("Vertical");
 
             if (horizontal != 0f || vertical != 0f)
             {
                 _cachedInput.MoveDirection = new Vector2(horizontal, vertical);
             }
             //camera euler
-            _cachedInput.CameraEuler = Network_CameraManager.Instance.GetMainCamEuler();;
+            _cachedInput.CameraEuler = Network_CameraManager.Instance.GetMainCamEuler(); ;
         }
 
-        
+
     }
 
 }

@@ -7,6 +7,9 @@ namespace SH.Multiplayer
 {
     public class Network_PlayerCombat : NetworkBehaviour, ISpawned
     {
+        [SerializeField] private Network_PlayerState _playerState;
+
+
         [Networked, HideInInspector]
         public int AttackCount { get; set; }
 
@@ -24,10 +27,15 @@ namespace SH.Multiplayer
         public byte IndexAttack { get; set; }
         public int LocalAttack;
 
-        
+        [Networked] private TickTimer avoidAttackTime { get; set; }
+
+
+
         public override void Spawned()
         {
             _attackCountInterpolator = GetInterpolator<int>(nameof(AttackCount));
+
+            avoidAttackTime = TickTimer.CreateFromSeconds(Runner, 0);
 
         }
 
@@ -36,7 +44,7 @@ namespace SH.Multiplayer
             if (Object.IsProxy == true)
                 return;
 
-            
+
             var input = GetInput<PlayerInput>();
 
             if (input.HasValue == true)
@@ -45,20 +53,30 @@ namespace SH.Multiplayer
             }
         }
 
-        public void Attack(PlayerInput input) {
-           
-            HasAttack = input.Buttons.WasPressed(_lastButtonsInput, EInputButtons.Attack);
-            
-            if(HasAttack) {
-                
-                LocalAttack++;
+        public void Attack(PlayerInput input)
+        {
 
-                if(LocalAttack >= AttackName.Length) LocalAttack = 0;
+            if (avoidAttackTime.Expired(Runner))
+            {
 
-                RPC_SetIndexAttack(LocalAttack);
+                HasAttack = input.Buttons.WasPressed(_lastButtonsInput, EInputButtons.Attack);
 
-                AttackCount++;
+
+                if (HasAttack && !_playerState.L_IsAction)
+                {
+
+                    LocalAttack++;
+
+                    if (LocalAttack >= AttackName.Length) LocalAttack = 0;
+
+                    RPC_SetIndexAttack(LocalAttack);
+
+                    AttackCount++;
+                    avoidAttackTime = TickTimer.CreateFromSeconds(Runner, 0.2f);
+                }
+
             }
+
             _lastButtonsInput = input.Buttons;
 
         }
@@ -71,14 +89,14 @@ namespace SH.Multiplayer
         }
         private void OnIndexAttackChanged()
         {
-           // Debug.Log($"Nickname changed for player to {nickName} for player {gameObject.name}");
+            // Debug.Log($"Nickname changed for player to {nickName} for player {gameObject.name}");
             LocalAttack = IndexAttack;
         }
 
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_SetIndexAttack(int indexAttack, RpcInfo info = default)
         {
-            this.IndexAttack = (byte) indexAttack;
+            this.IndexAttack = (byte)indexAttack;
         }
 
     }
