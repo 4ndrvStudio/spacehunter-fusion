@@ -5,6 +5,8 @@ using UnityEngine.Video;
 using TMPro;
 using SH.Define;
 using SH.Networking.Station;
+using SH.Multiplayer;
+using UnityEngine.Events;
 
 namespace SH
 {
@@ -16,12 +18,12 @@ namespace SH
         [SerializeField] private GameObject _videoChangeScene;
 
         private bool _isEnterPortal = false;
-        private bool _canEnterPortal = true;
 
         private void Awake()
         {
             _textMesh.text = _portalClass.NamePortal.ToString();
             _textMesh.fontSize = _portalClass.NameSize;
+            _isEnterPortal = false;
         }
 
         private void LateUpdate()
@@ -29,20 +31,20 @@ namespace SH
             NameFaceToPlayer();
         }
 
+        
 
         private void OnTriggerEnter(Collider other)
-        {
+        {   
+
             if (other.gameObject.tag == "Player")
             {
                 if (_portalClass.Name == PortalName.Planet_1)
                 {
-                    if (other.gameObject.transform.parent.GetComponent<RoomStationNetworkEntityView>()?.IsMine == true)
+                    if (!_isEnterPortal)
                     {
                         Debug.Log($"Enter {_portalClass.Name}");
-                        RoomStationManager.Instance.LeaveRoom(() =>
-                        {
-                             UIManager.Instance.LoadScene(SceneName.SceneMining);
-                        });
+                        Network_ClientManager.MoveToRoom(SceneDefs.scene_miningFusion);
+                        _isEnterPortal = true;
                     }
                 }
                 else
@@ -55,7 +57,7 @@ namespace SH
 
         private void NameFaceToPlayer()
         {
-            _textMesh.transform.LookAt(Camera.main.transform);
+            _textMesh.transform.LookAt(Network_CameraManager.Instance.GetTransform());
             _textMesh.transform.Rotate(0, 180f, 0);
         }
 

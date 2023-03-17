@@ -40,7 +40,12 @@ namespace SH.Multiplayer
             //Render Attack
             if (_lastVisibleAttack < _playerCombat.AttackCount)
 			{
-				_anim.SetTrigger(_playerCombat.AttackName[_playerCombat.LocalAttack]);
+                if(_playerState.L_IsGrounded) {
+                    _anim.SetTrigger(_playerCombat.AttackName[_playerCombat.LocalAttack]);
+                } else {
+                    
+                }
+				
                 
 			}
 			else if (_lastVisibleAttack > _playerCombat.AttackCount)

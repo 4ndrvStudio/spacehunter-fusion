@@ -102,7 +102,7 @@ namespace SH.Multiplayer
 
             if (input.Buttons.WasPressed(_lastButtonsInput, EInputButtons.Jump))
             {
-                if (_playerState.L_IsGrounded)
+                if (_playerState.L_IsGrounded && !_playerState.L_IsAction)
                 {
                     HasJumped = true;
                     JumpCount++;
