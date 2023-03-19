@@ -27,7 +27,6 @@ namespace SH.Multiplayer
             // }
 
             Vector3 targetPos = transform.position + sizeOffset;
-            targetPos.y = -1.49f;
             return transform.position + sizeOffset;
         }
 

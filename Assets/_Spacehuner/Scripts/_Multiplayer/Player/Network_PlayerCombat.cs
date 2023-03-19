@@ -44,7 +44,6 @@ namespace SH.Multiplayer
             if (Object.IsProxy == true)
                 return;
 
-
             var input = GetInput<PlayerInput>();
 
             if (input.HasValue == true)
@@ -98,6 +97,8 @@ namespace SH.Multiplayer
         {
             this.IndexAttack = (byte)indexAttack;
         }
+
+
 
     }
 

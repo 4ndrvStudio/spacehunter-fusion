@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 
-namespace SH
+namespace SH.Multiplayer
 {
     public class HealthBar : MonoBehaviour
     {
@@ -36,7 +36,7 @@ namespace SH
 
         private void LateUpdate()
         {
-            transform.LookAt(Camera.main.transform);
+            transform.LookAt(Network_CameraManager.Instance.GetTransform());
             transform.Rotate(0, 180, 0);
         }
     }

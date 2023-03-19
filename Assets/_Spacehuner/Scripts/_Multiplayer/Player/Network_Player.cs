@@ -42,7 +42,6 @@ namespace SH.Multiplayer
 
         static void OnNickNameChanged(Changed<Network_Player> changed)
         {
-            Debug.Log($"{Time.time} OnHPChanged value {changed.Behaviour.nickName}");
 
             changed.Behaviour.OnNickNameChanged();
         }

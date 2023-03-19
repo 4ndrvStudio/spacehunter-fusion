@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using SH.Multiplayer;
 namespace SH.Networking.Mining
 {
     public class Mineral : MonoBehaviour

@@ -9,6 +9,7 @@ using DG.Tweening.Core;
 using DG.Tweening.Plugins.Core.PathCore;
 using DG.Tweening.Plugins.Options;
 using SH.Networking.Mining;
+using SH.Multiplayer;
 
 namespace SH.Networking.PVE
 {

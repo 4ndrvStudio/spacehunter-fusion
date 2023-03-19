@@ -58,8 +58,6 @@ namespace SH.Multiplayer
             {   
                 Vector3 Postemp = pos.GetSpawnPosition();
                 var mineral = Runner.Spawn(_mineralOb, pos.GetSpawnPosition(), Quaternion.identity, PlayerRef.None);
-                Debug.Log(Postemp);
-                Debug.Log(mineral.transform.position);
                 _mineralId.Add(mineral.Id);
                 _mineralTransform.Add(mineral.transform);
             });
