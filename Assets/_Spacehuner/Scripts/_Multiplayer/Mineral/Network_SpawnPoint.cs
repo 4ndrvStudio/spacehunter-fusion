@@ -7,12 +7,12 @@ namespace SH.Multiplayer
     public class Network_SpawnPoint : MonoBehaviour
     {
         public Vector3 Size;
-        
+        public Color ZoneColor;
 
         void OnDrawGizmosSelected()
         {
             // Draw a semitransparent red cube at the transforms position
-            Gizmos.color = new Color(0, 255, 0, 0.8f);
+            Gizmos.color = ZoneColor;
             Gizmos.DrawCube(transform.position, new Vector3(Size.x, Size.y, Size.z));
 
         }

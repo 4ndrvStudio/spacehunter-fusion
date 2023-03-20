@@ -47,6 +47,8 @@ namespace SH.Multiplayer
         }
         public override void FixedUpdateNetwork()
         {
+            if(Runner.IsServer == false) return;
+
             switch (_gameState)
             {
                 case GameState.Starting:

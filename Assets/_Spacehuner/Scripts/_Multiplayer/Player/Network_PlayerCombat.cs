@@ -24,10 +24,10 @@ namespace SH.Multiplayer
         public string[] AttackName;
 
         [Networked(OnChanged = nameof(OnIndexAttackChanged))]
-        public byte IndexAttack { get; set; }
-        public int LocalAttack;
+        public byte N_IndexAttack { get; set; }
+        public int L_IndexAttack;
 
-        [Networked] private TickTimer avoidAttackTime { get; set; }
+        [Networked] private TickTimer _avoidAttackTime { get; set; }
 
 
 
@@ -35,7 +35,7 @@ namespace SH.Multiplayer
         {
             _attackCountInterpolator = GetInterpolator<int>(nameof(AttackCount));
 
-            avoidAttackTime = TickTimer.CreateFromSeconds(Runner, 0);
+            _avoidAttackTime = TickTimer.CreateFromSeconds(Runner, 0);
 
         }
 
@@ -55,7 +55,7 @@ namespace SH.Multiplayer
         public void Attack(PlayerInput input)
         {
 
-            if (avoidAttackTime.Expired(Runner))
+            if (_avoidAttackTime.Expired(Runner))
             {
 
                 HasAttack = input.Buttons.WasPressed(_lastButtonsInput, EInputButtons.Attack);
@@ -64,14 +64,14 @@ namespace SH.Multiplayer
                 if (HasAttack && !_playerState.L_IsAction)
                 {
 
-                    LocalAttack++;
+                    L_IndexAttack++;
 
-                    if (LocalAttack >= AttackName.Length) LocalAttack = 0;
+                    if (L_IndexAttack >= AttackName.Length) L_IndexAttack = 0;
 
-                    RPC_SetIndexAttack(LocalAttack);
+                    RPC_SetIndexAttack(L_IndexAttack);
 
                     AttackCount++;
-                    avoidAttackTime = TickTimer.CreateFromSeconds(Runner, 0.2f);
+                    _avoidAttackTime = TickTimer.CreateFromSeconds(Runner, 0.2f);
                 }
 
             }
@@ -89,13 +89,13 @@ namespace SH.Multiplayer
         private void OnIndexAttackChanged()
         {
             // Debug.Log($"Nickname changed for player to {nickName} for player {gameObject.name}");
-            LocalAttack = IndexAttack;
+            L_IndexAttack = N_IndexAttack;
         }
 
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_SetIndexAttack(int indexAttack, RpcInfo info = default)
         {
-            this.IndexAttack = (byte)indexAttack;
+            this.N_IndexAttack = (byte)indexAttack;
         }
 
 

@@ -62,8 +62,6 @@ namespace SH.Multiplayer
 
                 }
             }
-
-     
            
         }
 
@@ -83,7 +81,6 @@ namespace SH.Multiplayer
                 _healthBar.gameObject.SetActive(false);
                 _body.SetActive(false);
                 _destroyFX.SetActive(true);
-                
             } 
             _healthBar.UpdateHealth(_hp);
             
