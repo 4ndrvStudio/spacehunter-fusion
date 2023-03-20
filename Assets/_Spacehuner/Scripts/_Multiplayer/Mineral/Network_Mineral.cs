@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using System.Threading.Tasks;
 
 namespace SH.Multiplayer
 {
@@ -9,6 +10,9 @@ namespace SH.Multiplayer
     public class Network_Mineral : NetworkBehaviour
     {
 
+        [HideInInspector]  public Network_RoomMining Network_RoomMining = default ;
+
+        //network 
         [Networked] private NetworkBool _wasHit { get; set; }
 
         [Networked(OnChanged = nameof(OnHpChanged))]  
@@ -16,6 +20,10 @@ namespace SH.Multiplayer
         
         //local
         [SerializeField] private HealthBar _healthBar;
+        [SerializeField] private GameObject _body;
+        [SerializeField] private GameObject _destroyFX;
+
+
 
         public override void Spawned()
         {
@@ -45,9 +53,13 @@ namespace SH.Multiplayer
             {
                 _wasHit = false;
                 _hp--;
+                
 
                 if(_hp <=0) {
-                    Runner.Despawn(Object);
+                    
+                    MineralDestroy();
+                  
+
                 }
             }
 
@@ -55,13 +67,26 @@ namespace SH.Multiplayer
            
         }
 
+        async void MineralDestroy() {
+            await Task.Delay(2000);
+            Network_RoomMining.MineralCollected(Object);
+        }
+        
+
         static void OnHpChanged(Changed<Network_Mineral> changed)
         {
             changed.Behaviour.OnHpChanged();
         }
         private void OnHpChanged()
         {
+            if(_hp<=0) {
+                _healthBar.gameObject.SetActive(false);
+                _body.SetActive(false);
+                _destroyFX.SetActive(true);
+                
+            } 
             _healthBar.UpdateHealth(_hp);
+            
         }
 
 

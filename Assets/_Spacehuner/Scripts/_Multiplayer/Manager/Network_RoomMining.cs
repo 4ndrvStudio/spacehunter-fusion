@@ -16,18 +16,32 @@ namespace SH.Multiplayer
             Ending
         }
 
-        [SerializeField] private List<Network_SpawnPoint> _spawnPosition = new List<Network_SpawnPoint>();
-        //[SerializeField] private List<GameObject> _mineralOb = new List<GameObject>();
-        [SerializeField] private NetworkPrefabRef _mineralOb = NetworkPrefabRef.Empty;
-        [SerializeField] private List<Transform> _mineralTransform = new List<Transform>();
-        [SerializeField] private List<NetworkId> _mineralId = new List<NetworkId>();
+        [System.Serializable]
+        public class MineralData
+        {
+            public bool WasSpawn;
+            public Network_SpawnPoint SpawnPoint;
+            [HideInInspector] public NetworkObject MineralSpawned;
+            [Networked] public TickTimer RespawnTime { get; set; }
+            public bool RespawnTimeStarted;
+
+        }
+
+
+        [SerializeField] private List<MineralData> _mineralDataList = new List<MineralData>();
+
+        [SerializeField] private List<NetworkPrefabRef> _mineralObList = new List<NetworkPrefabRef>();
+
 
 
         [Networked] private GameState _gameState { get; set; }
 
+
+
         public override void Spawned()
         {
             if (Object.HasStateAuthority == false) return;
+
             _gameState = GameState.Starting;
 
         }
@@ -36,13 +50,13 @@ namespace SH.Multiplayer
             switch (_gameState)
             {
                 case GameState.Starting:
-                    SpawnMineral();
+                    InitialSpawnMineral();
                     break;
                 case GameState.Running:
-                    Debug.Log("IsRunning");
+                    RespawnMineral();
                     break;
                 case GameState.Ending:
-                    Debug.Log("Ending");
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -50,23 +64,86 @@ namespace SH.Multiplayer
         }
 
 
+        public void SpawnMineral(MineralData mineral) {
 
-        public void SpawnMineral()
+                Network_SpawnPoint spawnPoint = mineral.SpawnPoint;
+
+                // Simple Random
+                int randomInt = UnityEngine.Random.Range(0, 20);
+
+                int targetInt = randomInt > 15 &&  randomInt <=19 ? 2 : randomInt > 8  &&  randomInt <=15 ? 1 : 0;
+ 
+                NetworkPrefabRef targetToSpawn = _mineralObList[targetInt];
+
+                var mineralSpawned = Runner.Spawn(targetToSpawn, spawnPoint.GetSpawnPosition(), Quaternion.identity , PlayerRef.None);
+
+                mineral.WasSpawn = true;
+
+                mineralSpawned.GetComponent<Network_Mineral>().Network_RoomMining = this;
+
+                mineral.MineralSpawned = mineralSpawned;
+
+        }
+
+
+        public void InitialSpawnMineral()
         {
 
-            _spawnPosition.ForEach(pos =>
-            {   
-                Vector3 Postemp = pos.GetSpawnPosition();
-                var mineral = Runner.Spawn(_mineralOb, pos.GetSpawnPosition(), Quaternion.identity, PlayerRef.None);
-                _mineralId.Add(mineral.Id);
-                _mineralTransform.Add(mineral.transform);
+            _mineralDataList.ForEach(mineral =>
+            {
+                SpawnMineral(mineral);
             });
-
-
 
             _gameState = GameState.Running;
 
         }
+
+        public void RespawnMineral()
+        {
+
+            _mineralDataList.ForEach(mineral =>
+            {
+
+                if (mineral.WasSpawn == false)
+                {
+
+                    if (mineral.RespawnTimeStarted == false)
+                    {
+
+                        mineral.RespawnTime = TickTimer.CreateFromSeconds(Runner, 10);
+                        mineral.RespawnTimeStarted = true;
+                    }
+                    else
+                    {
+
+                        if (mineral.RespawnTime.Expired(Runner))
+                        {
+                            SpawnMineral(mineral);
+
+                            mineral.RespawnTimeStarted = false;
+                        }
+                    }
+                }
+            });
+
+        }
+
+        public void MineralCollected(NetworkObject mineral)
+        {
+            if (Runner.IsServer == false) return;
+
+            MineralData mineralData = _mineralDataList.Find(spawn => spawn.MineralSpawned == mineral);
+
+            mineralData.MineralSpawned = null;
+            mineralData.WasSpawn = false;
+
+            Runner.Despawn(mineral);
+
+
+        }
+
+
+
     }
 
 }
