@@ -117,8 +117,10 @@ namespace SH.Multiplayer
             if (Runner.IsServer)
             {
                 Debug.Log("Joined to " + SceneManager.GetActiveScene().name);
+            }else {
+                  UIManager.Instance.HideWaiting(); 
             }
-            UIManager.Instance.HideWaiting(); 
+          
 
 
         }
@@ -128,9 +130,11 @@ namespace SH.Multiplayer
             if (Runner.IsServer)
             {
                 Debug.Log("Scene Load to " + SceneManager.GetActiveScene().name);
+            } else {
+                 UIManager.Instance.ShowWaiting();      
             }
        
-        UIManager.Instance.ShowWaiting();        
+         
 
 
         }

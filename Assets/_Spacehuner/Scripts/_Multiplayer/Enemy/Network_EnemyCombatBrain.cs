@@ -14,9 +14,7 @@ namespace SH.Multiplayer
         [SerializeField] private NavMeshAgent _navMeshAgent;
         [Networked, SerializeField] private E_COMBAT_STATE E_COMBAT_STATE { get; set; }
 
-        //normal attack
-        [SerializeField] private float _attack_ReloadTime = 2f;
-        [SerializeField] private float _attack_ReloadTime_M = 2f;
+  
         [SerializeField] public string[] Attack_List;
         [SerializeField] private string[] _shoot_List;
 
@@ -32,6 +30,7 @@ namespace SH.Multiplayer
         public int AttackCount { get; set; }
 
         private Interpolator<int> _attackCountInterpolator;
+        private int _lastVisibleAttack;
 
         [Networked(OnChanged = nameof(OnIndexAttackChanged))]
         public byte N_IndexAttack { get; set; }
@@ -46,24 +45,26 @@ namespace SH.Multiplayer
 
         public override void Spawned()
         {
-            if (Object.HasStateAuthority == false) return;
+            if (Runner.IsServer == false) return;
 
             E_COMBAT_STATE = E_COMBAT_STATE.None;
             _canAttack = true;
 
             _attackCountInterpolator = GetInterpolator<int>(nameof(AttackCount));
+            _lastVisibleAttack = AttackCount;
+
 
 
         }
 
         public override void FixedUpdateNetwork()
         {
-            if (Object.HasStateAuthority == false) return;
-            
+            if (Runner.IsServer == false) return;
+
             if (_enemyBrain.E_AI_STATE == E_AI_STATE.Combat)
             {
                 //if player player not in combat state, return to chasing
-                if (_enemyBrain.DisToPlayer > _enemyBrain.DisToCombat) _enemyBrain.E_AI_STATE = E_AI_STATE.Chasing;
+                if (_enemyBrain.DisToPlayer >= _enemyBrain.DisToCombat) _enemyBrain.E_AI_STATE = E_AI_STATE.Chasing;
                 else E_COMBAT_STATE = E_COMBAT_STATE.NormalAttack;
 
                 //select combat state. 
@@ -85,32 +86,32 @@ namespace SH.Multiplayer
         private void NormalAttack()
         {
 
-                if (_timeHasCal == false)
+            if (_timeHasCal == false)
+            {
+                _attackReloadTime = TickTimer.CreateFromSeconds(Runner, TimeToReloadAttack);
+
+                _timeHasCal = true;
+
+                if (_enemyBrain.E_TYPE == E_TYPE.ShortRange)
                 {
-                    _attackReloadTime = TickTimer.CreateFromSeconds(Runner, TimeToReloadAttack);
-
-                    _timeHasCal = true;
-
-                    if (_enemyBrain.E_TYPE == E_TYPE.ShortRange)
-                    {
-                        if (_canAttack) ShortRangeAttack();
-                    }
-                    else
-                    {
-                        if (_canAttack) LongRangeAttack();
-                    };
+                    if (_canAttack) ShortRangeAttack();
                 }
                 else
                 {
-                    if (_attackReloadTime.Expired(Runner))
-                    {
-                        _timeHasCal = false;
-                        _canAttack = true;
-                    }
+                    if (_canAttack) LongRangeAttack();
+                };
+            }
+            else
+            {
+                if (_attackReloadTime.Expired(Runner))
+                {
+                    _timeHasCal = false;
+                    _canAttack = true;
                 }
+            }
 
 
-            
+
         }
 
         private void LongRangeAttack()
@@ -119,19 +120,23 @@ namespace SH.Multiplayer
             _enemyBrain.RotateToPlayer();
             _enemyAnim.PlayShoot(_shoot_List[targetAttack]);
             StartCoroutine(ShootBullet());
-         
+
             _canAttack = false;
         }
 
 
         private void ShortRangeAttack()
         {
+            if(Runner.IsServer == false) return;
+            
             int targetAttack = GetRandomAttack(); // Define logic Here.
+            //int targetAttack = 0;
             N_IndexAttack = (byte) targetAttack;
+
             _enemyBrain.RotateToPlayer();
             _enemyBrain.AimSupport();
             AttackCount++;
-            _enemyAnim.PlayAttack(Attack_List[L_IndexAttack]);
+            // _enemyAnim.PlayAttack(Attack_List[0]);
             _canAttack = false;
         }
 
@@ -149,7 +154,7 @@ namespace SH.Multiplayer
             bool isShortRange = _enemyBrain.E_TYPE == E_TYPE.ShortRange;
             string[] targetList = isShortRange ? Attack_List : _shoot_List;
             int targetIndex = targetList.Length == 1 ? 0 : Random.Range(0, targetList.Length);
-        
+
             return targetIndex;
         }
 
@@ -162,7 +167,23 @@ namespace SH.Multiplayer
             L_IndexAttack = N_IndexAttack;
         }
 
+     
 
+        public override void Render()
+        {
+            if (_lastVisibleAttack < AttackCount)
+            {
+                _enemyAnim.PlayAttack(Attack_List[L_IndexAttack]);
+
+            }
+            else if (_lastVisibleAttack > AttackCount)
+            {
+                //cancel attack
+            }
+            _lastVisibleAttack = AttackCount;
+
+
+        }
 
 
     }

@@ -28848,6 +28848,7 @@ GameObject:
   - component: {fileID: 7408166450466894968}
   - component: {fileID: 7408166450466894969}
   - component: {fileID: 7408166450466894974}
+  - component: {fileID: -7358172646194045446}
   m_Layer: 0
   m_Name: Mineral_Lv3
   m_TagString: Untagged
@@ -28965,6 +28966,19 @@ MonoBehaviour:
   Hitboxes:
   - {fileID: 7408166449184889454}
   - {fileID: 7408166449372190227}
+--- !u!135 &-7358172646194045446
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7408166450466894971}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.43
+  m_Center: {x: 0, y: 1.17, z: 0.45}
 --- !u!1 &7665144537995056959
 GameObject:
   m_ObjectHideFlags: 0

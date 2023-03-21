@@ -11,9 +11,6 @@ namespace SH.Multiplayer
        
         [Networked] public E_AI_STATE E_AI_STATE {get; set;}
         [Networked] public E_TYPE E_TYPE {get; set;}
-        
-        //Initial
-        [SerializeField] protected Network_EnemyStats _enemyStats;
 
         public List<Collider> PlayersInRange = new List<Collider>();
         public Collider SelectedPlayer;
@@ -37,15 +34,12 @@ namespace SH.Multiplayer
 
         public override void FixedUpdateNetwork()
         {
-            if (Object.HasStateAuthority == false) return;
+            if (Runner.IsServer == false) return;
 
             if (SelectedPlayer != null)
             {
                 DisToPlayer = Vector3.Distance(transform.position, SelectedPlayer.transform.position);
             }
-            //Check State
-
-            //if (_enemyStats.IsDeath) E_AI_STATE = E_AI_STATE.Dead;
 
 
             RangeCombatCheck();
@@ -74,10 +68,11 @@ namespace SH.Multiplayer
             }
         }
 
-        public void RotateToPlayer(Transform target = null)
+        public void RotateToPlayer(Vector3 target = default)
         {
-            Transform targetRot = target != null && SelectedPlayer == null ? target.transform : SelectedPlayer.transform;
-            var lookPos = targetRot.position - transform.position;
+            Vector3 targetRot = target != null && SelectedPlayer == null ? target : SelectedPlayer.transform.position;
+           
+            var lookPos = targetRot - transform.position;
             lookPos.y = 0;
             var rotation = Quaternion.LookRotation(lookPos);
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Runner.DeltaTime * 100);
@@ -88,7 +83,7 @@ namespace SH.Multiplayer
         {
             if (SelectedPlayer != null && DisToPlayer != 0)
             {
-                transform.DOMove(CalPosBeforeTarget(SelectedPlayer.transform.position, transform.position, DisToCombat), 1f);
+                transform.DOMove(CalPosBeforeTarget(SelectedPlayer.transform.position, transform.position, DisToCombat), 2f);
             }
         }
 

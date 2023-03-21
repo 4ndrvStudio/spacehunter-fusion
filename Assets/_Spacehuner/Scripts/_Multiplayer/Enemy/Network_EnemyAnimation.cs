@@ -134,8 +134,8 @@ namespace SH.Multiplayer
         }
         public void PlayAttack(string targetAttack)
         {
-            // _anim.Play(targetAttack, 1, 0);
-            _anim.SetTrigger(targetAttack);
+            _anim.Play(targetAttack, 1, 0);
+            //_anim.SetTrigger(targetAttack);
         }
 
         public void PlayShoot(string targetShoot)

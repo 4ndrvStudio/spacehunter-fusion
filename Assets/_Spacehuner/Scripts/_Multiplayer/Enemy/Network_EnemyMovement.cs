@@ -23,6 +23,8 @@ namespace SH.Multiplayer
         [SerializeField] protected LayerMask _obstacleMask;
 
         [SerializeField] private List<Transform> _waypoints = new List<Transform>();
+        
+        [Networked] public NetworkBool IsSetup {get; set;}
 
 
         //hidden in inspector             
@@ -43,14 +45,9 @@ namespace SH.Multiplayer
         public void SetWaypoint (Transform[] waypoints) {
 
             if(Runner.IsServer == false) return;
+
             this._waypoints = waypoints.ToList<Transform>();
-
-        }
-
-        public override void Spawned()
-        {
-            if(Object.HasStateAuthority == false) return;
-           
+            
             m_PlayerPosition = Vector3.zero;
             m_IsPatrol = true;
             m_CaughtPlayer = false;
@@ -62,8 +59,29 @@ namespace SH.Multiplayer
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _navMeshAgent.isStopped = false;
             _navMeshAgent.speed = _speedWalk;
-          
+            m_CurrentWaypointIndex = 0;
             _navMeshAgent.SetDestination(_waypoints[m_CurrentWaypointIndex].position);
+
+            IsSetup = true;
+        }
+
+        public override void Spawned()
+        {
+            if(Runner.IsServer) return;
+           
+            // m_PlayerPosition = Vector3.zero;
+            // m_IsPatrol = true;
+            // m_CaughtPlayer = false;
+            // m_playerInRange = false;
+            // m_PlayerNear = false;
+            // m_WaitTime = _startWaitTime;
+            // m_TimeToRotate = _timeToRotate;
+            // m_CurrentWaypointIndex = 0;
+            // _navMeshAgent = GetComponent<NavMeshAgent>();
+            // _navMeshAgent.isStopped = false;
+            // _navMeshAgent.speed = _speedWalk;
+          
+            //_navMeshAgent.SetDestination(_waypoints[m_CurrentWaypointIndex].position);
             
          
 
@@ -71,9 +89,10 @@ namespace SH.Multiplayer
 
         public override void FixedUpdateNetwork()
         {
-            if(Object.HasStateAuthority == false ) return;
+            if(Runner.IsServer == false ) return;
 
             if(_enemyBrain.IsStatic) return;
+            if(IsSetup == false ) return;
              
             m_DisToAttack = _enemyBrain.DisToCombat;
             m_stoppingDistance = _enemyBrain.DisToCombat;

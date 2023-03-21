@@ -6,14 +6,15 @@ using Fusion;
 
 namespace SH.Multiplayer
 {
-    public class Network_RoomPVE : NetworkBehaviour
-    {
-        enum GameState
+    
+        public enum PVEGameState
         {
             Starting,
             Running,
             Ending
         }
+    public class Network_RoomPVE : NetworkBehaviour
+    {
         
         [System.Serializable]
         public class EnemyData
@@ -31,14 +32,14 @@ namespace SH.Multiplayer
 
         [SerializeField] private List<NetworkPrefabRef> _enemyObList = new List<NetworkPrefabRef>();
 
-        [Networked] private GameState _gameState { get; set; }
+        [Networked] private PVEGameState _gameState { get; set; }
 
         
         public override void Spawned()
         {
             if (Object.HasStateAuthority == false) return;
 
-            _gameState = GameState.Starting;
+            _gameState = PVEGameState.Starting;
 
         }
 
@@ -48,13 +49,13 @@ namespace SH.Multiplayer
             
             switch (_gameState)
             {
-                case GameState.Starting:
+                case PVEGameState.Starting:
                     InitialSpawnEnemy();
                     break;
-                case GameState.Running:
+                case PVEGameState.Running:
                     RespawnEnemy();
                     break;
-                case GameState.Ending:
+                case PVEGameState.Ending:
                     //
                     break;
                 default:
@@ -66,19 +67,14 @@ namespace SH.Multiplayer
 
                 Network_SpawnPoint spawnPoint = enemy.SpawnPoint;
 
-                // Simple Random
-                // int randomInt = UnityEngine.Random.Range(0, 20);
+              
+                int randomInt = UnityEngine.Random.Range(0, _enemyObList.Count);
 
-                // int targetInt = randomInt > 15 &&  randomInt <=19 ? 2 : randomInt > 8  &&  randomInt <=15 ? 1 : 0;
- 
-                // NetworkPrefabRef targetToSpawn = _mineralObList[targetInt];
-
-                var enemySpawned = Runner.Spawn(_enemyObList[0], spawnPoint.GetSpawnPosition(), Quaternion.identity , PlayerRef.None);
+                var enemySpawned = Runner.Spawn(_enemyObList[randomInt], spawnPoint.GetSpawnPosition(), Quaternion.identity , PlayerRef.None);
 
                
                 enemy.WasSpawn = true;
-                 Debug.Log(enemy.WasSpawn);
-
+                enemySpawned.GetComponent<Network_EnemyDamageable>().RoomPVE = this;
                 enemySpawned.GetComponent<Network_EnemyMovement>().SetWaypoint(enemy.PatrolPointList);
 
                 enemy.EnemySpawned = enemySpawned;
@@ -92,11 +88,11 @@ namespace SH.Multiplayer
                 SpawnEnemy(enemy);
             });
 
-            _gameState = GameState.Running;
+            _gameState = PVEGameState.Running;
 
         }
 
-         public void RespawnEnemy()
+        public void RespawnEnemy()
         {
 
             _enemyDataList.ForEach(enemy =>
@@ -108,7 +104,7 @@ namespace SH.Multiplayer
                     if (enemy.RespawnTimeStarted == false)
                     {
 
-                        enemy.RespawnTime = TickTimer.CreateFromSeconds(Runner, 10);
+                        enemy.RespawnTime = TickTimer.CreateFromSeconds(Runner, 5);
                         enemy.RespawnTimeStarted = true;
                     }
                     else
@@ -125,6 +121,20 @@ namespace SH.Multiplayer
             });
 
         }
+
+         public void EnemyDefeated(NetworkObject enemy)
+        {
+            if (Runner.IsServer == false) return;
+
+            EnemyData enemyData = _enemyDataList.Find(spawn => spawn.EnemySpawned == enemy);
+
+            enemyData.EnemySpawned = null;
+            enemyData.WasSpawn = false;
+
+            Runner.Despawn(enemy);
+
+        }
+
 
 
     }

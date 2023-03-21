@@ -81,7 +81,7 @@ namespace SH.Multiplayer
             Vector2 moveDir = input.MoveDirection.normalized;
 
 
-            if (moveDir != Vector2.zero )
+            if (moveDir != Vector2.zero)
             {
               
                 float targetRotation = Mathf.Atan2(moveDir.x, moveDir.y) * Mathf.Rad2Deg + mainCamEuler.y;

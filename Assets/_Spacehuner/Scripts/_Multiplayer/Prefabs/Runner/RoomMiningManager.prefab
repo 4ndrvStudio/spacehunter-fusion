@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4133816641915184210
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4133816641915184209}
+  - component: {fileID: 4133816641915184208}
+  - component: {fileID: 4133816641915184211}
+  m_Layer: 0
+  m_Name: RoomMiningManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4133816641915184209
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4133816641915184210}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.0952713, y: 8.71615, z: 110.24615}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4133816641915184208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4133816641915184210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33fd864f3fdfb5745ba832c2ea6e3450, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  _mineralDataList:
+  - WasSpawn: 0
+    SpawnPoint: {fileID: 0}
+    MineralSpawned: {fileID: 0}
+    RespawnTimeStarted: 0
+  - WasSpawn: 0
+    SpawnPoint: {fileID: 0}
+    MineralSpawned: {fileID: 0}
+    RespawnTimeStarted: 0
+  - WasSpawn: 0
+    SpawnPoint: {fileID: 0}
+    MineralSpawned: {fileID: 0}
+    RespawnTimeStarted: 0
+  - WasSpawn: 0
+    SpawnPoint: {fileID: 0}
+    MineralSpawned: {fileID: 0}
+    RespawnTimeStarted: 0
+  - WasSpawn: 0
+    SpawnPoint: {fileID: 0}
+    MineralSpawned: {fileID: 0}
+    RespawnTimeStarted: 0
+  - WasSpawn: 0
+    SpawnPoint: {fileID: 0}
+    MineralSpawned: {fileID: 0}
+    RespawnTimeStarted: 0
+  - WasSpawn: 0
+    SpawnPoint: {fileID: 0}
+    MineralSpawned: {fileID: 0}
+    RespawnTimeStarted: 0
+  - WasSpawn: 0
+    SpawnPoint: {fileID: 0}
+    MineralSpawned: {fileID: 0}
+    RespawnTimeStarted: 0
+  - WasSpawn: 0
+    SpawnPoint: {fileID: 0}
+    MineralSpawned: {fileID: 0}
+    RespawnTimeStarted: 0
+  - WasSpawn: 0
+    SpawnPoint: {fileID: 0}
+    MineralSpawned: {fileID: 0}
+    RespawnTimeStarted: 0
+  _mineralObList:
+  - RawGuidValue: 420995316a0682142ac856501e23fcc5
+  - RawGuidValue: d5e3e675e8cedf84daf52983493a05b4
+  - RawGuidValue: 4b6f64381f74bbd49b5988c65882f037
+--- !u!114 &4133816641915184211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4133816641915184210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2305
+  NetworkGuid:
+    RawGuidValue: 16e7d6ba5e7d4e44fbbbe7d933290116
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 4133816641915184208}
+  SimulationBehaviours: []

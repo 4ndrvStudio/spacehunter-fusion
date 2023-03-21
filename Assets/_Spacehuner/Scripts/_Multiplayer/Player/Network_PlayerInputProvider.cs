@@ -105,10 +105,6 @@ namespace SH.Multiplayer
                 {
                     _cachedInput.Attack = true;
                 }
-        
-
-        
-
 
 
             //Movement 

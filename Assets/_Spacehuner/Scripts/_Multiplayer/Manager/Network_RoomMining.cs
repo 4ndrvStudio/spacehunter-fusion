@@ -7,14 +7,15 @@ using SH.Define;
 
 namespace SH.Multiplayer
 {
-    public class Network_RoomMining : NetworkBehaviour
-    {
-        enum GameState
+        public enum MiningGameState
         {
             Starting,
             Running,
             Ending
         }
+    public class Network_RoomMining : NetworkBehaviour
+    {
+    
 
         [System.Serializable]
         public class MineralData
@@ -34,7 +35,7 @@ namespace SH.Multiplayer
 
 
 
-        [Networked] private GameState _gameState { get; set; }
+        [Networked] private MiningGameState _gameState { get; set; }
 
 
 
@@ -42,7 +43,7 @@ namespace SH.Multiplayer
         {
             if (Object.HasStateAuthority == false) return;
 
-            _gameState = GameState.Starting;
+            _gameState = MiningGameState.Starting;
 
         }
         public override void FixedUpdateNetwork()
@@ -51,13 +52,13 @@ namespace SH.Multiplayer
 
             switch (_gameState)
             {
-                case GameState.Starting:
+                case MiningGameState.Starting:
                     InitialSpawnMineral();
                     break;
-                case GameState.Running:
+                case MiningGameState.Running:
                     RespawnMineral();
                     break;
-                case GameState.Ending:
+                case MiningGameState.Ending:
 
                     break;
                 default:
@@ -96,7 +97,7 @@ namespace SH.Multiplayer
                 SpawnMineral(mineral);
             });
 
-            _gameState = GameState.Running;
+            _gameState = MiningGameState.Running;
 
         }
 
@@ -140,7 +141,6 @@ namespace SH.Multiplayer
             mineralData.WasSpawn = false;
 
             Runner.Despawn(mineral);
-
 
         }
 

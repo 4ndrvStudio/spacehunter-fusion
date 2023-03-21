@@ -2,53 +2,154 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Fusion;
+using System.Threading.Tasks;
 
 namespace SH.Multiplayer
 {
-    public class Network_EnemyDamageable : MonoBehaviour
+    public class Network_EnemyDamageable : NetworkBehaviour
     {
         [SerializeField] private Network_EnemyBrain _enemyBrain;
         [SerializeField] private Network_EnemyStats _enemyStats;
         [SerializeField] private Network_EnemyAnimation _enemyAnim;
+        
+        [HideInInspector] public Network_RoomPVE RoomPVE;
 
-        private void OnTriggerEnter(Collider other)
-        {   
-            bool damageTag = other.CompareTag("P_Damageable") || other.CompareTag("PA_Damageable");
-            if (damageTag && !_enemyStats.IsDeath) {
-                GetHit(other.transform);
-               // if(other.CompareTag("P_Damageable")) PlayerStats.Instance.RefillArrow();
-            } 
+        //network 
+        [Networked] private NetworkBool _wasHit { get; set; }
+        [Networked] private NetworkBool _isAlive { get; set; }
+
+        [Networked(OnChanged = nameof(OnHitFromPosChanged))]
+        private Vector3 N_HitFromPosition { get; set; }
+        private Vector3 L_HitFromPosition;
+
+        [Networked, HideInInspector]
+        public int HitCount { get; set; }
+
+        private Interpolator<int> _hitCountInterpolator;
+        private int _lastVisibleHit;
+
+
+
+
+        public override void Spawned()
+        {
+            _hitCountInterpolator = GetInterpolator<int>(nameof(HitCount));
+            _lastVisibleHit = HitCount;
+            _isAlive = true;
         }
 
-        private void GetHit(Transform hitFromPos)
+
+        public void HitEnemy(PlayerRef player, Transform hisFromPos)
         {
-            _enemyAnim.GetDame();
-            bool isLastHit = _enemyStats.Health == 1;
-           // CameraManager.Instance.ShakeCam(5, 0.1f);
-            
-            // CameraManager.Instance.ShakeCam(2,0.1f);
-            PushEnemyBack(hitFromPos,0.5f);
-            _enemyBrain.RotateToPlayer(hitFromPos);
-            _enemyBrain.ReSelectNearestPlayer();
-            _enemyStats.ReduceHealth(1);
-            if (_enemyStats.Health <= 0)
+            if (Object == null) return;
+            if (Object.HasStateAuthority == false) return;
+            if (_wasHit) return;
+
+
+            N_HitFromPosition = hisFromPos.position;
+
+            if (Runner.TryGetPlayerObject(player, out var playerNetworkObject))
             {
-                 PushEnemyBack(hitFromPos,5f);
-                _enemyStats.SetIsDeath(true);
-                gameObject.GetComponent<Collider>().enabled = false;
-               
+
+                playerNetworkObject.GetComponentInChildren<Network_WeaponCollider>().ToggleActiveCollider(CanHitName.Mineral, false);
+
+            }
+
+            _wasHit = true;
+        }
+
+
+        public override void FixedUpdateNetwork()
+        {
+            if (Object.HasStateAuthority == false) return;
+            if (_wasHit)
+            {
+                _wasHit = false;
+
+                _enemyStats.ReduceHealth(1);
+
+                HitCount++;
+
+
+            }
+            if (_isAlive && _enemyStats.HP <= 0)
+            {
+                EnemyDestroy();
+                _isAlive = false;
+
             }
 
         }
-        public void PushEnemyBack(Transform hitFromPos, float factor)
+
+        async void EnemyDestroy()
         {
-            Vector3 direction = transform.position - hitFromPos.transform.position;
+            await Task.Delay(4000);
+            RoomPVE.EnemyDefeated(Object);
+
+        }
+
+        private void GetHit(Vector3 hitFromPos)
+        {
+            if (_isAlive == false)
+            {
+                return;
+            }
+            _enemyAnim.GetDame();
+
+            // CameraManager.Instance.ShakeCam(5, 0.1f);
+
+            // CameraManager.Instance.ShakeCam(2,0.1f);
+
+            PushEnemyBack(hitFromPos, 0.5f);
+            _enemyBrain.RotateToPlayer(hitFromPos);
+            _enemyBrain.ReSelectNearestPlayer();
+            _enemyStats.ReduceHealth(1);
+
+            if (_enemyStats.HP <= 0)
+            {
+                PushEnemyBack(hitFromPos, 2f);
+            }
+
+        }
+        public void PushEnemyBack(Vector3 hitFromPos, float factor)
+        {
+            Vector3 direction = transform.position - hitFromPos;
             direction = direction.normalized * factor;
             direction.y = transform.position.y;
             Vector3 targetPos = transform.position + direction;
             targetPos.y = transform.position.y;
             transform.DOMove(targetPos, 1f);
         }
+
+        public override void Render()
+        {
+            if (_lastVisibleHit < HitCount)
+            {
+                GetHit(L_HitFromPosition);
+
+            }
+            else if (_lastVisibleHit > HitCount)
+            {
+                //cancel attack
+            }
+            _lastVisibleHit = HitCount;
+
+
+        }
+
+        static void OnHitFromPosChanged(Changed<Network_EnemyDamageable> changed)
+        {
+            changed.Behaviour.OnHitFromPosChanged();
+        }
+        private void OnHitFromPosChanged()
+        {
+            this.L_HitFromPosition = N_HitFromPosition;
+        }
+
+
+
+
 
     }
 }

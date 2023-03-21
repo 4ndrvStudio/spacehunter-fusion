@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using DG.Tweening;
 
 namespace SH.Multiplayer
 {
     public class Network_PlayerCombat : NetworkBehaviour, ISpawned
     {
         [SerializeField] private Network_PlayerState _playerState;
+        [SerializeField] private Network_PlayerAimingAssistant _playerAim;
 
 
         [Networked, HideInInspector]
@@ -29,6 +31,10 @@ namespace SH.Multiplayer
 
         [Networked] private TickTimer _avoidAttackTime { get; set; }
 
+        //aiming assistant   
+        [SerializeField] private LayerMask _obstacleMask;
+        [SerializeField] private float _attackMoveDuration;
+        [SerializeField] private float _attackMoveDis;
 
 
         public override void Spawned()
@@ -68,9 +74,15 @@ namespace SH.Multiplayer
 
                     if (L_IndexAttack >= AttackName.Length) L_IndexAttack = 0;
 
-                    RPC_SetIndexAttack(L_IndexAttack);
+                    if(Runner.IsServer == false) {
 
+                        RPC_SetIndexAttack(L_IndexAttack);
+
+                    }
+
+                    AimSupport();
                     AttackCount++;
+                    
                     _avoidAttackTime = TickTimer.CreateFromSeconds(Runner, 0.2f);
                 }
 
@@ -79,6 +91,37 @@ namespace SH.Multiplayer
             _lastButtonsInput = input.Buttons;
 
         }
+
+        
+        void AimSupport()
+        {
+            if (_playerAim.SelectedNearest != null)
+            {
+
+                //Rotate support
+                Vector3 from = _playerAim.SelectedNearest.transform.position - transform.position;
+                Vector2 to = transform.forward;
+                from.y = 0;
+                var rotation = Quaternion.LookRotation(from);
+                transform.DORotateQuaternion(rotation, 0f);
+
+                //translate support
+                Vector3 targetPos = _playerAim.SelectedNearest.transform.position + ((transform.position - _playerAim.SelectedNearest.transform.position).normalized * 1.2f);
+                targetPos.y = transform.position.y;
+                transform.DOMove(targetPos, _attackMoveDuration);
+            }
+            else
+            {
+
+                // RaycastHit hit;
+                // if (!Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, _attackMoveDis, _obstacleMask))
+                // {
+                //     transform.DOMove(transform.position + transform.forward * _attackMoveDis, _attackMoveDuration);
+                // }
+               
+            }
+        }
+
 
 
 
@@ -95,6 +138,7 @@ namespace SH.Multiplayer
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_SetIndexAttack(int indexAttack, RpcInfo info = default)
         {
+            
             this.N_IndexAttack = (byte)indexAttack;
         }
 

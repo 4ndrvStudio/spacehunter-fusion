@@ -1,26 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
 namespace SH.Multiplayer
 {
-    public class Network_EnemyStats : MonoBehaviour
+    public class Network_EnemyStats : NetworkBehaviour
     {
-        [SerializeField] private int _health = 5;
-        [SerializeField] private bool _isDeath = false;
 
-        public int Health => _health;
-        public bool IsDeath => _isDeath;
+        [SerializeField] private Network_EnemyBrain _enemyBrain;
 
-        public void SetIsDeath(bool isDeath)
-        {
-            _isDeath = isDeath;
-            Destroy(this.gameObject, 7f);
+
+        [Networked(OnChanged = nameof(OnHpChanged))]  
+        [SerializeField] public int HP {get; set;}
+        
+
+        public void ReduceHealth(int targetReduce) 
+        {   
+            if(Object.HasStateAuthority == false) return;
+               HP-= targetReduce;
         }
-        public void ReduceHealth(int targetReduce)
+
+        static void OnHpChanged(Changed<Network_EnemyStats> changed)
         {
-            _health -= targetReduce;
+            changed.Behaviour.OnHpChanged();
         }
+        private void OnHpChanged()
+        {
+            
+            if(HP<=0) {
+                _enemyBrain.E_AI_STATE = E_AI_STATE.Dead;
+            } 
+           
+            
+        }
+
+    
 
     
     }
