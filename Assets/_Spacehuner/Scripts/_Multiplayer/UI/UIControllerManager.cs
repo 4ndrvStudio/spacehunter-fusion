@@ -9,9 +9,12 @@ namespace SH.Multiplayer
     {
         public static UIControllerManager Instance;
 
+        [SerializeField] private UITouchPanel _touchPanel;
         [SerializeField] private Joystick _movementJoy;
         [SerializeField] private UIButtonCustom _attackBtn;
         [SerializeField] private UIButtonCustom _jumpBtn;
+
+        public bool IsActive = false;
 
         void Awake()
         {
@@ -25,6 +28,8 @@ namespace SH.Multiplayer
             _movementJoy.gameObject.SetActive(isActive);
             _attackBtn.gameObject.SetActive(isActive);
             _jumpBtn.gameObject.SetActive(isActive);
+            _touchPanel.gameObject.SetActive(isActive);
+            IsActive =true;
         }
 
         public Joystick GetMovementJoystick() => _movementJoy;

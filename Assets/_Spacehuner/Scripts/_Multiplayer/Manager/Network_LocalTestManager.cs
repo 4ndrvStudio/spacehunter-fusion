@@ -19,7 +19,7 @@ namespace SH.Multiplayer
             {
                 GameMode = mode,
                 SessionName = "testRoom",
-                Scene = (int) SH.Define.SceneDefs.scene_miningFusion,
+                Scene = (int) SH.Define.SceneDefs.scene_stationFusion,
                 SceneManager = gameObject.GetComponent<NetworkSceneManagerDefault>()
             });
 

@@ -115,16 +115,18 @@ namespace SH.Multiplayer
         public void OnSceneLoadDone(NetworkRunner runner)
         {
             
+           
+            
 
             if (Runner.IsServer)
             {
                 Debug.Log("Joined to " + SceneManager.GetActiveScene().name);
             }else {
                   UIManager.Instance.HideWaiting(); 
-                  if((int)Runner.CurrentScene > 1 ) 
-                    UIControllerManager.Instance.ActiveController(true);
-                  else 
-                    UIControllerManager.Instance.ActiveController(false);
+                   // if(Object.HasInputAuthority == true) {
+           
+                 
+                
             }
           
 

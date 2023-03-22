@@ -11,6 +11,20 @@ namespace SH.Multiplayer
         public static Network_CameraManager Instance;
 
         [SerializeField] private Camera _mainCam;
+        
+        [SerializeField] private CinemachineFreeLook _cineCam;
+
+        // rotate Cam
+        [SerializeField] private UITouchPanel _touchInput;
+
+        private Vector2 _lookInput;
+
+        [SerializeField] private float _touchSpeedSensitivityX = 3f;
+        [SerializeField] private float _touchSpeedSensitivityY = 3f;
+
+        private string _touchXMapTo = "Mouse X";
+        private string _touchYMapTo = "Mouse Y";
+
 
          void Awake()
         {
@@ -22,7 +36,10 @@ namespace SH.Multiplayer
             {
                 Instance = this;
             }
-        }
+
+            CinemachineCore.GetInputAxis = GetInputAxis;
+        } 
+
 
 
         
@@ -36,6 +53,10 @@ namespace SH.Multiplayer
                     Cursor.visible = false;
                 }
 
+                while(_touchInput == null) {
+                    _touchInput = UITouchPanel.Instance;
+                }
+              
         }
 
         void OnDestroy()
@@ -47,7 +68,6 @@ namespace SH.Multiplayer
         }
 
 
-        [SerializeField] private CinemachineFreeLook _cineCam;
 
 
         public void SetAimTarget(Transform body, Transform lookPoint) {
@@ -61,7 +81,25 @@ namespace SH.Multiplayer
 
         public Transform GetTransform() => _mainCam.transform;
 
+        private float GetInputAxis(string axisName)
+        {
+            if(_touchInput == null) return 0;
 
+            _lookInput = _touchInput.PlayerJoystickOutputVector();
+
+            if (axisName == _touchXMapTo)
+                return _lookInput.x / _touchSpeedSensitivityX;
+
+            if (axisName == _touchYMapTo)
+                return _lookInput.y / _touchSpeedSensitivityY;
+
+            return Input.GetAxis(axisName);
+        }
+
+        public void SetUITouchPanel (UITouchPanel touchPanel) {
+            Debug.Log("Called");
+             _touchInput = touchPanel;
+        }
     
     
     }

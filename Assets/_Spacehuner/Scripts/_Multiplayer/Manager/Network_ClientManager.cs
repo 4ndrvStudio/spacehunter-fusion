@@ -62,11 +62,11 @@ namespace SH.Multiplayer
         private void OnGUI()
         {
          
-                if (GUI.Button(new Rect(0, 0, 200, 40), "Join Game"))
+                if (GUI.Button(new Rect(0, 0, 600, 120), "Join Game"))
                 {
                     StartGame(SceneDefs.scene_stationFusion);
                 }
-                if (GUI.Button(new Rect(0, 40, 200, 40), "Go To Mining"))
+                if (GUI.Button(new Rect(0, 120, 600, 120), "Go To Mining"))
                 {
                     MoveToRoom(SceneDefs.scene_miningFusion);
                 }

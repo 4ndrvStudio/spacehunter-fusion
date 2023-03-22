@@ -11,9 +11,6 @@ namespace SH.Multiplayer
         [SerializeField] private Vector2 StartPosition;
         [SerializeField] private Vector2 EndPosition;
 
-      
-
-
         // Start is called before the first frame update
         void Start()
         {

@@ -27,7 +27,16 @@ namespace SH.Multiplayer
             {
                 Local = this;
                 Network_CameraManager.Instance.SetAimTarget(_body, _lookPoint);
+
+                if((int)Runner.CurrentScene > 1 ) 
+                    UIControllerManager.Instance.ActiveController(true);
+                else 
+                    UIControllerManager.Instance.ActiveController(false);
+
+
                 RPC_SetNickName(PlayerDataManager.DisplayName);
+                
+                //Network_CameraManager.Instance.SetUITouchPanel(UITouchPanel.Instance.GetUITouchPanel());
             }
 
         }
