@@ -6,8 +6,8 @@
     "ServerPhysicsMode": 1,
     "UseLagCompensation": true,
     "LagCompensation": {
-        "HitboxBufferSize": 12,
-        "HitboxCapacity": 512,
+        "HitboxBufferSize": 30,
+        "HitboxCapacity": 2048,
         "ExpansionFactor": 0.20000000298023225,
         "Optimize": false,
         "DebugBroadphase": false,
@@ -43,8 +43,8 @@
         "InputDataWordCount": 0,
         "TickRate": 60,
         "MaxPrediction": 60,
-        "DefaultPlayers": 10,
-        "ReplicationMode": 0,
+        "DefaultPlayers": 119,
+        "ReplicationMode": 1,
         "ObjectInterest": false,
         "ServerPacketInterval": 1,
         "ClientPacketInterval": 1

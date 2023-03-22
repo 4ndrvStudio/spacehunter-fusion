@@ -33,7 +33,11 @@ public class LookTouchZone :  MonoBehaviour, IPointerDownHandler, IDragHandler, 
     {
         SetupHandle();
     }
+    
+    void Update() {
+        
 
+    }
     private void SetupHandle()
     {
         if(handleRect)
@@ -71,6 +75,7 @@ public class LookTouchZone :  MonoBehaviour, IPointerDownHandler, IDragHandler, 
     public void OnPointerUp(PointerEventData eventData)
     {
         pointerDownPosition = Vector2.zero;
+
         currentPointerPosition = Vector2.zero;
 
         OutputPointerEventValue(Vector2.zero);

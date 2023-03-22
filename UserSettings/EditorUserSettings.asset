@@ -9,37 +9,37 @@ EditorUserSettings:
       value: 5355005256055f03595b552615250a4446161e72757f7335757a4e64e1b9623a
       flags: 0
     RecentlyUsedSceneGuid-1:
-      value: 5655550051510f095c5f0f70117a5a44144f497c797a73607e791931b3b0646c
-      flags: 0
-    RecentlyUsedSceneGuid-2:
       value: 5101515054015858555f0f7742220a4440161c287e2e2534287e4435b6b6363c
       flags: 0
-    RecentlyUsedSceneGuid-3:
+    RecentlyUsedSceneGuid-2:
       value: 5552035455015b0d550c5e21137a0a4441161d7f7e2e22627e2c4563e7b73561
       flags: 0
-    RecentlyUsedSceneGuid-4:
-      value: 0004565307070a5e5e5d5523497a06444f4f4e7a2f707561297f1b62b6e26c6d
-      flags: 0
-    RecentlyUsedSceneGuid-5:
+    RecentlyUsedSceneGuid-3:
       value: 5a54550452030c0a545a097516720b4415154b722a2b7035747a4b67bbb7606b
       flags: 0
-    RecentlyUsedSceneGuid-6:
+    RecentlyUsedSceneGuid-4:
       value: 0701075301535a0b0e5a5b7611720944124f4f7b75787f602f794536e3b7373c
       flags: 0
+    RecentlyUsedSceneGuid-5:
+      value: 050103025c0d0d5f5f5c5a2612715a44434e4d2e297120627b7c4f61b0b8673e
+      flags: 0
+    RecentlyUsedSceneGuid-6:
+      value: 0004565307070a5e5e5d5523497a06444f4f4e7a2f707561297f1b62b6e26c6d
+      flags: 0
     RecentlyUsedSceneGuid-7:
-      value: 0503015f540d0f0b5e0f54724671094446154e7e287e75627b7b4836b2b0316a
+      value: 5655550051510f095c5f0f70117a5a44144f497c797a73607e791931b3b0646c
       flags: 0
     RecentlyUsedSceneGuid-8:
-      value: 050103025c0d0d5f5f5c5a2612715a44434e4d2e297120627b7c4f61b0b8673e
+      value: 0503015f540d0f0b5e0f54724671094446154e7e287e75627b7b4836b2b0316a
       flags: 0
     RecentlyUsedSceneGuid-9:
       value: 020056545505585e5a565e2012770846434e4f797e2c71357f2b1e37e1b3613e
       flags: 0
     UnityRemoteCompression:
-      value: 337f73
+      value: 29617121
       flags: 0
     UnityRemoteDevice:
-      value: 54000d55510d0a590b0c0d73447b5d12154f1c7b287b7536797d1b6bb2b63168bbbf63bdbf69663a
+      value: 225f4d46245b0d4902070862342649191512
       flags: 0
     UnityRemoteJoystickSource:
       value: 315459091150

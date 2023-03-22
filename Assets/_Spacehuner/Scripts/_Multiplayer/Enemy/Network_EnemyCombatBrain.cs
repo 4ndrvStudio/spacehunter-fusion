@@ -134,7 +134,8 @@ namespace SH.Multiplayer
             N_IndexAttack = (byte) targetAttack;
 
             _enemyBrain.RotateToPlayer();
-            _enemyBrain.AimSupport();
+            
+           // _enemyBrain.AimSupport();
             AttackCount++;
             // _enemyAnim.PlayAttack(Attack_List[0]);
             _canAttack = false;

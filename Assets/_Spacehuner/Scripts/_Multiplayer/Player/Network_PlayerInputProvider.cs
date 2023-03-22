@@ -46,7 +46,7 @@ namespace SH.Multiplayer
 
                 events.OnInput.RemoveListener(OnInput);
                 events.OnInput.AddListener(OnInput);
-         
+
             }
         }
 
@@ -99,19 +99,32 @@ namespace SH.Multiplayer
                 _cachedInput.Jump = true;
             }
 
-       
+            //attack Btn 
+            if (Input.GetMouseButton(0) == true)
+            {
+                _cachedInput.Attack = true;
+            }
+
+            if (UIControllerManager.Instance != null)
+            {
+                //jump btn
+                if (UIControllerManager.Instance.GetJumpBtn() == true)
+                {
+                    _cachedInput.Jump = true;
+                }
                 //attack Btn 
-                if (Input.GetMouseButton(0) == true)
+                if (UIControllerManager.Instance.GetAttackBtn() == true)
                 {
                     _cachedInput.Attack = true;
                 }
+            }
 
 
             //Movement 
-            //Joystick movementJoystick = UIControllerManager.Instance.GetMovementJoystick();
+            Joystick movementJoystick = UIControllerManager.Instance.GetMovementJoystick();
 
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
+            float horizontal = Input.GetAxis("Horizontal") + movementJoystick.Horizontal;
+            float vertical = Input.GetAxis("Vertical") + movementJoystick.Vertical;
 
             if (horizontal != 0f || vertical != 0f)
             {

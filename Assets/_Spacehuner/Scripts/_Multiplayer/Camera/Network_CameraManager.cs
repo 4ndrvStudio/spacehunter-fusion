@@ -35,6 +35,7 @@ namespace SH.Multiplayer
                     Cursor.lockState = CursorLockMode.Locked;
                     Cursor.visible = false;
                 }
+
         }
 
         void OnDestroy()

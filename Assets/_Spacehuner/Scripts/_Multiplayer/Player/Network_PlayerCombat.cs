@@ -80,7 +80,7 @@ namespace SH.Multiplayer
 
                     }
 
-                    AimSupport();
+                    //AimSupport();
                     AttackCount++;
                     
                     _avoidAttackTime = TickTimer.CreateFromSeconds(Runner, 0.2f);

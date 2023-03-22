@@ -59,10 +59,14 @@ namespace SH.Multiplayer
 
         public override void FixedUpdateNetwork()
         {
+            
+
+        }
+        public override void Render()
+        {
             if (Object.HasInputAuthority == false) return;
             RPC_SetIsGrounded(GroundCheck());
             RPC_SetIsAction(_anim.GetBool("isAction"));
-
         }
 
 

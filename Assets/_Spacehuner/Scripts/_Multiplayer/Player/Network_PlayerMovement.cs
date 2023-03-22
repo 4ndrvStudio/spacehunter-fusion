@@ -81,13 +81,12 @@ namespace SH.Multiplayer
             Vector2 moveDir = input.MoveDirection.normalized;
 
 
-            if (moveDir != Vector2.zero)
+            if (moveDir != Vector2.zero )
             {
               
                 float targetRotation = Mathf.Atan2(moveDir.x, moveDir.y) * Mathf.Rad2Deg + mainCamEuler.y;
                 
                 Quaternion targetQuaternion = Quaternion.Euler(0f, targetRotation, 0f);
-
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetQuaternion, _turnSmoothTime * Runner.DeltaTime);
             }
 
