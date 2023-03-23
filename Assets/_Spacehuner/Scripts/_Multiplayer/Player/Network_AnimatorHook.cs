@@ -21,11 +21,12 @@ namespace SH.Multiplayer
         }
 
         public void EnableVFX(int index) {
-            _attackVFXList[index].SetActive(true);
+            GameObject targetFX = _attackVFXList[index];
+            GameObject fx  = Instantiate(targetFX,targetFX.transform.position, targetFX.transform.rotation);
+            fx.SetActive(true);
+            
         }
-        public void DisableVFX(int index) {
-            _attackVFXList[index].SetActive(false);
-        }
+     
 
         
     }

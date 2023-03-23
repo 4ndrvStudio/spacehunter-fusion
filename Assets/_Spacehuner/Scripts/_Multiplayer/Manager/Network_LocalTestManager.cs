@@ -19,11 +19,12 @@ namespace SH.Multiplayer
             {
                 GameMode = mode,
                 SessionName = "testRoom",
-                Scene = (int) SH.Define.SceneDefs.scene_stationFusion,
+                Scene = (int) SH.Define.SceneDefs.scene_miningFusion,
                 SceneManager = gameObject.GetComponent<NetworkSceneManagerDefault>()
             });
 
             _isRunning = true;
+               Application.targetFrameRate = 300;
         }
 
         private void OnGUI()

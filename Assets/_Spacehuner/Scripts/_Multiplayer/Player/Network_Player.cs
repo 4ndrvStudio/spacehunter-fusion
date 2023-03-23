@@ -36,7 +36,6 @@ namespace SH.Multiplayer
 
                 RPC_SetNickName(PlayerDataManager.DisplayName);
                 
-                //Network_CameraManager.Instance.SetUITouchPanel(UITouchPanel.Instance.GetUITouchPanel());
             }
 
         }

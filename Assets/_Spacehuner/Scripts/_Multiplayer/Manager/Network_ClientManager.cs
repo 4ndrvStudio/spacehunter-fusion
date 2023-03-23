@@ -42,7 +42,8 @@ namespace SH.Multiplayer
                 SceneManager = _networkSceneManagerDefault
             });
             Debug.Log("status :  " + startGameResult.ErrorMessage);
-   
+            
+            Application.targetFrameRate = 300;
         }
 
         public static async void MoveToRoom(SceneDefs sceneDefs)

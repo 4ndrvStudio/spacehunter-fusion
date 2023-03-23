@@ -53,7 +53,9 @@ namespace SH.Multiplayer
                     Cursor.visible = false;
                 }
 
-                while(_touchInput == null) {
+                //get touch input
+                while(_touchInput == null) 
+                {
                     _touchInput = UITouchPanel.Instance;
                 }
               
@@ -97,7 +99,6 @@ namespace SH.Multiplayer
         }
 
         public void SetUITouchPanel (UITouchPanel touchPanel) {
-            Debug.Log("Called");
              _touchInput = touchPanel;
         }
     

@@ -12,13 +12,10 @@ namespace SH.Multiplayer
         [SerializeField] private Network_EnemyCombatBrain _enemyCombatBrain;
         [SerializeField] private Animator _anim;
         [SerializeField] private SkinnedMeshRenderer _bodyMesh;
-
-        [SerializeField] private Material _effectMat;
-
-        private Texture _emiTex;
         private Material _enemyMat;
-         private Material m_enemyMat;
-         private Material m_effectMat;
+
+        [SerializeField] private bool IsAttack;
+
 
         private int _lastVisibleAttack;
 
@@ -26,16 +23,9 @@ namespace SH.Multiplayer
         {
 
             Material[] materials = _bodyMesh.materials;
-
-            m_enemyMat = new Material(materials[0]);
-
-            if (_effectMat != null)
-            {
-                m_effectMat = new Material(_effectMat);
-               
-            }
-            
-            _bodyMesh.material = m_enemyMat;
+            _bodyMesh.material = new Material(materials[0]);
+            _enemyMat = _bodyMesh.materials[0];
+        
 
             _lastVisibleAttack = _enemyCombatBrain.AttackCount;
 
@@ -51,15 +41,15 @@ namespace SH.Multiplayer
 
             //Render Attack
             if (_lastVisibleAttack < _enemyCombatBrain.AttackCount)
-			{
-               
+            {
+
                 _anim.SetTrigger(_enemyCombatBrain.Attack_List[_enemyCombatBrain.L_IndexAttack]);
 
-			}
-			else if (_lastVisibleAttack > _enemyCombatBrain.AttackCount)
-			{
-				//cancel attack
-			}
+            }
+            else if (_lastVisibleAttack > _enemyCombatBrain.AttackCount)
+            {
+                //cancel attack
+            }
 
             _lastVisibleAttack = _enemyCombatBrain.AttackCount;
 
@@ -106,14 +96,7 @@ namespace SH.Multiplayer
         {
             _anim.Play("GetDame", 1, 0);
 
-            _bodyMesh.material = _effectMat == null ? m_enemyMat : m_effectMat;
-            _enemyMat = _bodyMesh.materials[0];
-
-            _emiTex = _enemyMat.GetTexture("_EmissionMap");
-            
             //Effect
-            if (_emiTex != null) _enemyMat.SetTexture("_EmissionMap", null);
-
             _enemyMat.DOColor(Color.white, "_EmissionColor", 0f).OnComplete(() =>
             {
                 _enemyMat.DOColor(Color.red, "_EmissionColor", 0.1f).OnComplete(() =>
@@ -123,9 +106,6 @@ namespace SH.Multiplayer
                         _enemyMat.DOColor(Color.red, "_EmissionColor", 0.1f).OnComplete(() =>
                         {
                             _enemyMat.DOColor(Color.black, "_EmissionColor", 0);
-                            if (_emiTex != null) _enemyMat.SetTexture("_EmissionMap", _emiTex);
-                            _bodyMesh.material = m_enemyMat;
-                                                            
                         });
                     });
                 });
