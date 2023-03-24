@@ -39,6 +39,9 @@ namespace SH.Multiplayer
             if (SelectedPlayer != null)
             {
                 DisToPlayer = Vector3.Distance(transform.position, SelectedPlayer.transform.position);
+            } else {
+                DisToPlayer = Mathf.Infinity;
+
             }
 
 

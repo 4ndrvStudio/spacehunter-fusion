@@ -12,11 +12,24 @@ namespace SH.Multiplayer
     {
         public static Network_Player Local { get; set; }
 
-        [SerializeField] private Transform _body;
+        [SerializeField] private NetworkRigidbody _netRigid;
+        [SerializeField] private Network_PlayerState _playerState;
+        [SerializeField] private Network_PlayerAnimation _playerAnimation;
+        [SerializeField] private Network_WeaponCollider _networkWeaponCollider;
+     
+        [SerializeField] private GameObject _body;
         [SerializeField] private Transform _lookPoint;
-
+  
         [Networked(OnChanged = nameof(OnNickNameChanged))]
         public NetworkString<_16> nickName { get; set; }
+        
+      
+        [SerializeField]  private List<GameObject> _bodyList = new List<GameObject>();
+
+        [Networked(OnChanged = nameof(OnBodyChanged))]
+        public byte Body {get; set;}
+
+
 
         //Display Data 
         [SerializeField] private TextMeshPro _nameUI;
@@ -26,19 +39,21 @@ namespace SH.Multiplayer
             if (Object.HasInputAuthority)
             {
                 Local = this;
-                Network_CameraManager.Instance.SetAimTarget(_body, _lookPoint);
+
+                RPC_SetBody((int)PlayerDataManager.Character.Data.CharacterInUse.CharacterType);
+            
 
                 if((int)Runner.CurrentScene > 1 ) 
                     UIControllerManager.Instance.ActiveController(true);
                 else 
                     UIControllerManager.Instance.ActiveController(false);
 
-
                 RPC_SetNickName(PlayerDataManager.DisplayName);
-                
+            
             }
-
         }
+
+      
 
 
 
@@ -60,11 +75,48 @@ namespace SH.Multiplayer
             _nameUI.text = nickName.ToString();
         }
 
+        
+
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_SetNickName(string nickName, RpcInfo info = default)
         {
             Debug.Log($"[RPC] SetNickName {nickName}");
             this.nickName = nickName;
+        }
+
+        
+          static void OnBodyChanged(Changed<Network_Player> changed)
+        {
+
+            changed.Behaviour.OnBodyChanged();
+
+        }
+
+        private void OnBodyChanged()
+        {
+
+
+            this._body =  Instantiate(_bodyList[(int)Body -1 ],this.transform);
+
+            if(Object.HasInputAuthority) {
+                      Network_CameraManager.Instance.SetAimTarget(_body.transform, _lookPoint);
+            }
+      
+
+            _netRigid.InterpolationTarget = this._body.transform;
+
+            _playerState.Anim = gameObject.GetComponentInChildren<Animator>();
+            _playerAnimation.Anim = gameObject.GetComponentInChildren<Animator>();
+            
+            Network_AnimatorHook animatorHook = this.gameObject.GetComponentInChildren<Network_AnimatorHook>();
+            animatorHook.SetWeaponCollider(_networkWeaponCollider);
+       
+
+        }
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        public void RPC_SetBody(int body, RpcInfo info = default)
+        {
+            this.Body = (byte)body ;
         }
     }
 

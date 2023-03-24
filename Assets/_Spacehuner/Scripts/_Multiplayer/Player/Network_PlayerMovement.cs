@@ -91,11 +91,11 @@ namespace SH.Multiplayer
             }
 
 
-            Speed = input.MoveDirection.magnitude * _speed;
+            Speed = moveDir != Vector2.zero  ? _speed : 0;
 
             if (moveDir != Vector2.zero && !_playerState.L_IsAction)
             {
-                transform.Translate(transform.forward * Speed * Runner.DeltaTime, Space.World);
+                transform.Translate(transform.forward * _speed * Runner.DeltaTime, Space.World);
             }
 
 

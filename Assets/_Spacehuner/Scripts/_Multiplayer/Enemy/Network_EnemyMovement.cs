@@ -45,7 +45,8 @@ namespace SH.Multiplayer
         public void SetWaypoint (Transform[] waypoints) {
 
             if(Runner.IsServer == false) return;
-
+            
+            
             this._waypoints = waypoints.ToList<Transform>();
             
             m_PlayerPosition = Vector3.zero;
@@ -60,6 +61,7 @@ namespace SH.Multiplayer
             _navMeshAgent.isStopped = false;
             _navMeshAgent.speed = _speedWalk;
             m_CurrentWaypointIndex = 0;
+
             _navMeshAgent.SetDestination(_waypoints[m_CurrentWaypointIndex].position);
 
             IsSetup = true;
@@ -80,7 +82,7 @@ namespace SH.Multiplayer
             // _navMeshAgent = GetComponent<NavMeshAgent>();
             // _navMeshAgent.isStopped = false;
             // _navMeshAgent.speed = _speedWalk;
-          
+             _navMeshAgent.speed = _speedWalk;
             //_navMeshAgent.SetDestination(_waypoints[m_CurrentWaypointIndex].position);
             
          
@@ -93,7 +95,7 @@ namespace SH.Multiplayer
 
             if(_enemyBrain.IsStatic) return;
             if(IsSetup == false ) return;
-             
+            
             m_DisToAttack = _enemyBrain.DisToCombat;
             m_stoppingDistance = _enemyBrain.DisToCombat;
 
@@ -104,6 +106,7 @@ namespace SH.Multiplayer
             };
 
             EnviromentView();
+
             if (_enemyBrain.E_AI_STATE != E_AI_STATE.Combat)
             {
                 if (!m_IsPatrol)
@@ -114,6 +117,12 @@ namespace SH.Multiplayer
                 {
                     Patroling();
                 }
+            } else {
+                if(_enemyBrain.SelectedPlayer == null) {
+                    if(_enemyBrain.E_AI_STATE == E_AI_STATE.Combat) {
+                        _enemyBrain.E_AI_STATE = E_AI_STATE.Patrolling;
+                    }
+                }
             }
         }
         private void Chasing()
@@ -123,6 +132,7 @@ namespace SH.Multiplayer
             playerLastPosition = Vector3.zero;
             _navMeshAgent.stoppingDistance = m_stoppingDistance;
             _enemyBrain.E_AI_STATE = E_AI_STATE.Chasing;
+
             if (!m_CaughtPlayer)
             {
                 Move(_speedRun);
@@ -180,6 +190,7 @@ namespace SH.Multiplayer
         {
                                   
             _enemyBrain.E_AI_STATE = E_AI_STATE.Patrolling;
+          
             _navMeshAgent.stoppingDistance = 0;
 
             if (m_PlayerNear)
@@ -200,22 +211,24 @@ namespace SH.Multiplayer
                 m_PlayerNear = false;
                 playerLastPosition = Vector3.zero;
               
-                          _navMeshAgent.SetDestination(_waypoints[m_CurrentWaypointIndex].position);
+                _navMeshAgent.SetDestination(_waypoints[m_CurrentWaypointIndex].position);
                 
-          
+                Move(_speedWalk);
+
                 if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
                 {
                     if (m_WaitTime <= 0)
                     {
-
                         NextPoint();
                         Move(_speedWalk);
                         m_WaitTime = _startWaitTime;
+                      
                     }
                     else
                     {
-                       _enemyBrain.E_AI_STATE = E_AI_STATE.Idle;
+                         _enemyBrain.E_AI_STATE = E_AI_STATE.Idle;
                         Stop();
+                 
                         m_WaitTime -= Runner.DeltaTime;
                     }
                 }
@@ -226,6 +239,7 @@ namespace SH.Multiplayer
         {
             m_CurrentWaypointIndex = (m_CurrentWaypointIndex + 1) % _waypoints.Count;
             _navMeshAgent.SetDestination(_waypoints[m_CurrentWaypointIndex].position);
+            
 
         }
 
@@ -250,6 +264,7 @@ namespace SH.Multiplayer
         void LookingPlayer(Vector3 player)
         {
             _navMeshAgent.SetDestination(player);
+
             if (Vector3.Distance(transform.position, player) <= 0.3)
             {
                 if (m_WaitTime <= 0)
@@ -259,6 +274,7 @@ namespace SH.Multiplayer
                     _navMeshAgent.SetDestination(_waypoints[m_CurrentWaypointIndex].position);
                     m_WaitTime = _startWaitTime;
                     m_TimeToRotate = _timeToRotate;
+                    
                 }
                 else
                 {
@@ -277,12 +293,14 @@ namespace SH.Multiplayer
         void EnviromentView()
         {
             Collider[] rangeTemp = Physics.OverlapSphere(transform.position, _viewRadius, _playerMask);
+          
             _enemyBrain.PlayersInRange = rangeTemp.ToList();
 
             for (int i = 0; i < _enemyBrain.PlayersInRange.Count; i++)
             {
                 Transform player = _enemyBrain.PlayersInRange[i].transform;
                 Vector3 dirToPlayer = (player.position - transform.position).normalized;
+
                 if (Vector3.Angle(transform.forward, dirToPlayer) < _viewAngle / 2)
                 {
                     if (_enemyBrain.SelectedPlayer == null) _enemyBrain.SelectedPlayer = _enemyBrain.PlayersInRange[i];

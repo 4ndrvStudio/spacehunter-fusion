@@ -8,7 +8,7 @@ namespace SH.Multiplayer
 
     public class Network_PlayerState : NetworkBehaviour
     {
-        [SerializeField] private Animator _anim;
+        public Animator Anim;
         [SerializeField] private Transform _groundCheck;
         [SerializeField] private LayerMask _groundMask;
 
@@ -66,7 +66,8 @@ namespace SH.Multiplayer
         {
             if (Object.HasInputAuthority == false) return;
             RPC_SetIsGrounded(GroundCheck());
-            RPC_SetIsAction(_anim.GetBool("isAction"));
+            if(Anim == null) return;
+            RPC_SetIsAction(Anim.GetBool("isAction"));
         }
 
 

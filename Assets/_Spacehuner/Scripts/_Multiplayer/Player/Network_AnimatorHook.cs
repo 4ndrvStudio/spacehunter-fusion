@@ -9,8 +9,12 @@ namespace SH.Multiplayer
     {
         [SerializeField] private Network_WeaponCollider _weaponColider;
         [SerializeField] private List<GameObject> _attackVFXList;
+        [SerializeField] private Transform _centerWeapon;
 
-
+        public void SetWeaponCollider(Network_WeaponCollider weaponColider) {
+            _weaponColider = weaponColider;
+            weaponColider.SetupCenterOverlapse(_centerWeapon);
+        }
 
         public void EnableCollider(CanHitName canHitName) {
             _weaponColider.ToggleActiveCollider(CanHitName.Mineral, true);
@@ -24,7 +28,6 @@ namespace SH.Multiplayer
             GameObject targetFX = _attackVFXList[index];
             GameObject fx  = Instantiate(targetFX,targetFX.transform.position, targetFX.transform.rotation);
             fx.SetActive(true);
-            
         }
      
 

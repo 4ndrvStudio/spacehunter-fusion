@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using Fusion;
 
 namespace SH.Multiplayer
 {
     public class Network_CameraManager : MonoBehaviour
-    {  
+    {
 
         public static Network_CameraManager Instance;
 
         [SerializeField] private Camera _mainCam;
-        
+
         [SerializeField] private CinemachineFreeLook _cineCam;
 
         // rotate Cam
@@ -26,7 +27,7 @@ namespace SH.Multiplayer
         private string _touchYMapTo = "Mouse Y";
 
 
-         void Awake()
+        void Awake()
         {
             if (Instance != null && Instance != this)
             {
@@ -38,28 +39,10 @@ namespace SH.Multiplayer
             }
 
             CinemachineCore.GetInputAxis = GetInputAxis;
-        } 
-
-
-
-        
-        void LateUpdate() {
-                if(Input.GetKey(KeyCode.Delete)) {
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
-                }
-                if(Input.GetKey(KeyCode.Tab)) {
-                    Cursor.lockState = CursorLockMode.Locked;
-                    Cursor.visible = false;
-                }
-
-                //get touch input
-                while(_touchInput == null) 
-                {
-                    _touchInput = UITouchPanel.Instance;
-                }
-              
+            _touchInput = UITouchPanel.Instance;
         }
+
+
 
         void OnDestroy()
         {
@@ -72,11 +55,12 @@ namespace SH.Multiplayer
 
 
 
-        public void SetAimTarget(Transform body, Transform lookPoint) {
-            
+        public void SetAimTarget(Transform body, Transform lookPoint)
+        {
+
             _cineCam.Follow = body;
             _cineCam.LookAt = lookPoint;
-       
+
         }
 
         public Vector3 GetMainCamEuler() => _mainCam.transform.eulerAngles;
@@ -85,7 +69,7 @@ namespace SH.Multiplayer
 
         private float GetInputAxis(string axisName)
         {
-            if(_touchInput == null) return 0;
+            if (_touchInput == null) return 0;
 
             _lookInput = _touchInput.PlayerJoystickOutputVector();
 
@@ -98,11 +82,9 @@ namespace SH.Multiplayer
             return Input.GetAxis(axisName);
         }
 
-        public void SetUITouchPanel (UITouchPanel touchPanel) {
-             _touchInput = touchPanel;
-        }
-    
-    
+
+
+
     }
 
 }

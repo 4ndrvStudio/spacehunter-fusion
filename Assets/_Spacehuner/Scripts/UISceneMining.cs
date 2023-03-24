@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using SH.Networking.Mining;
 using SH.Define;
+using SH.Multiplayer;
 
 public class UISceneMining : MonoBehaviour
 {
@@ -20,16 +21,14 @@ public class UISceneMining : MonoBehaviour
 
     private void Update()
     {
-        if (RoomMiningManager.Instance != null)
-            UIManager.Instance.SetPing(RoomMiningManager.Instance.Ping);
+        
     }
 
     public void OnBackClick()
     {
-        RoomMiningManager.Instance.LeaveRoom(async() =>
-        {
-            UIManager.Instance.LoadScene(SceneName.SceneStation);
-        });
+        Network_ClientManager.MoveToRoom(SceneDefs.scene_stationFusion);
     }
 
 }
+
+

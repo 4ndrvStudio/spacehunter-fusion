@@ -19,6 +19,7 @@ namespace SH.PlayerData
         public static PlayerCharacter Character = new PlayerCharacter();
         public static PlayerInventory Inventory = new PlayerInventory();
 
+
         private void Awake()
         {
             if (Instance == null)

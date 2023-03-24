@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using Fusion.Sockets;
 using System;
+using SH.PlayerData;
 
 namespace SH.Multiplayer
 {
@@ -20,6 +21,7 @@ namespace SH.Multiplayer
         // PRIVATE MEMBERS
 
         [SerializeField] private NetworkObject _playerPrefab;
+
         private Dictionary<PlayerRef, NetworkObject> _players = new(100);
         
         [SerializeField] private Dictionary<int, Vector3> _spawnPosition = new Dictionary<int, Vector3> {
@@ -42,6 +44,7 @@ namespace SH.Multiplayer
         public void OnConnectedToServer(NetworkRunner runner)
         {
             Debug.Log("Connected To Server");
+            
         }
 
         public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
@@ -55,6 +58,7 @@ namespace SH.Multiplayer
 
         public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)
         {
+
         }
 
         public void OnDisconnectedFromServer(NetworkRunner runner)
@@ -81,6 +85,7 @@ namespace SH.Multiplayer
                 return;
           
             Vector3 spawnPos = _spawnPosition[(int) runner.CurrentScene];
+            
 
             var player = Runner.Spawn(_playerPrefab, spawnPos, Quaternion.identity, inputAuthority: playerRef);
 

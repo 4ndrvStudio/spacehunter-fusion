@@ -6,6 +6,8 @@ using UnityEngine;
 using Fusion;
 using SH.Define;
 using SH.PlayerData;
+using Fusion.Photon.Realtime;
+using Fusion.Sockets;
 namespace SH.Multiplayer
 {
     
@@ -32,14 +34,15 @@ namespace SH.Multiplayer
         public static async void StartGame(SceneDefs sceneDefs)
         {
             _networkRunner.ProvideInput = true;
-            Debug.Log("Started : " + _networkRunner.IsRunning);
 
             StartGameResult startGameResult = await _networkRunner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.Client,
                 SessionName = sceneDefs.ToString(),
                 Scene = (int) sceneDefs,
-                SceneManager = _networkSceneManagerDefault
+                SceneManager = _networkSceneManagerDefault,
+
+                
             });
             Debug.Log("status :  " + startGameResult.ErrorMessage);
             
@@ -63,14 +66,14 @@ namespace SH.Multiplayer
         private void OnGUI()
         {
          
-                if (GUI.Button(new Rect(0, 0, 600, 120), "Join Game"))
-                {
-                    StartGame(SceneDefs.scene_stationFusion);
-                }
-                if (GUI.Button(new Rect(0, 120, 600, 120), "Go To Mining"))
-                {
-                    MoveToRoom(SceneDefs.scene_miningFusion);
-                }
+                // if (GUI.Button(new Rect(0, 0, 600, 120), "Join Game"))
+                // {
+                //     StartGame(SceneDefs.scene_stationFusion);
+                // }
+                // if (GUI.Button(new Rect(0, 120, 600, 120), "Go To Mining"))
+                // {
+                //     MoveToRoom(SceneDefs.scene_miningFusion);
+                // }
               
             
         }

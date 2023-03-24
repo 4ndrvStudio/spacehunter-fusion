@@ -66765,7 +66765,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   _centerOverlapse: {fileID: 7495643002418346561}
-  _extends: {x: 0.26, y: 0.09, z: 1.23}
+  _extends: {x: 0.36, y: 0.15, z: 1.55}
 --- !u!1 &7495643002306871534
 GameObject:
   m_ObjectHideFlags: 0

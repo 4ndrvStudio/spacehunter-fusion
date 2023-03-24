@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SH.PlayerData
-{
+{   
+    [System.Serializable]
     public class PlayerCharacter
     {
         public CharacterData Data { private set; get; }
@@ -19,6 +20,7 @@ namespace SH.PlayerData
         }
     }
 
+    [System.Serializable]
     public class CharacterData
     {
         public List<Character> Characters;

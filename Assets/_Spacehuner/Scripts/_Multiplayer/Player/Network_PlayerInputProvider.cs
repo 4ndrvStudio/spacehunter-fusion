@@ -93,18 +93,6 @@ namespace SH.Multiplayer
         private void ProcessKeyboardInput()
         {
 
-            // //jump btn
-            // if (Input.GetKey(KeyCode.Space) == true)
-            // {
-            //     _cachedInput.Jump = true;
-            // }
-
-            // //attack Btn 
-            // if (Input.GetMouseButton(0) == true)
-            // {
-            //     _cachedInput.Attack = true;
-            // }
-
             if (UIControllerManager.Instance != null)
             {
                 //jump btn

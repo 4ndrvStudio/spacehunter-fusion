@@ -1936,7 +1936,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5225466302897782561}
   m_LocalRotation: {x: -0.31571674, y: 0.43526614, z: -0.5073093, w: 0.67342675}
-  m_LocalPosition: {x: 0.010229594, y: 0.4, z: -0.12622908}
+  m_LocalPosition: {x: 0.010229594, y: 0.42, z: -0.12622908}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2211,7 +2211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 2
-  SphereRadius: 0.84
+  SphereRadius: 1.03
   BoxExtents: {x: 0, y: 0, z: 0}
   Offset: {x: 0, y: 0.78, z: 0}
   Root: {fileID: 5857986112097979729}
@@ -2350,7 +2350,7 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
@@ -2372,6 +2372,7 @@ MonoBehaviour:
   _enemyBrain: {fileID: 2040187252854299183}
   _healBar: {fileID: 8537992083593918286}
   _HP: 15
+  WasHealSetup: 0
 --- !u!114 &2040187252854299183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2451,7 +2452,6 @@ MonoBehaviour:
   _enemyCombatBrain: {fileID: 1638387858981348250}
   _anim: {fileID: 5320108225854539423}
   _bodyMesh: {fileID: 5291493350302006617}
-  _effectMat: {fileID: 2100000, guid: fe93f0ef9f257cd4ab0348106aa010c1, type: 2}
   IsAttack: 0
 --- !u!114 &1638387858981348250
 MonoBehaviour:
@@ -2512,8 +2512,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   Config: 1
-  BroadRadius: 1.52
-  Offset: {x: 0, y: 0.63, z: 0}
+  BroadRadius: 1.78
+  Offset: {x: 0, y: 1.16, z: 0}
   GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   Hitboxes:
   - {fileID: 6217707673283845406}

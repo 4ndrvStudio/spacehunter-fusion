@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 namespace SH.Multiplayer
@@ -9,7 +10,7 @@ namespace SH.Multiplayer
     {
         public static UIControllerManager Instance;
 
-        [SerializeField] private UITouchPanel _touchPanel;
+        [SerializeField] private Image _touchPanel;
         [SerializeField] private Joystick _movementJoy;
         [SerializeField] private UIButtonCustom _attackBtn;
         [SerializeField] private UIButtonCustom _jumpBtn;
@@ -28,7 +29,7 @@ namespace SH.Multiplayer
             _movementJoy.gameObject.SetActive(isActive);
             _attackBtn.gameObject.SetActive(isActive);
             _jumpBtn.gameObject.SetActive(isActive);
-            _touchPanel.gameObject.SetActive(isActive);
+            _touchPanel.enabled = true;
             IsActive =true;
         }
 
@@ -37,6 +38,7 @@ namespace SH.Multiplayer
         public bool GetAttackBtn() => _attackBtn.GetComponent<UIButtonCustom>().IsPressed;
 
         public bool GetJumpBtn() => _jumpBtn.GetComponent<UIButtonCustom>().IsPressed;
+        
 
     }
 

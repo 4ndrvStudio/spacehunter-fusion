@@ -16,7 +16,6 @@ namespace SH.Multiplayer {
         void Start() {
 
             if(Instance == null ) Instance = this;
-            this.gameObject.SetActive(false);
 
         }
 

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5479724870623768188}
   - component: {fileID: 5479724870623768191}
   - component: {fileID: 5479724870623768190}
-  - component: {fileID: 5479724870623768185}
   m_Layer: 0
   m_Name: Sever Runner Manager
   m_TagString: Untagged
@@ -135,17 +134,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 1340977671037359871, guid: 9e63b8b1f6fc03448990d0379bf6fe8e, type: 3}
---- !u!114 &5479724870623768185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5479724870623768187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90a93abf1a391964a94e5c139605105b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowHierarchyWindowOverlay: 1
-  PostLoadDelayFrames: 1

@@ -258,6 +258,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   Network_RoomMining: {fileID: 0}
   __hp: 10
+  _wasSetupHp: 0
   _healthBar: {fileID: 5385405049829758640}
   _body: {fileID: 4158294108132981588}
   _destroyFX: {fileID: 8752021327255674664}
@@ -275,7 +276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   Config: 1
-  BroadRadius: 1.52
+  BroadRadius: 2.14
   Offset: {x: 0, y: 1.08, z: 0}
   GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   Hitboxes:

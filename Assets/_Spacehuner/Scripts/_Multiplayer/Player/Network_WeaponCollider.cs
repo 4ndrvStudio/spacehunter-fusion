@@ -26,6 +26,7 @@ namespace SH.Multiplayer
 
         private List<LagCompensatedHit> _lagCompensatedHits = new List<LagCompensatedHit>();
 
+        public void SetupCenterOverlapse(Transform centerTransform) => _centerOverlapse  = centerTransform;
 
         public override void FixedUpdateNetwork()
         {
@@ -57,6 +58,8 @@ namespace SH.Multiplayer
         {
             if (CanHitMineral == false) return false;
 
+            if(_centerOverlapse == null) return false;
+
             _lagCompensatedHits.Clear();
 
             var count = Runner.LagCompensation.OverlapBox(_centerOverlapse.transform.position, _extends, Quaternion.LookRotation(_centerOverlapse.transform.up),
@@ -76,6 +79,8 @@ namespace SH.Multiplayer
         public bool HasHitEnemy()
         {
             if (CanHitMineral == false) return false;
+
+            if(_centerOverlapse == null) return false;
 
             _lagCompensatedHits.Clear();
 

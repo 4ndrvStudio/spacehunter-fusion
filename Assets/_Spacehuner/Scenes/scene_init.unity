@@ -178,5 +178,57 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sever Runner Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 5479724870623768190, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}
+      propertyPath: _playerPrefab
+      value: 
+      objectReference: {fileID: 5625604849404661774, guid: 56bb8cda6a75120489dfc3b9279be684, type: 3}
+    - target: {fileID: 5479724870623768190, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}
+      propertyPath: _playerFrefabList.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5479724870623768190, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}
+      propertyPath: _playerFrefabList.Array.data[0]
+      value: 
+      objectReference: {fileID: 9184128019567056818, guid: aef3cc811da43634891b56aa7c2e2ac2, type: 3}
+    - target: {fileID: 5479724870623768190, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}
+      propertyPath: _playerFrefabList.Array.data[1]
+      value: 
+      objectReference: {fileID: 3124298123026708337, guid: 2ea4ef63eb182b94bbdd54fb47cb3e2d, type: 3}
+    - target: {fileID: 5479724870623768190, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}
+      propertyPath: _playerFrefabList.Array.data[2]
+      value: 
+      objectReference: {fileID: 8452600712757395536, guid: d3a36efd53371d44994840a6e87506a8, type: 3}
+    - target: {fileID: 5479724870623768190, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}
+      propertyPath: _playerFrefabList.Array.data[3]
+      value: 
+      objectReference: {fileID: 8833454781500653845, guid: ba651057d48cbb84b8cb18c7ca95acff, type: 3}
+    - target: {fileID: 5479724870623768190, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}
+      propertyPath: _playerFrefabList.Array.data[4]
+      value: 
+      objectReference: {fileID: 8962570683048173071, guid: 28883a04c4e63484aa6b5772c49f573c, type: 3}
+    - target: {fileID: 5479724870623768190, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}
+      propertyPath: _playerFrefabList.Array.data[5]
+      value: 
+      objectReference: {fileID: 4392073168645709728, guid: 3f69724b32c44b34eb8c872b6a086d9c, type: 3}
+    - target: {fileID: 5479724870623768190, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}
+      propertyPath: _playerFrefabList.Array.data[6]
+      value: 
+      objectReference: {fileID: 8632573324818642728, guid: 505710d4ddd89e247a661284c276701b, type: 3}
+    - target: {fileID: 5479724870623768190, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}
+      propertyPath: _playerFrefabList.Array.data[7]
+      value: 
+      objectReference: {fileID: 15715641977477234, guid: fe77d9791c5ce6c4d97c8c1a9fa9db1b, type: 3}
+    - target: {fileID: 5479724870623768190, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}
+      propertyPath: _playerFrefabList.Array.data[8]
+      value: 
+      objectReference: {fileID: 7495643002176234444, guid: 21147ded0133cd144bfd7abfb3344fc3, type: 3}
+    - target: {fileID: 5479724870623768190, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}
+      propertyPath: _playerFrefabList.Array.data[9]
+      value: 
+      objectReference: {fileID: 8962570683048173071, guid: 28883a04c4e63484aa6b5772c49f573c, type: 3}
+    - target: {fileID: 5479724870623768191, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}
+      propertyPath: Room
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3de2ed60e3edb1c4bb98a12331068a17, type: 3}

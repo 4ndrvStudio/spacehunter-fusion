@@ -7,7 +7,7 @@ namespace SH.Multiplayer
 {
     public class Network_PlayerAnimation : NetworkBehaviour
     {
-        [SerializeField] private Animator _anim;
+         public Animator Anim;
         [SerializeField] private Network_PlayerState _playerState;
         [SerializeField] private Network_PlayerMovement _playerMovement;
         [SerializeField] private Network_PlayerCombat _playerCombat;
@@ -27,7 +27,8 @@ namespace SH.Multiplayer
 
         public override void Render()
         {
-            UpdateAnimations();
+            if(Anim == null) return;
+             UpdateAnimations();
         }
 
 
@@ -41,7 +42,7 @@ namespace SH.Multiplayer
             if (_lastVisibleAttack < _playerCombat.AttackCount)
 			{
                 if(_playerState.L_IsGrounded) {
-                    _anim.SetTrigger(_playerCombat.AttackName[_playerCombat.L_IndexAttack]);
+                    Anim.SetTrigger(_playerCombat.AttackName[_playerCombat.L_IndexAttack]);
                 } else {
                     
                 }
@@ -55,9 +56,9 @@ namespace SH.Multiplayer
             _lastVisibleAttack = _playerCombat.AttackCount;
 
 
-            _anim.SetFloat("movement", _playerMovement.Speed);
+            Anim.SetFloat("movement", _playerMovement.Speed);
 
-            _anim.SetBool("onGround", _playerState.L_IsGrounded);
+            Anim.SetBool("onGround", _playerState.L_IsGrounded);
 
    
         }

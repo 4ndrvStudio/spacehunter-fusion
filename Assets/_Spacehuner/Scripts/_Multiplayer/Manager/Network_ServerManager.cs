@@ -32,6 +32,7 @@ namespace SH.Multiplayer
         async void StartGame()
         {
             _networkRunner.ProvideInput = true;
+
             SceneDefs scene = (SceneDefs)Room;
 
             await _networkRunner.StartGame(new StartGameArgs()
