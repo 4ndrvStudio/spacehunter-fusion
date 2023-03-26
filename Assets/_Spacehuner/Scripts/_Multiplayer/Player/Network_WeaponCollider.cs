@@ -20,7 +20,9 @@ namespace SH.Multiplayer
         //private 
         [SerializeField] private LayerMask _mineralCollisionLayer;
         [SerializeField] private LayerMask _enemyCollisionLayer;
+        [SerializeField] private LayerMask _playerCollisionLayer;
         [SerializeField] private Transform _centerOverlapse;
+
         [SerializeField] private Vector3 _extends;
 
 
@@ -32,10 +34,12 @@ namespace SH.Multiplayer
         {
             if (Object.IsProxy == true)
                 return;
-
+            
             if (HasHitMineral()) Debug.Log("Hit Mineral");
 
             if (HasHitEnemy()) Debug.Log("Hit Enemy");
+
+            if (HasHitPlayer()) Debug.Log("Hit Player");
 
 
 
@@ -94,6 +98,26 @@ namespace SH.Multiplayer
             networkEnemyDamageable.HitEnemy(Object.InputAuthority, Object.transform);
 
             return true;
+        }
+
+        public bool HasHitPlayer() {
+
+            if (CanHitMineral == false) return false;
+
+            if(_centerOverlapse == null) return false;
+              _lagCompensatedHits.Clear();
+
+            var count = Runner.LagCompensation.OverlapBox(_centerOverlapse.transform.position, _extends, Quaternion.LookRotation(_centerOverlapse.transform.up),
+                Object.InputAuthority, _lagCompensatedHits, _playerCollisionLayer.value);
+            
+            if (count <= 0) return false;
+
+            var networkPlayerDamageable = _lagCompensatedHits[0].GameObject.GetComponentInParent<Network_PlayerDamageable>();
+
+            networkPlayerDamageable.HitPlayer(Object.InputAuthority);
+
+            return true;
+
         }
 
         void OnDrawGizmosSelected()

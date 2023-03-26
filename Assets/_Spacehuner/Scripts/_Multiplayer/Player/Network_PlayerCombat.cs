@@ -12,22 +12,33 @@ namespace SH.Multiplayer
         [SerializeField] private Network_PlayerAimingAssistant _playerAim;
 
 
+
         [Networked, HideInInspector]
         public int AttackCount { get; set; }
 
         public bool HasAttack { get; private set; }
+
+        [Networked, HideInInspector]
+        public int Combo1Count { get; set; }
+
+        public bool HasCombo1 { get; private set; }
+
 
         [Networked]
         private NetworkButtons _lastButtonsInput { get; set; }
 
         private Interpolator<int> _attackCountInterpolator;
 
+        private Interpolator<int> _combo1CountInterpolator;
+
 
         public string[] AttackName;
+        public string Combo1Name;
 
         [Networked(OnChanged = nameof(OnIndexAttackChanged))]
         public byte N_IndexAttack { get; set; }
         public int L_IndexAttack;
+
 
         [Networked] private TickTimer _avoidAttackTime { get; set; }
 
@@ -40,6 +51,7 @@ namespace SH.Multiplayer
         public override void Spawned()
         {
             _attackCountInterpolator = GetInterpolator<int>(nameof(AttackCount));
+            _combo1CountInterpolator = GetInterpolator<int>(nameof(Combo1Count));
 
             _avoidAttackTime = TickTimer.CreateFromSeconds(Runner, 0);
 
@@ -60,6 +72,8 @@ namespace SH.Multiplayer
 
         public void Attack(PlayerInput input)
         {
+
+
 
             if (_avoidAttackTime.Expired(Runner))
             {
@@ -85,6 +99,14 @@ namespace SH.Multiplayer
                     
                     _avoidAttackTime = TickTimer.CreateFromSeconds(Runner, 0.2f);
                 }
+
+            }
+
+            HasCombo1 = input.Buttons.WasPressed(_lastButtonsInput, EInputButtons.Combo1);
+
+            if(HasCombo1) {
+
+                Combo1Count++;
 
             }
 
@@ -141,6 +163,9 @@ namespace SH.Multiplayer
             
             this.N_IndexAttack = (byte)indexAttack;
         }
+    
+
+
 
 
 

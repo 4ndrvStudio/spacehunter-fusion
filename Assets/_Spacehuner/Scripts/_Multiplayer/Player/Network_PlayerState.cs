@@ -21,6 +21,10 @@ namespace SH.Multiplayer
         [HideInInspector] public NetworkBool N_IsGrounded { get; set; }
         public bool L_IsGrounded;
 
+        [Networked(OnChanged = nameof(OnIsComboChanged))]
+        [HideInInspector] public NetworkBool N_IsCombo { get; set; }
+        public bool L_IsCombo;
+
 
         // Action State    
 
@@ -37,6 +41,22 @@ namespace SH.Multiplayer
         public void RPC_SetIsAction(bool isAction, RpcInfo info = default)
         {
             this.N_IsAction = isAction;
+        }
+
+        // Combo State   
+        static void OnIsComboChanged(Changed<Network_PlayerState> changed)
+        {
+            changed.Behaviour.OnIsComboChanged();
+        }
+        private void OnIsComboChanged()
+        {
+            L_IsCombo = N_IsCombo;
+        }
+
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        public void RPC_SetIsCombo(bool isCombo, RpcInfo info = default)
+        {
+            this.N_IsCombo = isCombo;
         }
 
 
@@ -68,6 +88,10 @@ namespace SH.Multiplayer
             RPC_SetIsGrounded(GroundCheck());
             if(Anim == null) return;
             RPC_SetIsAction(Anim.GetBool("isAction"));
+
+            RPC_SetIsCombo(Anim.GetCurrentAnimatorStateInfo(3).IsTag("Combo"));
+
+
         }
 
 

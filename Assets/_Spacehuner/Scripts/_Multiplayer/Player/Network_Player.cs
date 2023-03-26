@@ -16,8 +16,9 @@ namespace SH.Multiplayer
         [SerializeField] private Network_PlayerState _playerState;
         [SerializeField] private Network_PlayerAnimation _playerAnimation;
         [SerializeField] private Network_WeaponCollider _networkWeaponCollider;
+        [SerializeField] private Network_TestMode _testMode;
      
-        [SerializeField] private GameObject _body;
+        private GameObject _body;
         [SerializeField] private Transform _lookPoint;
   
         [Networked(OnChanged = nameof(OnNickNameChanged))]
@@ -40,7 +41,8 @@ namespace SH.Multiplayer
             {
                 Local = this;
 
-                RPC_SetBody((int)PlayerDataManager.Character.Data.CharacterInUse.CharacterType);
+                //RPC_SetBody((int)PlayerDataManager.Character.Data.CharacterInUse.CharacterType);
+                RPC_SetBody(9);
             
 
                 if((int)Runner.CurrentScene > 1 ) 
@@ -105,11 +107,15 @@ namespace SH.Multiplayer
 
             _netRigid.InterpolationTarget = this._body.transform;
 
-            _playerState.Anim = gameObject.GetComponentInChildren<Animator>();
-            _playerAnimation.Anim = gameObject.GetComponentInChildren<Animator>();
+            Animator animator = gameObject.GetComponentInChildren<Animator>();
+            _playerState.Anim = animator;
+            _playerAnimation.Anim = animator;
+            _testMode.Anim = animator;
             
             Network_AnimatorHook animatorHook = this.gameObject.GetComponentInChildren<Network_AnimatorHook>();
             animatorHook.SetWeaponCollider(_networkWeaponCollider);
+            animatorHook.SetComboVFXList(_testMode.ComboVFXList);
+            
        
 
         }

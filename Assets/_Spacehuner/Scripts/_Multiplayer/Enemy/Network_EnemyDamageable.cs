@@ -119,7 +119,7 @@ namespace SH.Multiplayer
             direction.y = transform.position.y;
             Vector3 targetPos = transform.position + direction;
             targetPos.y = transform.position.y;
-            transform.DOMove(targetPos, 1f);
+           // transform.DOMove(targetPos, 1f);
         }
 
         public override void Render()

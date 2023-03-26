@@ -54,9 +54,6 @@ namespace SH.Multiplayer
             _speedInterpolator = GetInterpolator<float>(nameof(Speed));
             
         }
-        void Update() {
-
-        }
 
         public override void FixedUpdateNetwork()
         {
@@ -81,7 +78,7 @@ namespace SH.Multiplayer
             Vector2 moveDir = input.MoveDirection.normalized;
 
 
-            if (moveDir != Vector2.zero )
+            if (moveDir != Vector2.zero && !_playerState.L_IsCombo )
             {
               
                 float targetRotation = Mathf.Atan2(moveDir.x, moveDir.y) * Mathf.Rad2Deg + mainCamEuler.y;
@@ -120,6 +117,10 @@ namespace SH.Multiplayer
             _lastButtonsInput = input.Buttons;
 
         }
+
+
+        // For test Mode
+        public void SetSpeed(float speed) => this._speed = speed;
 
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using UnityEngine.SceneManagement;
+using SH.Define;
 
 namespace SH.Multiplayer
 {
@@ -10,6 +11,7 @@ namespace SH.Multiplayer
     {
         [SerializeField] private NetworkRunner _networkRunner;
         [SerializeField] private bool _isRunning;
+        [SerializeField] private SceneDefs SceneTest;
 
         async void StartGame(GameMode mode)
         {
@@ -19,7 +21,7 @@ namespace SH.Multiplayer
             {
                 GameMode = mode,
                 SessionName = "testRoom",
-                Scene = (int) SH.Define.SceneDefs.scene_stationFusion,
+                Scene = (int) SceneTest,
                 SceneManager = gameObject.GetComponent<NetworkSceneManagerDefault>()
             });
 

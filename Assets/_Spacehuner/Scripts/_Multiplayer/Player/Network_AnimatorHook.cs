@@ -9,11 +9,17 @@ namespace SH.Multiplayer
     {
         [SerializeField] private Network_WeaponCollider _weaponColider;
         [SerializeField] private List<GameObject> _attackVFXList;
+        [SerializeField] private List<GameObject> _comboVFXList;
+        
+
         [SerializeField] private Transform _centerWeapon;
 
         public void SetWeaponCollider(Network_WeaponCollider weaponColider) {
             _weaponColider = weaponColider;
             weaponColider.SetupCenterOverlapse(_centerWeapon);
+        }
+        public void SetComboVFXList(List<GameObject> comboVFX) {
+            _comboVFXList = comboVFX;
         }
 
         public void EnableCollider(CanHitName canHitName) {
@@ -26,6 +32,12 @@ namespace SH.Multiplayer
 
         public void EnableVFX(int index) {
             GameObject targetFX = _attackVFXList[index];
+            GameObject fx  = Instantiate(targetFX,targetFX.transform.position, targetFX.transform.rotation);
+            fx.SetActive(true);
+        }
+
+        public void EnableComboVFX(int index) {
+            GameObject targetFX = _comboVFXList[index];
             GameObject fx  = Instantiate(targetFX,targetFX.transform.position, targetFX.transform.rotation);
             fx.SetActive(true);
         }

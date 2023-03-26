@@ -9,6 +9,8 @@ namespace SH.Multiplayer
     {
         Jump = 0,
         Attack = 1,
+        Combo1 = 2,
+        ActiveTestMode = 100
     }
     public struct PlayerInput : INetworkInput
     {
@@ -24,6 +26,16 @@ namespace SH.Multiplayer
         {
             get { return Buttons.IsSet(EInputButtons.Attack); }
             set { Buttons.Set((int)EInputButtons.Attack, value); }
+        }
+         public bool Combo1
+        {
+            get { return Buttons.IsSet(EInputButtons.Combo1); }
+            set { Buttons.Set((int)EInputButtons.Combo1, value); }
+        }
+         public bool ActiveTestMode
+        {
+            get { return Buttons.IsSet(EInputButtons.ActiveTestMode); }
+            set { Buttons.Set((int)EInputButtons.ActiveTestMode, value); }
         }
 
     }
@@ -104,6 +116,17 @@ namespace SH.Multiplayer
                 if (UIControllerManager.Instance.GetAttackBtn() == true)
                 {
                     _cachedInput.Attack = true;
+                }
+                //combo1 Btn 
+                if (UIControllerManager.Instance.GetCombo1Btn() == true)
+                {
+                    _cachedInput.Combo1 = true;
+                }
+
+                //active TestMode 
+                if (UIControllerManager.Instance.GetActiveTestModeBtn() == true)
+                {
+                    _cachedInput.ActiveTestMode = true;
                 }
             }
 

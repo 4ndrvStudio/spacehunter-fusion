@@ -14,6 +14,8 @@ namespace SH.Multiplayer
         [SerializeField] private Joystick _movementJoy;
         [SerializeField] private UIButtonCustom _attackBtn;
         [SerializeField] private UIButtonCustom _jumpBtn;
+        [SerializeField] private UIButtonCustom _combo1Btn;
+        [SerializeField] private UIButtonCustom _activeTestModeBtn;
 
         public bool IsActive = false;
 
@@ -29,15 +31,26 @@ namespace SH.Multiplayer
             _movementJoy.gameObject.SetActive(isActive);
             _attackBtn.gameObject.SetActive(isActive);
             _jumpBtn.gameObject.SetActive(isActive);
+            _activeTestModeBtn.gameObject.SetActive(isActive);
             _touchPanel.enabled = true;
             IsActive =true;
+        }
+
+        public void ActiveTestModeController(bool isActive) {
+            _combo1Btn.gameObject.SetActive(isActive);
         }
 
         public Joystick GetMovementJoystick() => _movementJoy;
 
         public bool GetAttackBtn() => _attackBtn.GetComponent<UIButtonCustom>().IsPressed;
 
+        public bool GetCombo1Btn() => _combo1Btn.GetComponent<UIButtonCustom>().IsPressed;
+
         public bool GetJumpBtn() => _jumpBtn.GetComponent<UIButtonCustom>().IsPressed;
+
+        public bool GetActiveTestModeBtn() => _activeTestModeBtn.GetComponent<UIButtonCustom>().IsPressed;
+
+
         
 
     }
