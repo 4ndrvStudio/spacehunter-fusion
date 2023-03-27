@@ -17,6 +17,10 @@ namespace SH.Multiplayer
         [SerializeField] private UIButtonCustom _combo1Btn;
         [SerializeField] private UIButtonCustom _activeTestModeBtn;
 
+        //local
+        [SerializeField] private Button _inventoryBtn;
+
+
         public bool IsActive = false;
 
         void Awake()
@@ -26,12 +30,20 @@ namespace SH.Multiplayer
                 Instance = this;
             }
         }
+
+        void Start() {
+            _inventoryBtn.onClick.AddListener(() => UIManager.Instance.ShowPopup(PopupName.Inventory));
+        }
+
         public void ActiveController(bool isActive)
         {
             _movementJoy.gameObject.SetActive(isActive);
             _attackBtn.gameObject.SetActive(isActive);
             _jumpBtn.gameObject.SetActive(isActive);
             _activeTestModeBtn.gameObject.SetActive(isActive);
+
+            _inventoryBtn.gameObject.SetActive(true);
+
             _touchPanel.enabled = true;
             IsActive =true;
         }
