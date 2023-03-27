@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Spacehuner/Scenes/scene_miningFusion.unity
     guid: f07d98dd226db2e4595de9f26522283f
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Spacehuner/Scenes/scene_chat.unity
     guid: ec87dbe17f7d64d4abe37226b3c9a240
   - enabled: 0

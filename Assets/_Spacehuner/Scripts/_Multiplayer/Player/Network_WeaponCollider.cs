@@ -39,7 +39,7 @@ namespace SH.Multiplayer
 
             if (HasHitEnemy()) Debug.Log("Hit Enemy");
 
-            if (HasHitPlayer()) Debug.Log("Hit Player");
+           // if (HasHitPlayer()) Debug.Log("Hit Player");
 
 
 

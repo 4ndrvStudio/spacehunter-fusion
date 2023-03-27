@@ -129,9 +129,7 @@ namespace SH.Multiplayer
             }else {
                   UIManager.Instance.HideWaiting(); 
                    // if(Object.HasInputAuthority == true) {
-           
                  
-                
             }
           
 
