@@ -10,13 +10,13 @@ namespace SH.Networking.Space
     {
         [SerializeField] private string _id = default;
 
-        private RoomSpaceAsteroidEntity _previousState = default;
+        // private RoomSpaceAsteroidEntity _previousState = default;
 
         private RoomSpaceAsteroidEntity _currentState = default;
 
-        private float _stateSyncRateMs = 0.1f;
+        // private float _stateSyncRateMs = 0.1f;
 
-        private float _counterStateSyncRate = 0f;
+        // private float _counterStateSyncRate = 0f;
 
         public void Setup(RoomSpaceAsteroidEntity entity)
         {

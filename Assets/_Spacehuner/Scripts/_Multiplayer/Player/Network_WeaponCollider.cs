@@ -30,6 +30,11 @@ namespace SH.Multiplayer
 
         public void SetupCenterOverlapse(Transform centerTransform) => _centerOverlapse  = centerTransform;
 
+        public void SetupDamageZone(Transform centerTransfom, Vector3 extend) {
+            _centerOverlapse = centerTransfom;
+            _extends = extend;
+        }
+
         public override void FixedUpdateNetwork()
         {
             if (Object.IsProxy == true)
@@ -120,14 +125,7 @@ namespace SH.Multiplayer
 
         }
 
-        void OnDrawGizmosSelected()
-        {
-            // Draw a semitransparent red cube at the transforms position
-            Gizmos.color = new Color(0, 255, 0, 0.8f);
-            Gizmos.DrawCube(_centerOverlapse.transform.position, new Vector3(_extends.x, _extends.y, _extends.z));
-
-        }
-
+       
 
 
 

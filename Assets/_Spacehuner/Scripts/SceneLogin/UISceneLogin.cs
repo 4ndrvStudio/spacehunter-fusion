@@ -9,9 +9,9 @@ namespace SH
 {
     public class UISceneLogin : MonoBehaviour
     {
-        [SerializeField] private GameObject _slotCharacterPanel = default;
+        // [SerializeField] private GameObject _slotCharacterPanel = default;
 
-        [SerializeField] private GameObject _loginPanel = default;
+        // [SerializeField] private GameObject _loginPanel = default;
 
         [SerializeField] private Canvas _canvas = default;
 

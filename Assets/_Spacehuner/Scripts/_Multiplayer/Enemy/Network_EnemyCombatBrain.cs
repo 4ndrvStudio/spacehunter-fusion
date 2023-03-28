@@ -22,8 +22,6 @@ namespace SH.Multiplayer
         [SerializeField] private Transform _shootPosition;
 
         [Networked] private NetworkBool _canAttack { get; set; }
-        private int _preSRIndex = 0;
-        private int _preLRIndex = 0;
 
 
         [Networked]

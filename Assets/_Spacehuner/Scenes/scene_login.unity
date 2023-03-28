@@ -4721,7 +4721,6 @@ MonoBehaviour:
   _hunter: {fileID: 1802479213}
   _tmpSlotNumberExist: {fileID: 1622874213}
   _tmpLevel: {fileID: 1547042327}
-  _tmpId: {fileID: 1663724016}
   _bgId: {fileID: 313899187}
   _slotCharacterPanel: {fileID: 933132071}
   _uiCharacter: {fileID: 2006319521}
@@ -8874,9 +8873,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 569607099}
-  - {fileID: 504179887}
-  - {fileID: 756584129}
   - {fileID: 1624933942}
   - {fileID: 1875209981}
   m_Father: {fileID: 1510880241}
@@ -9132,51 +9128,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &504179886
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 504179887}
-  - component: {fileID: 504179888}
-  m_Layer: 0
-  m_Name: RoomMiningManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &504179887
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 504179886}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 490909687}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &504179888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 504179886}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90866b94bd077c24b81ef0651b47d274, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _colyseusSettings: {fileID: 11400000, guid: 589582a818cfbd54ebfc76a86797c64c, type: 2}
 --- !u!1 &507660014
 GameObject:
   m_ObjectHideFlags: 0
@@ -10656,51 +10607,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 567715796}
   m_CullTransparentMesh: 1
---- !u!1 &569607098
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 569607099}
-  - component: {fileID: 569607100}
-  m_Layer: 0
-  m_Name: RoomStationManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &569607099
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 569607098}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 490909687}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &569607100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 569607098}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 689e90693d22ba647b8a3e72918d4b94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _colyseusSettings: {fileID: 11400000, guid: 589582a818cfbd54ebfc76a86797c64c, type: 2}
 --- !u!1 &578557344
 GameObject:
   m_ObjectHideFlags: 0
@@ -12237,7 +12143,6 @@ MonoBehaviour:
   _hunter: {fileID: 677269143}
   _tmpSlotNumberExist: {fileID: 488411701}
   _tmpLevel: {fileID: 379257081}
-  _tmpId: {fileID: 1733959307}
   _bgId: {fileID: 1043322280}
   _slotCharacterPanel: {fileID: 933132071}
   _uiCharacter: {fileID: 1913675773}
@@ -14718,51 +14623,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 754341487}
   m_CullTransparentMesh: 1
---- !u!1 &756584128
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 756584129}
-  - component: {fileID: 756584130}
-  m_Layer: 0
-  m_Name: RoomPVEManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &756584129
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756584128}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 490909687}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &756584130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756584128}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 850c35e197a7f1d438c765f6ded3f651, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _colyseusSettings: {fileID: 11400000, guid: 589582a818cfbd54ebfc76a86797c64c, type: 2}
 --- !u!1 &764924952
 GameObject:
   m_ObjectHideFlags: 0
@@ -15963,7 +15823,6 @@ MonoBehaviour:
   _hunter: {fileID: 842646072}
   _tmpSlotNumberExist: {fileID: 1636040588}
   _tmpLevel: {fileID: 1499221039}
-  _tmpId: {fileID: 257855252}
   _bgId: {fileID: 1847594727}
   _slotCharacterPanel: {fileID: 933132071}
   _uiCharacter: {fileID: 1989995120}
@@ -17734,8 +17593,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a23a3bcc5c1e504abe901bde679bd27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slotCharacterPanel: {fileID: 933132071}
-  _loginPanel: {fileID: 1199354546}
   _canvas: {fileID: 915502505}
   _tmpVersion: {fileID: 474444246}
 --- !u!1 &920041262
@@ -29778,7 +29635,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 490909687}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1624933943
 MonoBehaviour:
@@ -34613,7 +34470,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 490909687}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1875209982
 MonoBehaviour:
@@ -43121,7 +42978,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7637823390728317312}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9dc0ee0fb9f3ed9468d8b928e50bb34f, type: 3}
   m_Name: 
@@ -43133,14 +42990,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7637823390728317312}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3fea7e9cb08265498cb1fe6289f6b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _networkRunner: {fileID: 7637823390728317318}
   _isRunning: 0
-  SceneTest: 2
+  SceneTest: 3
 --- !u!114 &7697374515054141038
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -44,7 +44,7 @@ namespace SH.Account
 
         [SerializeField] private TextMeshProUGUI _tmpLevel = default;
 
-        [SerializeField] private TextMeshProUGUI _tmpId = default;
+        // [SerializeField] private TextMeshProUGUI _tmpId = default;
 
         [SerializeField] private GameObject _bgId = default;
 
@@ -123,7 +123,7 @@ namespace SH.Account
             UIManager.Instance.ShowAlert("Please visit our website to import hunters!", AlertType.Normal);
         }
 
-        public async void OnPlayCharacterClick()
+        public void OnPlayCharacterClick()
         {
             PlayerDataManager.Character.Data.CharacterInUse = _character;
             //UIManager.Instance.LoadScene(SceneName.SceneStation);

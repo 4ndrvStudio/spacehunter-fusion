@@ -86,6 +86,7 @@ namespace SH.Multiplayer
         {
             if (Object.HasInputAuthority == false) return;
             RPC_SetIsGrounded(GroundCheck());
+            
             if(Anim == null) return;
             RPC_SetIsAction(Anim.GetBool("isAction"));
 

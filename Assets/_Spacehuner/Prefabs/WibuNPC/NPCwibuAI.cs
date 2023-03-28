@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using SH.Networking.Station;
 
 public class NPCwibuAI : MonoBehaviour
 {
@@ -48,14 +47,7 @@ public class NPCwibuAI : MonoBehaviour
        timeToNextSpeak -= Time.deltaTime;
         var players = GameObject.FindGameObjectsWithTag("Player");
 
-        foreach (GameObject item in players)
-        {
-            bool? ismine = item.GetComponent<RoomStationNetworkEntityView>()?.IsMine;
-            if(ismine == true)
-            {
-                _player = item;
-            }
-        }
+      
         if (_player != null)
         {
             if (Vector3.Distance(_player.transform.position, transform.position) <= distanceStop)

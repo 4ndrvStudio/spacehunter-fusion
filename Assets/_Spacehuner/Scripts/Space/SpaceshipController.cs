@@ -22,19 +22,10 @@ public class SpaceshipController : MonoBehaviour
 
     [SerializeField] private float _rollAcceleration = 3.5f;
 
-    [SerializeField] private float _lookSafeZonePercentSize = 10f;
-
     [SerializeField] private float _forwardSpeed = 25f;
 
     [SerializeField] private float _forwardAcceleration = 2.5f;
 
-    [SerializeField] private float _strafeSpeed = 7.5f;
-
-    [SerializeField] private float _strafeAcceleration = 2f;
-
-    [SerializeField] private float _hoverSpeed = 5f;
-
-    [SerializeField] private float _hoverAcceleration = 2f;
 
     [SerializeField] private float _boostSpeed = 100f;
 
@@ -165,7 +156,7 @@ public class SpaceshipController : MonoBehaviour
     private IEnumerator ReturnToSpaceStation()
     {
         yield return new WaitForSeconds(3f);
-        RoomSpaceManager.Instance.LeaveRoom(async() =>
+        RoomSpaceManager.Instance.LeaveRoom(() =>
              {
                  UIManager.Instance.LoadScene(SceneName.SceneStation);
              });

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &379793161149440918
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7632547215274338905}
+  m_Layer: 8
+  m_Name: Center Overlapse Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7632547215274338905
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379793161149440918}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.16, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5579092968305581505}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3494676950976648776
 GameObject:
   m_ObjectHideFlags: 0
@@ -9941,8 +9972,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5579092968305581505}
-  - component: {fileID: 5579092968305581506}
-  - component: {fileID: -2840716463787600718}
+  - component: {fileID: 2016213490604066828}
   m_Layer: 8
   m_Name: PickAxe
   m_TagString: Weapon
@@ -9965,23 +9995,11 @@ Transform:
   - {fileID: 4325605286756835266}
   - {fileID: 7777120428557265787}
   - {fileID: 3494676950976481900}
+  - {fileID: 7632547215274338905}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
---- !u!65 &5579092968305581506
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5055074881118111611}
-  m_Material: {fileID: 13400000, guid: ad6074e2b4926044d8b5ed64fe356027, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.47068197, y: 0.45754963, z: 0.6601298}
-  m_Center: {x: 0.0037633374, y: 0.15352662, z: -0.036121186}
---- !u!114 &-2840716463787600718
+--- !u!114 &2016213490604066828
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9990,17 +10008,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5055074881118111611}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cbf488bec653e34da8203d775be475a, type: 3}
+  m_Script: {fileID: 11500000, guid: a9512f03fe80607408c5cb0f0fbb02eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerStatsManager: {fileID: 0}
-  _inputHandler: {fileID: 0}
-  _atkDame: 1
-  _skillDame: 5
-  _hitCount: 0
-  _skillTime: 5
-  _useSkill: 0
-  _skillFX: {fileID: 3494676950976648780}
+  _centerOverlapse: {fileID: 7632547215274338905}
+  _extends: {x: 0.45, y: 0.8, z: 0.21}
 --- !u!1 &6271535334233356183
 GameObject:
   m_ObjectHideFlags: 0

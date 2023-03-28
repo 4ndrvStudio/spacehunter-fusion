@@ -6,7 +6,7 @@ namespace SH.Account
 {
     public class UIPlayAsGuest : MonoBehaviour
     {
-        [SerializeField] private GameObject _content = default;
+        // [SerializeField] private GameObject _content = default;
 
 
         public void OnContinueClick()

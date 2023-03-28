@@ -29,7 +29,7 @@ namespace SH.Multiplayer
         [SerializeField] private float _jumpHeight = 5f;
         [SerializeField] private float _turnSmoothTime = 0.1f;
         [SerializeField] private float _turnSmoothVelocity;
-        [SerializeField] private float _speedSmoothTime = 0.1f;
+        // [SerializeField] private float _speedSmoothTime = 0.1f;
         [SerializeField] private Transform _lookPoint;
         [SerializeField] private Transform _groundCheck;
         [SerializeField] private LayerMask _groundMask;

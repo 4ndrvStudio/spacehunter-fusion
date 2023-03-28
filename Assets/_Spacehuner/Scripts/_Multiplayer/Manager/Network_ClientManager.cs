@@ -32,7 +32,8 @@ namespace SH.Multiplayer
         }
 
         public static async void StartGame(SceneDefs sceneDefs)
-        {
+        {  
+            UIManager.Instance.ShowWaiting();
             _networkRunner.ProvideInput = true;
 
             StartGameResult startGameResult = await _networkRunner.StartGame(new StartGameArgs()
@@ -45,7 +46,7 @@ namespace SH.Multiplayer
                 
             });
             Debug.Log("status :  " + startGameResult.ErrorMessage);
-            
+            UIManager.Instance.HideWaiting();
             Application.targetFrameRate = 300;
         }
 

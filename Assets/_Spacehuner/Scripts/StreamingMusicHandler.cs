@@ -25,7 +25,12 @@ public class StreamingMusicHandler : MonoBehaviour
 
             yield return uwr.SendWebRequest();
 
-            if (uwr.isNetworkError || uwr.isHttpError)
+            // if (uwr.isNetworkError || uwr.isHttpError)
+            // {
+            //     Debug.LogError(uwr.error);
+            //     yield break;
+            // }
+            if (uwr.result == UnityWebRequest.Result.ConnectionError || uwr.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(uwr.error);
                 yield break;

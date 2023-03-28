@@ -168,6 +168,8 @@ namespace SH.Multiplayer
         {
             UIManager.Instance.ShowWaiting();  
             await Runner.Shutdown(false, ShutdownReason.Ok, true);
+            UIManager.Instance.HideWaiting();  
+
            
         }
 

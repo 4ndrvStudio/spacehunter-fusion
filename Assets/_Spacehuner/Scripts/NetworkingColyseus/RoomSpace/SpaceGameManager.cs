@@ -1,6 +1,4 @@
-using SH.Networking.Mining;
-using SH.Networking.PVE;
-using SH.Networking.Station;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -67,9 +65,7 @@ namespace SH.Networking.Space
             if (player != null)
             {
                 player.transform.SetParent(_entityContainer);
-                Destroy(player.GetComponent<RoomMiningNetworkEntityView>());
-                Destroy(player.GetComponent<RoomPVENetworkEntityView>());
-                Destroy(player.GetComponent<RoomStationNetworkEntityView>());
+         
                 RoomSpaceNetworkEntityView entityView = player.GetComponent<RoomSpaceNetworkEntityView>();
                 if (entity == null || entityView == null)
                 {
