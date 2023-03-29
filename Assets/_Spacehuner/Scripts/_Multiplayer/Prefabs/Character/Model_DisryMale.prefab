@@ -89773,7 +89773,7 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7288418395899900122}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -90081,6 +90081,7 @@ MonoBehaviour:
   - {fileID: 2929351942821520656}
   - {fileID: 2929351942649722209}
   - {fileID: 2929351941471840248}
+  _comboVFXList: []
   _centerWeapon: {fileID: 2929351943411863807}
 --- !u!1 &8298781116185456124
 GameObject:
