@@ -7,7 +7,7 @@ namespace SH.Multiplayer {
      public class UITouchPanel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
         public static UITouchPanel Instance;
-        private Vector2 _playerTouchVectorOutput;
+        [SerializeField] private Vector2 _playerTouchVectorOutput;
         private bool _isPlayerTouchingPanel;
         private Touch _myTouch;
         private int _touchID;

@@ -149,7 +149,11 @@ PlayerSettings:
   useHDRDisplay: 0
   D3DHDRBitDepth: 0
   m_ColorGamuts: 00000000
+<<<<<<< Updated upstream
   targetPixelDensity: 270
+=======
+  targetPixelDensity: 260
+>>>>>>> Stashed changes
   resolutionScalingMode: 1
   resetResolutionOnWindowResize: 0
   androidSupportedAspectRatio: 1
