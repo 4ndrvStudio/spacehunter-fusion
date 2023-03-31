@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -23884,7 +23884,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.33333337, b: 0.556703, a: 0.8039216}
+  m_Color: {r: 0.7207903, g: 0.8514508, b: 0.9622642, a: 0.8039216}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -42997,7 +42997,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _networkRunner: {fileID: 7637823390728317318}
   _isRunning: 0
-  SceneTest: 3
+  SceneTest: 2
 --- !u!114 &7697374515054141038
 MonoBehaviour:
   m_ObjectHideFlags: 0
