@@ -2,88 +2,122 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
+
 
 namespace SH.Multiplayer
 {
+
+
+
     public class NPC_Movement : MonoBehaviour
     {
-        public NPC_Brain _NPC_Brain;
-             public Transform Body;
-        public Transform pathContainer;
-        public float moveDuration = 5f;
-        public float idleDuration = 2f;
-   
 
-        private Tweener pathTween;
-        private bool isIdle = false;
 
-        private Vector3 currentPos;
+        [SerializeField] private NPC_Brain _NPC_Brain;
+        [SerializeField] private Transform _body;
 
-        private bool isRewalk;
+        [System.Serializable]
+        public class MovingPathContainer
+        {
+            public PathType MovingType;
+            public Transform PathContainer;
+        }
+
+        [SerializeField] private List<MovingPathContainer> _movingPathContainers = new List<MovingPathContainer>();
+
+        [SerializeField] private float _moveSpeed = 1.2f;
+
+        [SerializeField] private float _idleDuration = 2f;
+
+        [SerializeField] private int _pathIndex = 0;
+        
+        [SerializeField] private bool _canIdle = false;
+        [SerializeField] private bool _isRightWay = false;
+        [SerializeField] private bool _isIdle = false;
 
         public void Start()
         {
+            MovingNextState();
+        }
 
-            Transform[] waypoints = pathContainer.GetComponentsInChildren<Transform>();
 
+        private void Update()
+        {
+
+            if (_isIdle)
+            {
+                _NPC_Brain.NpcState = NPCState.Idle;
+            }
+            else
+            {
+                _NPC_Brain.NpcState = NPCState.Walking;
+
+            }
+        }
+
+        private void MovingNextState()
+        {
+            Debug.Log("Moving next State Called");
+            PathType targetPathType = _movingPathContainers[_pathIndex].MovingType;
+
+            Transform[] waypoints = _movingPathContainers[_pathIndex].PathContainer.GetComponentsInChildren<Transform>();
 
             Vector3[] pathPoints = new Vector3[waypoints.Length - 1];
+
+            
 
             for (int i = 1; i < waypoints.Length; i++)
             {
                 pathPoints[i - 1] = waypoints[i].position;
             }
 
+            if(_isRightWay) Array.Reverse(pathPoints);
 
-            pathTween = transform.DOPath(pathPoints, moveDuration, PathType.CatmullRom, PathMode.Full3D)
+            switch (targetPathType)
+            {
+                case PathType.Linear:
+                    MovingNPC(pathPoints, targetPathType);
+                    break;
+                case PathType.CatmullRom:
+                    MovingNPC(pathPoints, targetPathType);
+                    break;
+            }
+
+        }
+
+        private void MovingNPC(Vector3[] path, PathType targetPath)
+        {
+            transform.DOPath(path, _moveSpeed, targetPath, PathMode.Full3D)
                 .SetEase(Ease.Linear)
                 .SetLookAt(0.01f)
-                .OnWaypointChange((int index) =>
-                {   
-                    if(index == pathPoints.Length) {
-                        Body.transform.localEulerAngles = Body.transform.localEulerAngles + 180f * Vector3.up;
-                    } else if( index == 0) {
-                        Body.transform.localEulerAngles = 0 * Vector3.up;
-                    }
+                .SetSpeedBased()
+                .SetOptions(AxisConstraint.None, AxisConstraint.X | AxisConstraint.Z)
+                .OnComplete(() =>
+                {
+                    _pathIndex += 1;
+                    if (_pathIndex >= _movingPathContainers.Count) _pathIndex = 0;
 
-                    int randomfactor = Random.Range(0,6);
-                    if(randomfactor < 2) isIdle = true;
-                    
+                    int randomFactor = UnityEngine.Random.Range(0, 8);
+
+                    if (randomFactor <= 2 && _canIdle) 
+                        StartCoroutine(Idle());
+                    else
+                        MovingNextState();
+
                 })
-                .OnStepComplete(() =>
-                {   
-                    isIdle = true;
-                    
-                })
-                .SetLoops(-1,LoopType.Yoyo)
-                .Pause();
-                
+                .SetAutoKill(true);
         }
 
-        private void Update()
-        {
-            transform.rotation = new Quaternion(0f, transform.rotation.y, 0,0);
 
-            if (isIdle)
-            {
-                _NPC_Brain.NpcState = NPCState.Idle;
-                StartCoroutine(Idle());
-
-                
-            }
-            else
-            {
-                _NPC_Brain.NpcState = NPCState.Walking;
-                pathTween.PlayForward();
-            }
-        }
 
         private IEnumerator Idle()
         {
-            pathTween.Pause();
-            yield return new WaitForSeconds(idleDuration);
-            isIdle = false;
-            pathTween.PlayBackwards();
+            _isIdle = true;
+            yield return new WaitForSeconds(_idleDuration);
+            _isIdle = false;
+            MovingNextState();
+
         }
 
     }
