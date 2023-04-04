@@ -25,20 +25,29 @@ namespace SH.Multiplayer
         }
 
         [SerializeField] private List<MovingPathContainer> _movingPathContainers = new List<MovingPathContainer>();
+        [SerializeField] private List<Transform> _movingRandomPathContainers = new List<Transform>();    
 
         [SerializeField] private float _moveSpeed = 1.2f;
 
-        [SerializeField] private float _idleDuration = 2f;
+        [SerializeField] private float _idleDuration = 10f;
 
         [SerializeField] private int _pathIndex = 0;
-        
+
         [SerializeField] private bool _canIdle = false;
         [SerializeField] private bool _isRightWay = false;
         [SerializeField] private bool _isIdle = false;
+        [SerializeField] private bool _isRandomMoving = false;
 
         public void Start()
         {
-            MovingNextState();
+
+            if (_isRandomMoving) {
+                MovingRandom();
+            }
+            else
+                MovingNextState();
+
+
         }
 
 
@@ -58,21 +67,18 @@ namespace SH.Multiplayer
 
         private void MovingNextState()
         {
-            Debug.Log("Moving next State Called");
             PathType targetPathType = _movingPathContainers[_pathIndex].MovingType;
 
             Transform[] waypoints = _movingPathContainers[_pathIndex].PathContainer.GetComponentsInChildren<Transform>();
 
             Vector3[] pathPoints = new Vector3[waypoints.Length - 1];
 
-            
-
             for (int i = 1; i < waypoints.Length; i++)
             {
                 pathPoints[i - 1] = waypoints[i].position;
             }
 
-            if(_isRightWay) Array.Reverse(pathPoints);
+            if (_isRightWay) Array.Reverse(pathPoints);
 
             switch (targetPathType)
             {
@@ -84,6 +90,22 @@ namespace SH.Multiplayer
                     break;
             }
 
+        }
+
+        private void MovingRandom()
+        {
+           
+            Transform targetPoint = _movingRandomPathContainers[UnityEngine.Random.Range(0, _movingRandomPathContainers.Count)];
+            transform.LookAt(targetPoint);
+            transform.DOMove(targetPoint.position, _moveSpeed)
+                .SetEase(Ease.Linear)
+                .SetSpeedBased()
+                .OnComplete(() => {
+
+                    _idleDuration = UnityEngine.Random.Range(5, 15);
+                    StartCoroutine(Idle());
+            });
+         
         }
 
         private void MovingNPC(Vector3[] path, PathType targetPath)
@@ -98,12 +120,22 @@ namespace SH.Multiplayer
                     _pathIndex += 1;
                     if (_pathIndex >= _movingPathContainers.Count) _pathIndex = 0;
 
-                    int randomFactor = UnityEngine.Random.Range(0, 8);
 
-                    if (randomFactor <= 2 && _canIdle) 
+
+                    if (_isRandomMoving)
+                    {
                         StartCoroutine(Idle());
+                    }
                     else
-                        MovingNextState();
+                    {
+                        int randomFactor = UnityEngine.Random.Range(0, 8);
+                        if (randomFactor <= 2 && _canIdle)
+                            StartCoroutine(Idle());
+                        else
+                            MovingNextState();
+
+                    }
+
 
                 })
                 .SetAutoKill(true);
@@ -116,7 +148,11 @@ namespace SH.Multiplayer
             _isIdle = true;
             yield return new WaitForSeconds(_idleDuration);
             _isIdle = false;
-            MovingNextState();
+
+            if(_isRandomMoving)
+                MovingRandom();
+            else 
+                MovingNextState();
 
         }
 

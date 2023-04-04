@@ -14,6 +14,7 @@ namespace SH.Multiplayer
     public enum NPCState {
         Idle,
         Walking,
+        Sitting
     }
 
 }
