@@ -77,8 +77,9 @@ namespace SH.Multiplayer
 
             Vector2 moveDir = input.MoveDirection.normalized;
 
+            Speed = input.MoveDirection.magnitude;
 
-            if (moveDir != Vector2.zero && !_playerState.L_IsCombo )
+            if (Speed > 0.15f && !_playerState.L_IsCombo )
             {
               
                 float targetRotation = Mathf.Atan2(moveDir.x, moveDir.y) * Mathf.Rad2Deg + mainCamEuler.y;
@@ -86,13 +87,13 @@ namespace SH.Multiplayer
                 Quaternion targetQuaternion = Quaternion.Euler(0f, targetRotation, 0f);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetQuaternion, _turnSmoothTime * Runner.DeltaTime);
             }
+            
 
+            float targetspeed = input.MoveDirection.magnitude * _speed;
 
-            Speed = moveDir != Vector2.zero  ? _speed : 0;
-
-            if (moveDir != Vector2.zero && !_playerState.L_IsAction)
+            if (Speed > 0.15f && !_playerState.L_IsAction)
             {
-                transform.Translate(transform.forward * _speed * Runner.DeltaTime, Space.World);
+                transform.Translate(transform.forward * targetspeed * Runner.DeltaTime, Space.World);
             }
 
 

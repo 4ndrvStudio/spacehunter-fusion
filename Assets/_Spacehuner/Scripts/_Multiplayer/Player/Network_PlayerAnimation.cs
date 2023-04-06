@@ -93,12 +93,11 @@ namespace SH.Multiplayer
 
             _lastVisibleGetHit = _playerDamageable.HitCount;
 
-
-
-
             Anim.SetFloat("movement", _playerMovement.Speed);
 
             Anim.SetBool("onGround", _playerState.L_IsGrounded);
+
+            Anim.applyRootMotion = _playerState.L_IsCombo;
 
    
         }

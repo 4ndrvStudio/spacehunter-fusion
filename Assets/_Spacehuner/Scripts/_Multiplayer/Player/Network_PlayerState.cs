@@ -12,6 +12,8 @@ namespace SH.Multiplayer
         [SerializeField] private Transform _groundCheck;
         [SerializeField] private LayerMask _groundMask;
 
+        [SerializeField] private float _groundCheckRange;
+
 
         [Networked(OnChanged = nameof(OnIsActionChanged))]
         [HideInInspector] public NetworkBool N_IsAction { get; set; }
@@ -96,7 +98,7 @@ namespace SH.Multiplayer
         }
 
 
-        private bool GroundCheck() => Physics.CheckSphere(_groundCheck.position, 0.15f, _groundMask);
+        private bool GroundCheck() => Physics.CheckSphere(_groundCheck.position, _groundCheckRange, _groundMask);
 
 
     }

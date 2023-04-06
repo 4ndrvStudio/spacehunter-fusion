@@ -47,18 +47,18 @@ namespace SH.Multiplayer
         {
             if(_isRunning) return;
 
-            // if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
-            // {
-            //     StartGame(GameMode.Host);
-            // }
-            // if (GUI.Button(new Rect(0, 40, 200, 40), "Join"))
-            // {
-            //     StartGame(GameMode.Client);
-            // }
-            // if (GUI.Button(new Rect(0, 80, 200, 40), "Server"))
-            // {
-            //     StartGame(GameMode.Server);
-            // }
+            if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
+            {
+                StartGame(GameMode.Host);
+            }
+            if (GUI.Button(new Rect(0, 40, 200, 40), "Join"))
+            {
+                StartGame(GameMode.Client);
+            }
+            if (GUI.Button(new Rect(0, 80, 200, 40), "Server"))
+            {
+                StartGame(GameMode.Server);
+            }
   
 
         }
