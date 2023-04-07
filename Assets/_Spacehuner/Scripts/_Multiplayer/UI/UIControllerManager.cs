@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using SH.Define;
 
 
 namespace SH.Multiplayer
@@ -19,6 +20,7 @@ namespace SH.Multiplayer
 
         //local
         [SerializeField] private Button _inventoryBtn;
+        [SerializeField] private Button _gotoMiningBtn;
 
 
         public bool IsActive = false;
@@ -33,6 +35,7 @@ namespace SH.Multiplayer
 
         void Start() {
             _inventoryBtn.onClick.AddListener(() => UIManager.Instance.ShowPopup(PopupName.Inventory));
+            _gotoMiningBtn.onClick.AddListener(() => GotoMining());
         }
 
         public void ActiveController(bool isActive)
@@ -62,6 +65,13 @@ namespace SH.Multiplayer
 
         public bool GetActiveTestModeBtn() => _activeTestModeBtn.GetComponent<UIButtonCustom>().IsPressed;
 
+        public void ShowGotoMiningBtn(bool isActive) => _gotoMiningBtn.gameObject.SetActive(isActive);
+
+        public void GotoMining() {
+
+             Network_ClientManager.MoveToRoom(SceneDefs.scene_miningFusion);
+
+        }
 
         
 

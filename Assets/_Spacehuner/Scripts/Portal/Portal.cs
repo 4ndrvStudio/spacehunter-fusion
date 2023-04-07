@@ -29,9 +29,7 @@ namespace SH
         {
             NameFaceToPlayer();
         }
-
         
-
         private void OnTriggerEnter(Collider other)
         {   
 

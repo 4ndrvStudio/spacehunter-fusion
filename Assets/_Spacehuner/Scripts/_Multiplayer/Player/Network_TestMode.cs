@@ -82,7 +82,7 @@ namespace SH.Multiplayer
                 }
                  Anim.SetLayerWeight(1, 1);
 
-                _playerMovement.SetSpeed(_speed);
+                //_playerMovement.SetSpeed(_speed);
 
 
 

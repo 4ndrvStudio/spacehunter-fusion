@@ -97,7 +97,13 @@ namespace SH.Multiplayer
 
             Anim.SetBool("onGround", _playerState.L_IsGrounded);
 
-            Anim.applyRootMotion = _playerState.L_IsCombo;
+            Anim.applyRootMotion = _playerState.L_IsCombo || _playerState.L_IsAction;
+            
+
+            if(_playerState.L_IsCombo || _playerState.L_IsAction) {
+                transform.position += Anim.deltaPosition;
+            }
+           
 
    
         }

@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 161564686168047946}
   - component: {fileID: 6115275785901611824}
   - component: {fileID: 161564686168047947}
+  - component: {fileID: 2306872574204512267}
   m_Layer: 6
   m_Name: Model_MutasMale
   m_TagString: Player
@@ -270,7 +271,21 @@ MonoBehaviour:
   - {fileID: 6343484538299544968}
   - {fileID: 6343484538920671695}
   - {fileID: 6343484538177370845}
+  _comboVFXList: []
   _centerWeapon: {fileID: 6343484538872485789}
+--- !u!114 &2306872574204512267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681783612252298224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4900b6503ae93b249846bdf248e72f49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _clip: {fileID: 7400000, guid: 21a6950108cf0e24a88cd7b76db2c7fe, type: 2}
 --- !u!1 &743883727953114644
 GameObject:
   m_ObjectHideFlags: 0
