@@ -10,6 +10,7 @@ namespace SH.Multiplayer
         Jump = 0,
         Attack = 1,
         Combo1 = 2,
+        DashAttack = 3,
         ActiveTestMode = 100
     }
     public struct PlayerInput : INetworkInput
@@ -27,16 +28,23 @@ namespace SH.Multiplayer
             get { return Buttons.IsSet(EInputButtons.Attack); }
             set { Buttons.Set((int)EInputButtons.Attack, value); }
         }
-         public bool Combo1
+        public bool Combo1
         {
             get { return Buttons.IsSet(EInputButtons.Combo1); }
             set { Buttons.Set((int)EInputButtons.Combo1, value); }
         }
-         public bool ActiveTestMode
+        public bool DashAttack
+        {
+            get { return Buttons.IsSet(EInputButtons.DashAttack); }
+            set { Buttons.Set((int)EInputButtons.DashAttack, value); }
+        }
+        public bool ActiveTestMode
         {
             get { return Buttons.IsSet(EInputButtons.ActiveTestMode); }
             set { Buttons.Set((int)EInputButtons.ActiveTestMode, value); }
         }
+
+
 
     }
     public class Network_PlayerInputProvider : SimulationBehaviour, ISpawned, IDespawned, IBeforeUpdate
@@ -121,6 +129,10 @@ namespace SH.Multiplayer
                 if (UIControllerManager.Instance.GetCombo1Btn() == true)
                 {
                     _cachedInput.Combo1 = true;
+                }
+
+                if(UIControllerManager.Instance.GetDashAttackBtn() == true) {
+                    _cachedInput.DashAttack = true;
                 }
 
                 //active TestMode 

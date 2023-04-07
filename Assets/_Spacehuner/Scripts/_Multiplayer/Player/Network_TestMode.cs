@@ -77,10 +77,10 @@ namespace SH.Multiplayer
             {
                 if (Object.HasInputAuthority)
                 {
-                    UIControllerManager.Instance.ActiveTestModeController(true);
+                    //UIControllerManager.Instance.ActiveTestModeController(true);
 
                 }
-                 Anim.SetLayerWeight(1, 1);
+                //Anim.SetLayerWeight(1, 1);
 
                 //_playerMovement.SetSpeed(_speed);
 

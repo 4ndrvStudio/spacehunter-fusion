@@ -23,6 +23,12 @@ namespace SH.Multiplayer
 
         public bool HasCombo1 { get; private set; }
 
+        [Networked, HideInInspector]
+        public int DashAttackCount {get; set; }
+
+        public bool HasDashAttack { get; private set; }
+
+
 
         [Networked]
         private NetworkButtons _lastButtonsInput { get; set; }
@@ -31,9 +37,13 @@ namespace SH.Multiplayer
 
         private Interpolator<int> _combo1CountInterpolator;
 
+        private Interpolator<int> _dashCountInterpolator;
+
 
         public string[] AttackName;
         public string Combo1Name;
+        public string DashAttackName;
+
 
         [Networked(OnChanged = nameof(OnIndexAttackChanged))]
         public byte N_IndexAttack { get; set; }
@@ -52,6 +62,7 @@ namespace SH.Multiplayer
         {
             _attackCountInterpolator = GetInterpolator<int>(nameof(AttackCount));
             _combo1CountInterpolator = GetInterpolator<int>(nameof(Combo1Count));
+            _dashCountInterpolator = GetInterpolator<int>(nameof(DashAttackCount));
 
             _avoidAttackTime = TickTimer.CreateFromSeconds(Runner, 0);
 
@@ -103,11 +114,16 @@ namespace SH.Multiplayer
             }
 
             HasCombo1 = input.Buttons.WasPressed(_lastButtonsInput, EInputButtons.Combo1);
+            HasDashAttack = input.Buttons.WasPressed(_lastButtonsInput, EInputButtons.DashAttack);
 
             if(HasCombo1) {
 
                 Combo1Count++;
 
+            }
+
+            if(HasDashAttack) {
+                DashAttackCount++;
             }
 
             _lastButtonsInput = input.Buttons;

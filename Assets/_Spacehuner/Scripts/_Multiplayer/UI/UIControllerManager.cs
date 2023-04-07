@@ -16,6 +16,7 @@ namespace SH.Multiplayer
         [SerializeField] private UIButtonCustom _attackBtn;
         [SerializeField] private UIButtonCustom _jumpBtn;
         [SerializeField] private UIButtonCustom _combo1Btn;
+        [SerializeField] private UIButtonCustom _dashAttackBtn;
         [SerializeField] private UIButtonCustom _activeTestModeBtn;
 
         //local
@@ -33,7 +34,8 @@ namespace SH.Multiplayer
             }
         }
 
-        void Start() {
+        void Start()
+        {
             _inventoryBtn.onClick.AddListener(() => UIManager.Instance.ShowPopup(PopupName.Inventory));
             _gotoMiningBtn.onClick.AddListener(() => GotoMining());
         }
@@ -43,15 +45,17 @@ namespace SH.Multiplayer
             _movementJoy.gameObject.SetActive(isActive);
             _attackBtn.gameObject.SetActive(isActive);
             _jumpBtn.gameObject.SetActive(isActive);
-            _activeTestModeBtn.gameObject.SetActive(isActive);
-
+            // _activeTestModeBtn.gameObject.SetActive(isActive);
+            _combo1Btn.gameObject.SetActive(isActive);
+            _dashAttackBtn.gameObject.SetActive(isActive);
             _inventoryBtn.gameObject.SetActive(true);
 
             _touchPanel.enabled = true;
-            IsActive =true;
+            IsActive = true;
         }
 
-        public void ActiveTestModeController(bool isActive) {
+        public void ActiveTestModeController(bool isActive)
+        {
             _combo1Btn.gameObject.SetActive(isActive);
         }
 
@@ -63,17 +67,20 @@ namespace SH.Multiplayer
 
         public bool GetJumpBtn() => _jumpBtn.GetComponent<UIButtonCustom>().IsPressed;
 
+        public bool GetDashAttackBtn() => _dashAttackBtn.GetComponent<UIButtonCustom>().IsPressed;
+
         public bool GetActiveTestModeBtn() => _activeTestModeBtn.GetComponent<UIButtonCustom>().IsPressed;
 
         public void ShowGotoMiningBtn(bool isActive) => _gotoMiningBtn.gameObject.SetActive(isActive);
 
-        public void GotoMining() {
+        public void GotoMining()
+        {
 
-             Network_ClientManager.MoveToRoom(SceneDefs.scene_miningFusion);
+            Network_ClientManager.MoveToRoom(SceneDefs.scene_miningFusion);
 
         }
 
-        
+
 
     }
 

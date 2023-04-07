@@ -17,6 +17,7 @@ namespace SH.Multiplayer
         private int _lastVisibleJump;
         private int _lastVisibleAttack;
         private int _lastCombo1Attack;
+        private int _lastDashAttack;
         private int _lastVisibleGetHit;
 
         // NetworkBehaviour INTERFACE
@@ -26,6 +27,7 @@ namespace SH.Multiplayer
             _lastVisibleJump = _playerMovement.JumpCount;
             _lastVisibleAttack = _playerCombat.AttackCount;
             _lastCombo1Attack = _playerCombat.Combo1Count;
+            _lastDashAttack = _playerCombat.DashAttackCount;
             _lastVisibleGetHit = _playerDamageable.HitCount;
 
 
@@ -79,6 +81,25 @@ namespace SH.Multiplayer
 
 
             _lastCombo1Attack = _playerCombat.Combo1Count;
+
+             //dash attack
+            if (_lastDashAttack < _playerCombat.DashAttackCount)
+			{
+                if(_playerState.L_IsGrounded) {
+                    Anim.Play(_playerCombat.DashAttackName,3,0);
+                } else {
+                    
+                }
+				
+			}
+			else if (_lastDashAttack > _playerCombat.DashAttackCount)
+			{
+
+			}
+
+
+            _lastDashAttack = _playerCombat.DashAttackCount;
+
 
             //gethit
             if (_lastVisibleGetHit < _playerDamageable.HitCount)
