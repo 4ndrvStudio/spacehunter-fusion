@@ -6327,7 +6327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4501957577015168, guid: 210ba2c8f4337404291ec2d2ad42d4ba, type: 3}
       propertyPath: m_LocalScale.x
-      value: 30
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 4501957577015168, guid: 210ba2c8f4337404291ec2d2ad42d4ba, type: 3}
       propertyPath: m_LocalScale.y
@@ -6335,7 +6335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4501957577015168, guid: 210ba2c8f4337404291ec2d2ad42d4ba, type: 3}
       propertyPath: m_LocalScale.z
-      value: 30
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 4501957577015168, guid: 210ba2c8f4337404291ec2d2ad42d4ba, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6376,7 +6376,7 @@ PrefabInstance:
     - target: {fileID: 33019638610068418, guid: 210ba2c8f4337404291ec2d2ad42d4ba, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 64001215473943048, guid: 210ba2c8f4337404291ec2d2ad42d4ba, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -6404,7 +6404,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10, y: 0, z: 10}
+  m_Size: {x: 0.99999994, y: 1, z: 0.99999994}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &346307518
 GameObject:
