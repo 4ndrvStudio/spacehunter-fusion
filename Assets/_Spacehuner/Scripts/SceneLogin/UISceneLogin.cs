@@ -19,7 +19,7 @@ namespace SH
 
         private void Start()
         {
-            _canvas.worldCamera = UIManager.Instance.UICamera;
+           // _canvas.worldCamera = UIManager.Instance.UICamera;
             _tmpVersion.SetText($"v{Application.version}");
         }
     }

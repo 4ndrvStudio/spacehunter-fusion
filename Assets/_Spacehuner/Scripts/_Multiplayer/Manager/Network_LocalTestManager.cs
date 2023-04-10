@@ -15,7 +15,7 @@ namespace SH.Multiplayer
 
         void Start() {
 
-           StartCoroutine(StartGameTest());
+           //StartCoroutine(StartGameTest());
              
             
           

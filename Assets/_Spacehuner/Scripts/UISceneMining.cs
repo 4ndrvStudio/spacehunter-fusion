@@ -14,7 +14,7 @@ public class UISceneMining : MonoBehaviour
     {
         if (UIManager.Instance != null)
         {
-            _canvas.worldCamera = UIManager.Instance.UICamera;
+           // _canvas.worldCamera = UIManager.Instance.UICamera;
         }
     }
 
