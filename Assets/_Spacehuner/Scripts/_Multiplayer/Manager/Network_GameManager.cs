@@ -25,7 +25,7 @@ namespace SH.Multiplayer
         private Dictionary<PlayerRef, NetworkObject> _players = new(100);
         
         [SerializeField] private Dictionary<int, Vector3> _spawnPosition = new Dictionary<int, Vector3> {
-            {2 , new Vector3(0f, 5f, 0f) },
+            {2 , new Vector3(0.0700000003f,13.6230001f,-70.5400009f)},
             {3 , new Vector3(4.78000021f,-0.349999994f, 114.089996f)}
         };
         

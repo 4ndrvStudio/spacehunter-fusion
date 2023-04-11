@@ -41,8 +41,8 @@ namespace SH.Multiplayer
             {
                 Local = this;
 
-                RPC_SetBody((int)PlayerDataManager.Character.Data.CharacterInUse.CharacterType);;
-                //RPC_SetBody(9);
+                //RPC_SetBody((int)PlayerDataManager.Character.Data.CharacterInUse.CharacterType);;
+                RPC_SetBody(9);
             
 
                 if((int)Runner.CurrentScene > 1 ) 
