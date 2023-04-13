@@ -12,6 +12,7 @@ namespace SH.Multiplayer
         public static Network_CameraManager Instance;
 
         [SerializeField] private Camera _mainCam;
+        public Camera MainCamera => _mainCam;
 
         [SerializeField] private CinemachineFreeLook _cineCam;
 
