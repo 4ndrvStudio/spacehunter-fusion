@@ -6,18 +6,14 @@ namespace SH.Multiplayer
 {
     public class LightBrain : MonoBehaviour
     {
-        
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
+        [SerializeField] private MusicManager _musicManager;   
+        [SerializeField] private Light _light;
+        [SerializeField] private float _intensityFactor;
 
         // Update is called once per frame
         void Update()
         {
-
+            _light.intensity = _musicManager.OutDbFactor * _intensityFactor;
         }
     }
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SH.Multiplayer
+namespace SH.NPC
 {
     public class NPC_Brain : MonoBehaviour
     {
@@ -14,7 +14,8 @@ namespace SH.Multiplayer
     public enum NPCState {
         Idle,
         Walking,
-        Sitting
+        Sitting,
+        Dancing
     }
 
 }

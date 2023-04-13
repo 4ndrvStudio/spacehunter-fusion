@@ -5,7 +5,7 @@ using DG.Tweening;
 using System;
 
 
-namespace SH.Multiplayer
+namespace SH.NPC
 {
 
 
@@ -101,7 +101,6 @@ namespace SH.Multiplayer
                 .SetEase(Ease.Linear)
                 .SetSpeedBased()
                 .OnComplete(() => {
-
                     _idleDuration = UnityEngine.Random.Range(5, 15);
                     StartCoroutine(Idle());
             });

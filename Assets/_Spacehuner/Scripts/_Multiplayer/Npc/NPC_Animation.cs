@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SH.Multiplayer
+namespace SH.NPC
 {
     public class NPC_Animation : MonoBehaviour
     {
         [SerializeField] private Animator anim;
         [SerializeField] private NPC_Brain _npcBrain;
+        
         // Update is called once per frame
         void Update()
         {
@@ -20,6 +21,10 @@ namespace SH.Multiplayer
                 case NPCState.Sitting : anim.SetBool("isSitting",true);
                     break;
             }
+        }
+
+        public void PlayDance(string danceName) {
+            anim.CrossFade(danceName,0.3f,1);
         }
     
     }

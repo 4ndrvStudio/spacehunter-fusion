@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-namespace SH.Multiplayer
+namespace SH.NPC
 {
     public class NPC_StairMoving : MonoBehaviour
     {

@@ -16,6 +16,8 @@ namespace SH.Multiplayer
         [SerializeField] private float _limitZ = 40;
         [SerializeField] private float _limitY = 180;
 
+        [SerializeField] private float _rotateSpeed =40;
+
 
         // Start is called before the first frame update
         void Start()
@@ -39,14 +41,14 @@ namespace SH.Multiplayer
             float targetRotateY = Random.Range(-_limitY, _limitY);
 
             Vector3 targetRotate = new Vector3(0, targetRotateY,targetRotateZ );
-            _lightRight.transform.DORotate(targetRotate,80f)
+            _lightRight.transform.DORotate(targetRotate,_rotateSpeed)
                 .SetSpeedBased()
                 .SetEase(Ease.Linear)
                 .OnComplete(async()=> {
                     //await Task.Delay(2000);
                     _rightDone = true;
                 });
-             _lightLeft.transform.DORotate(targetRotate,80f)
+             _lightLeft.transform.DORotate(targetRotate,_rotateSpeed)
                 .SetSpeedBased()
                 .SetEase(Ease.Linear)
                 .OnComplete(async()=> {

@@ -16,6 +16,7 @@ namespace SH.Multiplayer
             Insentity
         }
 
+        [SerializeField] private MusicManager _musicManager;
         [SerializeField] private MeshRenderer _bodyMesh;
         [SerializeField] private int _matPosition;
         private Material _selectedMat;
@@ -46,11 +47,21 @@ namespace SH.Multiplayer
 
         }
 
+      private void Update() {
+            
+            if(_musicManager != null) {
+                Debug.Log("Collor");
+                
+                _selectedMat.SetColor("_EmissionColor",_colorList[0] * _musicManager.OutDbFactor * 5f);
+
+            }
+      }
+
 
         private void ColorAnimation(Color color)
         {
-            
-            _selectedMat.DOColor(color * _intensity, "_EmissionColor", _timeChangeState)
+          
+                   _selectedMat.DOColor(color * _intensity, "_EmissionColor", _timeChangeState)
                 .SetEase(Ease.Linear)
                 .SetSpeedBased()
                 .OnComplete(async () =>
@@ -60,6 +71,9 @@ namespace SH.Multiplayer
                         await Task.Delay(200);
                         ColorAnimation(_colorList[_currentColorIndex]); 
                     });
+            
+
+         
         }
 
 

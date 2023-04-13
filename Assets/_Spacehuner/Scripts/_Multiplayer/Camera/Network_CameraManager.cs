@@ -43,7 +43,6 @@ namespace SH.Multiplayer
         }
 
 
-
         void OnDestroy()
         {
             if (Instance == this)
