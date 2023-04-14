@@ -15,7 +15,8 @@ namespace SH.NPC
         Idle,
         Walking,
         Sitting,
-        Dancing
+        Dancing,
+        Receptionist
     }
 
 }

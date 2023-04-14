@@ -12,8 +12,6 @@ namespace SH.Multiplayer
         [Networked(OnChanged = nameof(OnWeaponInUseIdChanged))]
         [HideInInspector] public NetworkString<_16> WeaponInUseId { get; set; }
         
-        
-        
 
         static void OnWeaponInUseIdChanged(Changed<Network_PlayerWeaponHandler> changed)
         {

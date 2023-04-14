@@ -40188,6 +40188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fe93119efff8694aac9596d09d950f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsDragging: 0
 --- !u!222 &1796349534423239713
 CanvasRenderer:
   m_ObjectHideFlags: 0
