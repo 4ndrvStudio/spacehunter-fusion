@@ -7,7 +7,7 @@ namespace SH.NPC
     public class NPC_Brain : MonoBehaviour
     {
         public NPCState NpcState;
-
+        public string Name;
 
     }
 

@@ -18,6 +18,8 @@ namespace SH.Multiplayer
         private Vector2 _startPos;
         PointerEventData eventDatas;
 
+        [SerializeField] List<Touch> _touches = new List<Touch>();
+
         void Start()
         {
 
@@ -27,7 +29,80 @@ namespace SH.Multiplayer
 
         void Update()
         {
+            // foreach (Touch touch in Input.touches)
+            // {
+            //     if (touch.phase == TouchPhase.Began)
+            //     {
+            //         if (EventSystem.current.currentSelectedGameObject == gameObject)
+            //         {
+
+            //         }
+            //     }
+
+
+
+            // }
+            Debug.Log(_touches.Count);
+
+
         }
+
+        // public float HandleAxisInputDelegate(string axisName)
+        // {
+        //     switch (axisName)
+        //     {
+        //         case "Mouse X":
+        //             if (Input.touchCount > 0)
+        //             {
+        //                 foreach (Touch touch in Input.touches)
+        //                 {
+        //                     if (touch.phase == TouchPhase.Began)
+        //                     {
+        //                         if (EventSystem.current.currentSelectedGameObject == gameObject)
+        //                         {
+        //                             return touch.deltaPosition.x / 10;
+        //                         }
+        //                         else return Input.GetAxis(axisName);
+                                
+        //                     } 
+        //                 }
+        //             }
+        //             else
+        //             {
+        //                 return Input.GetAxis(axisName);
+        //             }
+
+
+        //         case "Mouse Y":
+        //             if (Input.touchCount > 0)
+        //             {
+        //                foreach (Touch touch in Input.touches)
+        //                 {
+        //                     if (touch.phase == TouchPhase.Began)
+        //                     {
+        //                         if (EventSystem.current.currentSelectedGameObject == gameObject)
+        //                         {
+        //                             return touch.deltaPosition.y / 10;
+        //                         }
+        //                         else return Input.GetAxis(axisName);
+
+    
+        //                     } 
+        //                 }
+        //             }
+        //             else
+        //             {
+        //                 return Input.GetAxis(axisName);
+        //             }
+        //             break;
+
+        //         default:
+        //             Debug.LogError("Input <" + axisName + "> not recognyzed.", this);
+        //             break;
+        //     }
+
+        //     return 0f;
+        // }
 
         // private void FixedUpdate()
         // {
@@ -108,7 +183,7 @@ namespace SH.Multiplayer
             IsDragging = _onDragData.delta != Vector2.zero;
             Vector2 delta = _onDragData.delta / 35.0f;
 
-   
+
             if (delta.magnitude > 0.1f)
             {
                 _playerTouchVectorOutput = _onDragData.delta.normalized;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Fusion;
+using UnityEngine.EventSystems;
 
 namespace SH.Multiplayer
 {
@@ -26,6 +27,10 @@ namespace SH.Multiplayer
 
         private string _touchXMapTo = "Mouse X";
         private string _touchYMapTo = "Mouse Y";
+
+        public float TouchSensitivity_x = 10f;
+        public float TouchSensitivity_y = 10f;
+
 
 
         void Awake()
@@ -80,6 +85,41 @@ namespace SH.Multiplayer
                 return _lookInput.y / _touchSpeedSensitivityY;
 
             return Input.GetAxis(axisName);
+        }
+
+      
+
+        float HandleAxisInputDelegate(string axisName)
+        {
+            switch(axisName)
+         {
+ 
+             case "Mouse X":
+ 
+                 if (Input.touchCount>0)
+                 {
+                     return Input.touches[0].deltaPosition.x / TouchSensitivity_x;
+                     
+                 }else{
+                     return Input.GetAxis(axisName);
+                 }
+ 
+             case "Mouse Y":
+                 if (Input.touchCount > 0)
+                 {
+                     return Input.touches[0].deltaPosition.y / TouchSensitivity_y;
+                 }
+                 else
+                 {
+                     return Input.GetAxis(axisName);
+                 }
+ 
+             default:
+                 Debug.LogError("Input <"+axisName+"> not recognyzed.",this);
+                 break;
+         }
+ 
+         return 0f;
         }
 
 

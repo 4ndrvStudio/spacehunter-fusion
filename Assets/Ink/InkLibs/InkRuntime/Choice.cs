@@ -7,6 +7,7 @@ namespace Ink.Runtime
     /// different Choices dynamically dependent on state, so they're
     /// separated.
     /// </summary>
+    [System.Serializable]
 	public class Choice : Runtime.Object
 	{
         /// <summary>

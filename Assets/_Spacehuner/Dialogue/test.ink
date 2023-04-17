@@ -1,4 +1,4 @@
-//-> main
+-> main
 
 === main ===
 Which pokemon do you choose?

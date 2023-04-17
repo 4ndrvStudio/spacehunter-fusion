@@ -3,21 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Ink.Runtime;
-namespace SH
+using UnityEngine.UI;
+using SH.Multiplayer;
+
+namespace SH.Dialogue
 {
     public class DialogueManager : MonoBehaviour
     {
         public static DialogueManager Instance;
 
         [SerializeField] private GameObject _dialoguePanel;
+        [SerializeField] private GameObject _dialogueChoicePanel;
+        [SerializeField] private GameObject _choiceBtnOb;
+        [SerializeField] private GameObject _dialogueStartChatPanel;
+        [SerializeField] private GameObject _startChatBtnOb;
+       
         [SerializeField] private TextMeshProUGUI _dialogueText;
+
+        [SerializeField] private List<Choice> _currentChoicesList = new List<Choice>();
+        [SerializeField] private List<Button> _continueBtnList = new List<Button>();
+
+        private List<GameObject> _currentChoicesBtnList = new List<GameObject>();
+        private List<GameObject> _startChatBtnList = new List<GameObject>();
+
 
         private Story _currentStory;
 
-        private bool _dialogueIsPlaying;
-
-        [SerializeField] private GameObject[] _choices;
-        private TextMeshProUGUI[] _choicesText;
+        public static bool DialogueIsPlaying;
 
         void Awake()
         {
@@ -41,42 +53,41 @@ namespace SH
 
         void Start()
         {
-            _dialogueIsPlaying = false;
+            DialogueIsPlaying = false;
             _dialoguePanel.SetActive(false);
+            _dialogueChoicePanel.SetActive(false);
 
-            _choicesText = new TextMeshProUGUI[_choices.Length];
-            int index = 0;
-            foreach (GameObject choice in _choices) {
-                _choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
-                index ++ ;
-            }
-
-        }
-        // Update is called once per frame
-        void Update()
-        {
-            if (_dialogueIsPlaying == false) return;
-
-            if(Input.GetKeyDown(KeyCode.T)) ContinueStory();
+            _continueBtnList.ForEach(continueBtn =>
+            {
+                continueBtn.onClick.AddListener(() => ContinueStory());
+            });
 
         }
+   
 
         public void EnterDialogueMode(TextAsset inkJson)
         {
+            if (DialogueIsPlaying == true) return;
+
             _currentStory = new Story(inkJson.text);
-            _dialogueIsPlaying = true;
+            DialogueIsPlaying = true;
+
             _dialoguePanel.SetActive(true);
 
-            ContinueStory();
+            UIControllerManager.Instance.ActiveController(false);
 
+            RemoveAllStartChatBtn();
+
+            ContinueStory();
         }
 
 
         private void ExitDialogueMode()
         {
-            _dialogueIsPlaying = false;
+            DialogueIsPlaying = false;
             _dialoguePanel.SetActive(false);
             _dialogueText.text = "";
+            UIControllerManager.Instance.ActiveController(true);
         }
 
         private void ContinueStory()
@@ -84,42 +95,110 @@ namespace SH
             if (_currentStory.canContinue)
             {
                 _dialogueText.text = _currentStory.Continue();
-                
-                if(_currentStory.currentChoices.Count > 0) {
+
+                if (_currentStory.currentChoices.Count > 0)
+                {
+
                     DisplayChoice();
-                    Debug.Log(_currentStory.currentChoices[0].text);
-                } else {
+
+                }
+                else
+                {
+
                     HideChoice();
                 }
-               
+
             }
             else
             {
-                ExitDialogueMode();
+                if (_currentStory.currentChoices.Count <= 0)
+                    ExitDialogueMode();
             }
         }
 
-        private void DisplayChoice() {
-            List<Choice> currentChoices = _currentStory.currentChoices;
+        private void DisplayChoice()
+        {
+
+            _currentChoicesList.Clear();
+
+
+            _currentChoicesBtnList.ForEach(choiceBtn =>
+            {
+                Destroy(choiceBtn);
+            });
+
+            _currentChoicesBtnList.Clear();
+
+            _dialogueChoicePanel.SetActive(true);
+
+            _currentChoicesList = _currentStory.currentChoices;
+
             int index = 0;
-            foreach(Choice choice in currentChoices) {
-                _choices[index].gameObject.SetActive(true);
-                _choicesText[index].text = choice.text;
-                index ++;
+
+            foreach (Choice choice in _currentChoicesList)
+            {
+
+                GameObject choiceBtn = Instantiate(_choiceBtnOb, _dialogueChoicePanel.transform);
+
+                choiceBtn.gameObject.SetActive(true);
+
+                DialogueChoiceButton choiceButtonScript = choiceBtn.GetComponent<DialogueChoiceButton>();
+
+                choiceButtonScript.Index = index;
+
+                choiceButtonScript.SetContent(choice.text);
+
+                _currentChoicesBtnList.Add(choiceBtn);
+
+                index++;
             }
 
-        } 
-        private void HideChoice() {
-             List<Choice> currentChoices = _currentStory.currentChoices;
-            int index = 0;
-            foreach(Choice choice in currentChoices) {
-                _choices[index].gameObject.SetActive(false);
-                index ++;
-            }
+        }
+        private void HideChoice() => _dialogueChoicePanel.SetActive(false);
+
+        public void AddStartChatBtn(string name, TextAsset content)
+        {
+          
+
+            if(_startChatBtnList.FindIndex(btn => btn.GetComponent<DialogueStartChatButton>().Name  == name) != -1)
+                return;
+
+            GameObject startChatBtn = Instantiate(_startChatBtnOb,_dialogueStartChatPanel.transform);
+            
+            startChatBtn.GetComponent<DialogueStartChatButton>().SetButtonContent(name,content);
+
+            _startChatBtnList.Add(startChatBtn);
+            
+
+            
+
         }
 
-        public void MakeChoice(int index) {
+        public void RemoveAllStartChatBtn() {
+            _startChatBtnList.ForEach(startChatBtn => {
+                Destroy(startChatBtn);
+            });
+            _startChatBtnList.Clear();
+        }
+
+        public void RemoveStartChatBtn(string name)
+        {
+
+            GameObject targetBtn = _startChatBtnList.Find(startChatBtn =>
+                 startChatBtn.GetComponent<DialogueStartChatButton>().Name == name);
+           
+            if(targetBtn == null) return;
+            
+            _startChatBtnList.Remove(targetBtn);
+            
+            Destroy(targetBtn);
+        }
+
+        public void MakeChoice(int index)
+        {
+
             _currentStory.ChooseChoiceIndex(index);
+
             ContinueStory();
         }
     }

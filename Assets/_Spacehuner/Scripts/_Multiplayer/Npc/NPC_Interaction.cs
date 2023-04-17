@@ -2,59 +2,57 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SH.Multiplayer;
-
+using SH.Dialogue;
 namespace SH.NPC
 {
     public class NPC_Interaction : MonoBehaviour
     {
-        [SerializeField] private LayerMask _npcMask;
-        [SerializeField] private bool _isInteraction;
+
+        [SerializeField] private float _distToInteract;
         [SerializeField] private float _disToPlayer;
         [SerializeField] private float _rotateSpeed;
 
-        // Update is called once per frame
-        void Update()
-        {
-            if(Network_Player.Local != null)
-                _disToPlayer = Vector3.Distance(this.transform.position, Network_Player.Local.transform.position);
-            
-            // Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began
+        [SerializeField] private Vector3 _rootEuler;
 
-            if (Input.GetMouseButtonDown(0))
-            {
-                RaycastHit hit;
-                Ray ray = Network_CameraManager.Instance.MainCamera.ScreenPointToRay(Input.mousePosition);
-
-                Debug.DrawRay(ray.origin, ray.direction, Color.blue, 100f);
-                if (Physics.Raycast(ray, out hit, 1000, _npcMask))
-                {
-                    if (hit.transform == this.transform)
-                        _isInteraction = true;
-
-                }
-            }
-
-            if (_isInteraction)
-            {
-                LookToPlayer();
-            }
-            
-
-            if(_disToPlayer > 4f && _isInteraction == true)
-                _isInteraction = false;
-
+        [SerializeField] public TextAsset DialogueContent;
+        
+        void Awake() {
+            _rootEuler = this.transform.rotation.eulerAngles;
+         
         }
 
-        private void LookToPlayer()
+        // Update is called once per frame
+        void FixedUpdate()
         {
-            transform.LookAt(Network_Player.Local.transform);
+            CheckPlayerNear();
+        }
+        private void CheckPlayerNear() {
 
-            Vector3 eulerAngles = transform.rotation.eulerAngles;
-            eulerAngles.x = 0;
-            eulerAngles.z = 0;
+            if(Network_Player.Local == null) return;
 
-            transform.rotation = Quaternion.RotateTowards(this.transform.rotation, Quaternion.Euler(eulerAngles),_rotateSpeed * Time.deltaTime);
-        
+            _disToPlayer = Vector3.Distance(Network_Player.Local.transform.position, this.transform.position);
+           
+            if(_disToPlayer <= _distToInteract )  {
+
+                LookToPosition(Network_Player.Local.transform.position);
+
+            }  else {
+
+                transform.rotation =Quaternion.RotateTowards(this.transform.rotation, Quaternion.Euler(_rootEuler),_rotateSpeed * Time.deltaTime);
+  
+            }
+        }
+
+        private void LookToPosition(Vector3 targetRot)
+        {
+            var lookPos = targetRot - transform.position;
+
+            lookPos.y = 0;
+
+            var rotation = Quaternion.LookRotation(lookPos);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, _rotateSpeed/10 * Time.deltaTime);
+            
         }
 
 

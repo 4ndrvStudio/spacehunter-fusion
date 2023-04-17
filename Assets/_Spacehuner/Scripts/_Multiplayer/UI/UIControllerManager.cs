@@ -45,13 +45,18 @@ namespace SH.Multiplayer
             _movementJoy.gameObject.SetActive(isActive);
             _attackBtn.gameObject.SetActive(isActive);
             _jumpBtn.gameObject.SetActive(isActive);
-            // _activeTestModeBtn.gameObject.SetActive(isActive);
+            //_activeTestModeBtn.gameObject.SetActive(isActive);
             _combo1Btn.gameObject.SetActive(isActive);
             _dashAttackBtn.gameObject.SetActive(isActive);
-            _inventoryBtn.gameObject.SetActive(true);
-
+            _inventoryBtn.gameObject.SetActive(isActive);
+           
             _touchPanel.enabled = true;
+            
             IsActive = true;
+        }
+
+        public void HideController() {
+
         }
 
         public void ActiveTestModeController(bool isActive)
