@@ -21,7 +21,6 @@ namespace SH.Dialogue
             _dialogueContent =dialogueContent;
             _startChatBtn.onClick.AddListener(() => {
                 DialogueManager.Instance.EnterDialogueMode(_dialogueContent);
-                
             }); 
         }
 

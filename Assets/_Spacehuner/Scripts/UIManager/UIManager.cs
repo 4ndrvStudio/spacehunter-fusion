@@ -66,9 +66,9 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region Waiting
-    public async void ShowWaiting(int hideTime = 15)
+    public async void ShowWaiting(int hideTime = 15, bool hasBackground = false)
     {
-        _uiWaiting.Show();
+        _uiWaiting.Show(hasBackground);
         await Task.Delay(hideTime * 1000);
         _uiWaiting.Hide();
     }
@@ -78,6 +78,8 @@ public class UIManager : MonoBehaviour
         _uiWaiting.Hide();
     }
     #endregion
+
+
 
     #region Loading
     public async void LoadScene(string sceneName)

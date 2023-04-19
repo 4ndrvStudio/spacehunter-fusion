@@ -46,10 +46,17 @@ namespace SH.Multiplayer
                 
                 if(dist <= _rangeToInteract) {
                     TextAsset dialogueContent = npcCollider[i].gameObject.GetComponent<NPC_Interaction>().DialogueContent;
-                    if(dialogueContent != null)
-                        DialogueManager.Instance.AddStartChatBtn(npcName, dialogueContent);
+  
+                    Dictionary<string, object> customProperties = new Dictionary<string, object>() {
+                        {InteractButtonCustomProperties.Name.ToString(), npcName },
+                        {InteractButtonCustomProperties.ChatContent.ToString(), dialogueContent}
+
+                    };
+
+                    UIControllerManager.Instance.AddInteractButton(npcCollider[i].GetInstanceID(),InteractButtonType.Chat, customProperties);
+
                 } else {
-                      DialogueManager.Instance.RemoveStartChatBtn(npcName);
+                    UIControllerManager.Instance.RemoveInteractionButton(npcCollider[i].GetInstanceID());
                 }
             
              }

@@ -42,7 +42,6 @@ namespace SH.Multiplayer
 
 
             // }
-            Debug.Log(_touches.Count);
 
 
         }

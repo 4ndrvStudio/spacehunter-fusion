@@ -2,19 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class UIWaiting : MonoBehaviour
 {
     [SerializeField] private GameObject _objContent = null;
     [SerializeField] private Transform _iconWaiting = null;
-    [SerializeField] private bool IsShowed;
-    private void Start()
-    {
-    }
+    [SerializeField] private Image _backgroundImage;
+    [SerializeField] private Color _overlayColor;
+    [SerializeField] private Sprite _backgroundSprite;
 
-    public void Show()
+    [SerializeField] private bool IsShowed;
+
+    public void Show(bool hasBackground)
     {
-        if(IsShowed) return;
+        if (hasBackground == true)
+        {
+            _backgroundImage.sprite = _backgroundSprite;
+            _backgroundImage.color = Color.white;
+        }
+
+
+        if (IsShowed) return;
         if (!_objContent.activeInHierarchy)
         {
             IsShowed = true;
@@ -27,5 +36,7 @@ public class UIWaiting : MonoBehaviour
     {
         _objContent.SetActive(false);
         IsShowed = false;
+        _backgroundImage.sprite = null;
+        _backgroundImage.color = _overlayColor;
     }
 }

@@ -15,12 +15,6 @@ namespace SH
         public Transform InsideSpawner;
         public Transform OutsideSpawner;
 
-
-        public virtual void EnterBuilding() => 
-            BuildingManager.Instance.EnterBuilding(BuildingName);
-        
-        public virtual void ExitBuilding() => 
-            BuildingManager.Instance.ExitBuilding(BuildingName);
         
     }
 

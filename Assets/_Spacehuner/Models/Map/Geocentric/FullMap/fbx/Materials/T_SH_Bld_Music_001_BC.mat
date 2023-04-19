@@ -13,9 +13,10 @@ Material:
   - _EMISSION
   - _METALLICSPECGLOSSMAP
   - _NORMALMAP
+  - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   m_InvalidKeywords:
   - _METALLICGLOSSMAP
-  m_LightmapFlags: 1
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -26,11 +27,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: ccc72d42e42b0844e84d73cd24024b43, type: 3}
+        m_Texture: {fileID: 2800000, guid: 77ae7b3ef3016b445bb1ac70bc96c3e4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 1619e3a89f601f547ba0bf1333ec38c5, type: 3}
+        m_Texture: {fileID: 2800000, guid: c350f43bcb411b44bb628b05adfb8300, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -46,15 +47,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 6766630bcc72f89499d4e146193885c7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 82674d843dfcb694ebe6d5734cef68b0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: ccc72d42e42b0844e84d73cd24024b43, type: 3}
+        m_Texture: {fileID: 2800000, guid: 77ae7b3ef3016b445bb1ac70bc96c3e4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 630aef57963bc9a438582251375cefb1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8dffe37e07893f44da57c6311c2e64bf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -103,8 +104,8 @@ Material:
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.341
-    - _SmoothnessTextureChannel: 0
+    - _Smoothness: 1
+    - _SmoothnessTextureChannel: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0

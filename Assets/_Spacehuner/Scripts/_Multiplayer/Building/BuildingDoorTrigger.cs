@@ -11,28 +11,31 @@ namespace SH
 
         void OnTriggerEnter(Collider other)
         {
+
             if (other.tag != "Player") return;
 
             Network_Player _network_Player = other.gameObject.GetComponent<Network_Player>();
 
             if (_network_Player.HasInputAuthority == false) return;
+            BuildingInteractType targetType = _building.IsEnter  ? BuildingInteractType.Exit : BuildingInteractType.Enter;
+            
+            Dictionary<string,object> customProperties = new Dictionary<string, object>() {
+                    {InteractButtonCustomProperties.Name , _building.BuildingName},
+                    {InteractButtonCustomProperties.BuildingInteractType, targetType }
+            };
 
-            if (_building.IsEnter == false)
-            {
-               
-                _building.EnterBuilding();
-                 _network_Player.transform.position  = _building.InsideSpawner.position;
-                _building.IsEnter = true;
-            }
-            else
-            {
-               
-                _building.ExitBuilding();
-                 _network_Player.transform.position  = _building.OutsideSpawner.position;
-                _building.IsEnter = false;
-            }
+            UIControllerManager.Instance.AddInteractButton(_building.gameObject.GetInstanceID(),InteractButtonType.Building,customProperties);
+        }
 
+        void OnTriggerExit(Collider other) {
+            
+            if (other.tag != "Player") return;
 
+            Network_Player _network_Player = other.gameObject.GetComponent<Network_Player>();
+            
+            if (_network_Player.HasInputAuthority == false) return;
+
+            UIControllerManager.Instance.RemoveInteractionButton(_building.gameObject.GetInstanceID());
 
         }
 

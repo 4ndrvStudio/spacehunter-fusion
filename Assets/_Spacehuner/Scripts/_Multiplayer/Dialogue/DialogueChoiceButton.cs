@@ -13,7 +13,7 @@ namespace SH.Dialogue
         [SerializeField] private TextMeshProUGUI _choiceTextContent;
         
         public int Index;
-
+        
         // Start is called before the first frame update
         void Start()
         {

@@ -192,11 +192,11 @@ namespace SH.Dialogue
             _startChatBtnList.Remove(targetBtn);
             
             Destroy(targetBtn);
+
         }
 
         public void MakeChoice(int index)
         {
-
             _currentStory.ChooseChoiceIndex(index);
 
             ContinueStory();

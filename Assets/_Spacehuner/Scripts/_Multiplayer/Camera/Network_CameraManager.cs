@@ -22,8 +22,8 @@ namespace SH.Multiplayer
 
         private Vector2 _lookInput;
 
-        [SerializeField] private float _touchSpeedSensitivityX = 3f;
-        [SerializeField] private float _touchSpeedSensitivityY = 3f;
+        [SerializeField] private float _touchSpeedSensitivityX = 10f;
+        [SerializeField] private float _touchSpeedSensitivityY = 10f;
 
         private string _touchXMapTo = "Mouse X";
         private string _touchYMapTo = "Mouse Y";
