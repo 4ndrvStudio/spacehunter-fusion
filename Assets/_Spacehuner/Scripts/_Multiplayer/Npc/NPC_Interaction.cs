@@ -52,7 +52,7 @@ namespace SH.NPC
             var rotation = Quaternion.LookRotation(lookPos);
 
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, _rotateSpeed/10 * Time.deltaTime);
-            
+        
         }
 
 

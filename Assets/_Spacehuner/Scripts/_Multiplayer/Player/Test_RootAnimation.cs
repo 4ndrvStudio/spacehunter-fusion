@@ -17,6 +17,7 @@ public class Test_RootAnimation : MonoBehaviour
     {
        Debug.Log(anim.deltaPosition);
       
-        clip.SampleAnimation(transform.gameObject,Time.deltaTime);
+        clip.SampleAnimation(transform.gameObject, Time.deltaTime);
+        
     }
 }

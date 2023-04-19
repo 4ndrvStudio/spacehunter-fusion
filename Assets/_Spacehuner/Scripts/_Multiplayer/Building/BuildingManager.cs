@@ -43,25 +43,27 @@ namespace SH
 
         public void EnterBuilding(BuildingName buildingName) {
 
-            
-            DOTween.KillAll();
+            //DOTween.KillAll();
+       
             _outside.SetActive(false);
 
             Building building  = _buildingList.Find(building => building.BuildingName == buildingName);
             if ( Network_Player.Local.HasInputAuthority != false)  {
                  Network_Player.Local.transform.position = building.InsideSpawner.position;
             };
-            building.InsideBuildingObject.SetActive(true); 
-            building.BuildingObject.SetActive(false); 
-            building.IsEnter = true;
-            StartCoroutine(ShowWaiting());
+
           
+            building.Enter();
+
+            StartCoroutine(ShowWaiting());
+
+            Network_CameraManager.Instance.ToggleInOutSide(true);
 
         }
 
         public void ExitBuilding(BuildingName buildingName) {
 
-            DOTween.KillAll();
+            //DOTween.KillAll();
 
             _outside.SetActive(true);
 
@@ -70,12 +72,12 @@ namespace SH
             if (Network_Player.Local.HasInputAuthority != false)  {
                  Network_Player.Local.transform.position = building.OutsideSpawner.position;
             };
-             building.IsEnter = false;
-            building.InsideBuildingObject.SetActive(false); 
 
-            building.BuildingObject.SetActive(true); 
+            building.Exit();
 
             StartCoroutine(ShowWaiting());
+
+            Network_CameraManager.Instance.ToggleInOutSide(false);
           
         }
         private IEnumerator ShowWaiting() {

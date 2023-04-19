@@ -7,9 +7,6 @@ using System;
 
 namespace SH.NPC
 {
-
-
-
     public class NPC_Movement : MonoBehaviour
     {
 
@@ -25,7 +22,7 @@ namespace SH.NPC
         }
 
         [SerializeField] private List<MovingPathContainer> _movingPathContainers = new List<MovingPathContainer>();
-        [SerializeField] private List<Transform> _movingRandomPathContainers = new List<Transform>();    
+        [SerializeField] private List<Transform> _movingRandomPathContainers = new List<Transform>();
 
         [SerializeField] private float _moveSpeed = 1.2f;
 
@@ -38,16 +35,19 @@ namespace SH.NPC
         [SerializeField] private bool _isIdle = false;
         [SerializeField] private bool _isRandomMoving = false;
 
+        [SerializeField] private Sequence npcMovingSequence;
+
+
         public void Start()
         {
+            npcMovingSequence = DOTween.Sequence();
 
-            if (_isRandomMoving) {
+            if (_isRandomMoving)
+            {
                 MovingRandom();
             }
             else
                 MovingNextState();
-
-
         }
 
 
@@ -94,22 +94,26 @@ namespace SH.NPC
 
         private void MovingRandom()
         {
-           
+
             Transform targetPoint = _movingRandomPathContainers[UnityEngine.Random.Range(0, _movingRandomPathContainers.Count)];
             transform.LookAt(targetPoint);
-            transform.DOMove(targetPoint.position, _moveSpeed)
+            npcMovingSequence.Append(
+                transform.DOMove(targetPoint.position, _moveSpeed)
                 .SetEase(Ease.Linear)
                 .SetSpeedBased()
-                .OnComplete(() => {
+                .OnComplete(() =>
+                {
                     _idleDuration = UnityEngine.Random.Range(5, 15);
                     StartCoroutine(Idle());
-            });
-         
+                })
+            );
+
         }
 
         private void MovingNPC(Vector3[] path, PathType targetPath)
         {
-            transform.DOPath(path, _moveSpeed, targetPath, PathMode.Full3D)
+            npcMovingSequence.Append(
+                transform.DOPath(path, _moveSpeed, targetPath, PathMode.Full3D)
                 .SetEase(Ease.Linear)
                 .SetLookAt(0.01f)
                 .SetSpeedBased()
@@ -118,8 +122,6 @@ namespace SH.NPC
                 {
                     _pathIndex += 1;
                     if (_pathIndex >= _movingPathContainers.Count) _pathIndex = 0;
-
-
 
                     if (_isRandomMoving)
                     {
@@ -134,10 +136,9 @@ namespace SH.NPC
                             MovingNextState();
 
                     }
-
-
                 })
-                .SetAutoKill(true);
+                .SetAutoKill(true)
+            );
         }
 
 
@@ -148,11 +149,17 @@ namespace SH.NPC
             yield return new WaitForSeconds(_idleDuration);
             _isIdle = false;
 
-            if(_isRandomMoving)
+            if (_isRandomMoving)
                 MovingRandom();
-            else 
+            else
                 MovingNextState();
 
+        }
+
+        private void OnDisable()
+        {
+            npcMovingSequence.Kill();
+            StopCoroutine(Idle());
         }
 
     }

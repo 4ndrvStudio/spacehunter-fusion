@@ -15,6 +15,29 @@ namespace SH
         public Transform InsideSpawner;
         public Transform OutsideSpawner;
 
+        public BuildingDoorTrigger EnterTrigger;
+        public BuildingDoorTrigger ExitTrigger;
+
+
+        public virtual void Enter() {
+
+            InsideBuildingObject.SetActive(true); 
+            BuildingObject.SetActive(false); 
+            IsEnter = true;
+            ExitTrigger.IsFirstLoad = true;
+
+        }
+
+        public virtual void Exit() {
+
+            IsEnter = false;
+
+            InsideBuildingObject.SetActive(false); 
+
+            BuildingObject.SetActive(true);
+
+            EnterTrigger.IsFirstLoad = true;
+        }
         
     }
 

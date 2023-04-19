@@ -7,12 +7,14 @@ namespace SH
 {
     public class BuildingDoorTrigger : MonoBehaviour
     {
+        public bool IsFirstLoad;
         [SerializeField] private Building _building;
+      
 
         void OnTriggerEnter(Collider other)
         {
 
-            if (other.tag != "Player") return;
+            if (other.tag != "Player" || IsFirstLoad == true) return;
 
             Network_Player _network_Player = other.gameObject.GetComponent<Network_Player>();
 
@@ -25,6 +27,7 @@ namespace SH
             };
 
             UIControllerManager.Instance.AddInteractButton(_building.gameObject.GetInstanceID(),InteractButtonType.Building,customProperties);
+
         }
 
         void OnTriggerExit(Collider other) {
@@ -36,6 +39,8 @@ namespace SH
             if (_network_Player.HasInputAuthority == false) return;
 
             UIControllerManager.Instance.RemoveInteractionButton(_building.gameObject.GetInstanceID());
+
+            IsFirstLoad = false;
 
         }
 

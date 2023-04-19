@@ -9,6 +9,7 @@ namespace SH.NPC
         [SerializeField] private Animator anim;
         [SerializeField] private NPC_Brain _npcBrain;
         
+
         // Update is called once per frame
         void Update()
         {
@@ -16,9 +17,11 @@ namespace SH.NPC
                 case NPCState.Idle : 
                     anim.SetBool("isWalking", false);
                     break;
-                case NPCState.Walking : anim.SetBool("isWalking", true);
+                case NPCState.Walking : 
+                    anim.SetBool("isWalking", true);
                     break;
-                case NPCState.Sitting : anim.SetBool("isSitting",true);
+                case NPCState.Sitting : 
+                    anim.SetBool("isSitting",true);
                     break;
             }
         }

@@ -51,12 +51,14 @@ namespace SH.Multiplayer
             }
 
             IsSet = true;
+            
             this.gameObject.SetActive(true);
-        }
 
+        }
 
         private void SetContentForChat(Dictionary<string, object> customProperties) 
         {
+
             NPCName = (string) customProperties[InteractButtonCustomProperties.Name];
             ChatContent = (TextAsset) customProperties[InteractButtonCustomProperties.ChatContent];
 
@@ -67,8 +69,6 @@ namespace SH.Multiplayer
                 DialogueManager.Instance.EnterDialogueMode(ChatContent);
                 DisableBtn();
             });
-
-
 
         }
 

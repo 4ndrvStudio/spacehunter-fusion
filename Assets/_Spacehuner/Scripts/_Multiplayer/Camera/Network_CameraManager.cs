@@ -58,14 +58,28 @@ namespace SH.Multiplayer
         }
 
 
-
-
         public void SetAimTarget(Transform body, Transform lookPoint)
         {
 
             _cineCam.Follow = body;
             _cineCam.LookAt = lookPoint;
 
+        }
+
+        public void ToggleInOutSide(bool isInSide)
+        {
+            if (isInSide == true)
+            {
+                _cineCam.m_Orbits[0].m_Radius = 5;
+                _cineCam.m_Orbits[1].m_Radius = 6;
+                _cineCam.m_Orbits[2].m_Radius = 5;
+            }
+            else
+            {
+                _cineCam.m_Orbits[0].m_Radius = 7;
+                _cineCam.m_Orbits[1].m_Radius = 9;
+                _cineCam.m_Orbits[2].m_Radius = 7;
+            }
         }
 
         public Vector3 GetMainCamEuler() => _mainCam.transform.eulerAngles;
@@ -87,39 +101,41 @@ namespace SH.Multiplayer
             return Input.GetAxis(axisName);
         }
 
-      
+
 
         float HandleAxisInputDelegate(string axisName)
         {
-            switch(axisName)
-         {
- 
-             case "Mouse X":
- 
-                 if (Input.touchCount>0)
-                 {
-                     return Input.touches[0].deltaPosition.x / TouchSensitivity_x;
-                     
-                 }else{
-                     return Input.GetAxis(axisName);
-                 }
- 
-             case "Mouse Y":
-                 if (Input.touchCount > 0)
-                 {
-                     return Input.touches[0].deltaPosition.y / TouchSensitivity_y;
-                 }
-                 else
-                 {
-                     return Input.GetAxis(axisName);
-                 }
- 
-             default:
-                 Debug.LogError("Input <"+axisName+"> not recognyzed.",this);
-                 break;
-         }
- 
-         return 0f;
+            switch (axisName)
+            {
+
+                case "Mouse X":
+
+                    if (Input.touchCount > 0)
+                    {
+                        return Input.touches[0].deltaPosition.x / TouchSensitivity_x;
+
+                    }
+                    else
+                    {
+                        return Input.GetAxis(axisName);
+                    }
+
+                case "Mouse Y":
+                    if (Input.touchCount > 0)
+                    {
+                        return Input.touches[0].deltaPosition.y / TouchSensitivity_y;
+                    }
+                    else
+                    {
+                        return Input.GetAxis(axisName);
+                    }
+
+                default:
+                    Debug.LogError("Input <" + axisName + "> not recognyzed.", this);
+                    break;
+            }
+
+            return 0f;
         }
 
 
