@@ -15,6 +15,7 @@ namespace SH.Multiplayer
 
         [SerializeField] private float _speed = 7f;
 
+        
 
 
 
@@ -51,15 +52,15 @@ namespace SH.Multiplayer
         public void ActiveTestMode(PlayerInput input)
         {
 
-            bool HasPressed = input.Buttons.WasPressed(_lastButtonsInput, EInputButtons.ActiveTestMode);
+            // bool HasPressed = input.Buttons.WasPressed(_lastButtonsInput, EInputButtons.ActiveTestMode);
 
-            if (HasPressed)
-            {
-                PressCount++;
+            // if (HasPressed)
+            // {
+            //     PressCount++;
 
-            }
+            // }
 
-            _lastButtonsInput = input.Buttons;
+            // _lastButtonsInput = input.Buttons;
 
 
         }

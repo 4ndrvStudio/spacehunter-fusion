@@ -90081,6 +90081,8 @@ MonoBehaviour:
   - {fileID: 2929351942821520656}
   - {fileID: 2929351942649722209}
   - {fileID: 2929351941471840248}
+  _comboVFXList: []
+  _weaponObject: {fileID: 2929351942746212888}
   _centerWeapon: {fileID: 2929351943411863807}
 --- !u!1 &8298781116185456124
 GameObject:

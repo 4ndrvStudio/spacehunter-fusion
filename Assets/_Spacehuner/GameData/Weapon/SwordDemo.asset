@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd9c1db3688c4f4582962d5507e2308, type: 3}
   m_Name: SwordDemo
   m_EditorClassIdentifier: 
-  Id: 1001
+  Id: 2001
   Prefabs: {fileID: 0}
   Sprite: {fileID: 0}
-  WeaponType: 0
+  WeaponType: 1
   WeaponScript: {fileID: 0}
-  OverlapseCenter: {fileID: 0}

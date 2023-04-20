@@ -13,7 +13,7 @@ namespace SH.Multiplayer
         public Transform GetCenter() => _centerOverlapse;
         public Vector3 GetExtends() => _extends;
 
-         void OnDrawGizmosSelected()
+        void OnDrawGizmosSelected()
         {
             // Draw a semitransparent red cube at the transforms position
             Gizmos.color = new Color(0, 255, 0, 0.8f);

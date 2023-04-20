@@ -11,7 +11,6 @@ namespace SH.Multiplayer
         Attack = 1,
         Combo1 = 2,
         DashAttack = 3,
-        ActiveTestMode = 100
     }
     public struct PlayerInput : INetworkInput
     {
@@ -38,11 +37,7 @@ namespace SH.Multiplayer
             get { return Buttons.IsSet(EInputButtons.DashAttack); }
             set { Buttons.Set((int)EInputButtons.DashAttack, value); }
         }
-        public bool ActiveTestMode
-        {
-            get { return Buttons.IsSet(EInputButtons.ActiveTestMode); }
-            set { Buttons.Set((int)EInputButtons.ActiveTestMode, value); }
-        }
+   
 
 
 
@@ -135,11 +130,7 @@ namespace SH.Multiplayer
                     _cachedInput.DashAttack = true;
                 }
 
-                //active TestMode 
-                if (UIControllerManager.Instance.GetActiveTestModeBtn() == true)
-                {
-                    _cachedInput.ActiveTestMode = true;
-                }
+            
             }
 
 

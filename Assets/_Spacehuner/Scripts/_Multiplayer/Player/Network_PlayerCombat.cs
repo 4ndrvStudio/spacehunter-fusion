@@ -8,9 +8,9 @@ namespace SH.Multiplayer
 {
     public class Network_PlayerCombat : NetworkBehaviour, ISpawned
     {
+
         [SerializeField] private Network_PlayerState _playerState;
         [SerializeField] private Network_PlayerAimingAssistant _playerAim;
-
 
 
         [Networked, HideInInspector]
@@ -56,6 +56,10 @@ namespace SH.Multiplayer
         [SerializeField] private LayerMask _obstacleMask;
         [SerializeField] private float _attackMoveDuration;
         [SerializeField] private float _attackMoveDis;
+
+
+        [SerializeField] private List<GameObject> _comboVFXList;
+        public List<GameObject> ComboVFXList => _comboVFXList;
 
 
         public override void Spawned()

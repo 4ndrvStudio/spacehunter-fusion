@@ -9,11 +9,14 @@ namespace SH.Multiplayer
     public class Network_PlayerState : NetworkBehaviour
     {
         public Animator Anim;
+
+        [SerializeField] private Network_WeaponManager _weaponManager;
+
         [SerializeField] private Transform _groundCheck;
         [SerializeField] private LayerMask _groundMask;
 
         [SerializeField] private float _groundCheckRange;
-
+        
 
         [Networked(OnChanged = nameof(OnIsActionChanged))]
         [HideInInspector] public NetworkBool N_IsAction { get; set; }
@@ -27,6 +30,9 @@ namespace SH.Multiplayer
         [HideInInspector] public NetworkBool N_IsCombo { get; set; }
         public bool L_IsCombo;
 
+        [Networked(OnChanged = nameof(OnIsInsideBuildingChanged))]
+        [HideInInspector] public NetworkBool N_IsInsideBuilding { get; set; }
+        public bool L_IsInsideBuilding;
 
         // Action State    
 
@@ -79,11 +85,27 @@ namespace SH.Multiplayer
             this.N_IsGrounded = isGrounded;
         }
 
-        public override void FixedUpdateNetwork()
+        //inside Building
+          static void OnIsInsideBuildingChanged(Changed<Network_PlayerState> changed)
         {
-            
+            changed.Behaviour.OnIsInsideBuildingChanged();
+        }
+        private void OnIsInsideBuildingChanged()
+        {
+            L_IsInsideBuilding = N_IsInsideBuilding;
+
+            //just for test
+            _weaponManager.RPC_SetEquippedWeapon(!L_IsInsideBuilding);
+            Network_Player.Local.AnimatorHook.ActiveWeapon(!L_IsInsideBuilding);
 
         }
+
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        public void RPC_SetIsInsideBuilding(bool isInSideBuilding, RpcInfo info = default)
+        {
+            this.N_IsInsideBuilding = isInSideBuilding;
+        }
+
         public override void Render()
         {
             if (Object.HasInputAuthority == false) return;

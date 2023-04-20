@@ -611,7 +611,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: BaseLayer2
+    m_Name: BaseTestPlayer
     m_StateMachine: {fileID: 1899484840090325710}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -808,7 +808,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BaseLayer2
+  m_Name: BaseTestPlayer
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -8102624751857861139}

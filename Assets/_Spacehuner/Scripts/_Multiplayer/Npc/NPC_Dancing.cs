@@ -6,9 +6,9 @@ namespace SH.NPC
 {
     public class NPC_Dancing : MonoBehaviour
     {
+
         [SerializeField] private NPC_Brain _npcBrain;
         [SerializeField] private NPC_Animation _npcAnim;
-
         [SerializeField] private List<string> _dancingName = new List<string>();
 
         [SerializeField] private float _timeChangeState = 20;
@@ -33,7 +33,8 @@ namespace SH.NPC
         // Update is called once per frame
         void Update()
         {
-
+            
+            
             //Random Dance
             if(_changeStateExcute == true) {
                 _timeChangeState = Random.Range(_timeFactor/2, _timeFactor);

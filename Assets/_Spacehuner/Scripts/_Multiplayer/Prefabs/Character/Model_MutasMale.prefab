@@ -272,6 +272,7 @@ MonoBehaviour:
   - {fileID: 6343484538920671695}
   - {fileID: 6343484538177370845}
   _comboVFXList: []
+  _weaponObject: {fileID: 6343484538850384410}
   _centerWeapon: {fileID: 6343484538872485789}
 --- !u!114 &2306872574204512267
 MonoBehaviour:
@@ -285,7 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4900b6503ae93b249846bdf248e72f49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _clip: {fileID: 7400000, guid: 21a6950108cf0e24a88cd7b76db2c7fe, type: 2}
+  _anim: {fileID: 0}
 --- !u!1 &743883727953114644
 GameObject:
   m_ObjectHideFlags: 0

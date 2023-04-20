@@ -17,6 +17,8 @@ namespace SH.Multiplayer
 
         [Header("NPC Checker")]
 
+        [SerializeField] private Network_PlayerState _playerState;
+
         [SerializeField] private LayerMask _npcMask;
 
         [SerializeField] private float _overlapseRadius  = 10f;
@@ -44,7 +46,7 @@ namespace SH.Multiplayer
 
                 if(DialogueManager.DialogueIsPlaying == true) return;
                 
-                if(dist <= _rangeToInteract) {
+                if(dist <= _rangeToInteract && _playerState.L_IsAction != true) {
                     TextAsset dialogueContent = npcCollider[i].gameObject.GetComponent<NPC_Interaction>().DialogueContent;
   
                     Dictionary<string, object> customProperties = new Dictionary<string, object>() {

@@ -13,6 +13,7 @@ TagManager:
   - Asteroid
   - Planet
   - FX
+  - Cinemachine_Ground Ignore
   layers:
   - Default
   - TransparentFX

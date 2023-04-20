@@ -14,6 +14,8 @@ namespace SH.Multiplayer
     public class Network_WeaponCollider : NetworkBehaviour
     {
 
+        [SerializeField] private Network_PlayerState _playerState;
+
         [Networked]
         public NetworkBool CanHitMineral { get; set; }
 
@@ -39,14 +41,14 @@ namespace SH.Multiplayer
         {
             if (Object.IsProxy == true)
                 return;
+
+            if(_playerState.L_IsInsideBuilding) return;
             
             if (HasHitMineral()) Debug.Log("Hit Mineral");
 
             if (HasHitEnemy()) Debug.Log("Hit Enemy");
 
            // if (HasHitPlayer()) Debug.Log("Hit Player");
-
-
 
         }
 

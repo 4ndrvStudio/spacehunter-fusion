@@ -11,6 +11,8 @@ namespace SH.Multiplayer
         [SerializeField] private List<GameObject> _attackVFXList;
         [SerializeField] private List<GameObject> _comboVFXList;
         
+        [SerializeField] private GameObject _weaponObject;
+
 
         [SerializeField] private Transform _centerWeapon;
 
@@ -41,6 +43,9 @@ namespace SH.Multiplayer
             GameObject fx  = Instantiate(targetFX,targetFX.transform.position, targetFX.transform.rotation);
             fx.SetActive(true);
         }
+
+        // for test. edit later
+        public void ActiveWeapon(bool isActive) => _weaponObject.SetActive(isActive);
      
 
         

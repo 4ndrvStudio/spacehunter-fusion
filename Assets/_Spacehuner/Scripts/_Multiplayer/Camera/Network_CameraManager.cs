@@ -70,9 +70,9 @@ namespace SH.Multiplayer
         {
             if (isInSide == true)
             {
-                _cineCam.m_Orbits[0].m_Radius = 5;
+                _cineCam.m_Orbits[0].m_Radius = 3;
                 _cineCam.m_Orbits[1].m_Radius = 6;
-                _cineCam.m_Orbits[2].m_Radius = 5;
+                _cineCam.m_Orbits[2].m_Radius = 3;
             }
             else
             {

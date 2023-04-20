@@ -6,12 +6,19 @@ using SH.Define;
 
 namespace SH.Multiplayer
 {
+    public enum ControllerType {
+        Hide,
+        Combat,
+        Action
+    }
+
     public class UIControllerManager : MonoBehaviour
     {
 
         public static UIControllerManager Instance;
 
         [Header("Controller")]
+        //combat 
         [SerializeField] private Image _touchPanel;
         [SerializeField] private Joystick _movementJoy;
         [SerializeField] private UIButtonCustom _attackBtn;
@@ -19,6 +26,13 @@ namespace SH.Multiplayer
         [SerializeField] private UIButtonCustom _combo1Btn;
         [SerializeField] private UIButtonCustom _dashAttackBtn;
         [SerializeField] private UIButtonCustom _activeTestModeBtn;
+
+        //dance
+        [SerializeField] private UIButtonCustom _danceBtn;
+
+
+        [SerializeField] private GameObject _combatGroup;
+        [SerializeField] private GameObject _actionGroup;
 
         [Header("UI")]
         [SerializeField] private Button _inventoryBtn;
@@ -28,6 +42,9 @@ namespace SH.Multiplayer
         [SerializeField] private GameObject _interactBtnPanel;
         [SerializeField] private List<UIInteractButton> _interactBtnList = new List<UIInteractButton>();
 
+        [SerializeField] private ControllerType _currentController;
+        [SerializeField] private Network_PlayerState _playerState;
+        
         public bool IsActive = false;
 
         void Awake()
@@ -42,32 +59,52 @@ namespace SH.Multiplayer
         {
             _inventoryBtn.onClick.AddListener(() => UIManager.Instance.ShowPopup(PopupName.Inventory));
             _gotoMiningBtn.onClick.AddListener(() => GotoMining());
+
         }
 
-        public void ActiveController(bool isActive)
-        {
-            _movementJoy.gameObject.SetActive(isActive);
-            _attackBtn.gameObject.SetActive(isActive);
-            _jumpBtn.gameObject.SetActive(isActive);
-            //_activeTestModeBtn.gameObject.SetActive(isActive);
-            _combo1Btn.gameObject.SetActive(isActive);
-            _dashAttackBtn.gameObject.SetActive(isActive);
-            _inventoryBtn.gameObject.SetActive(isActive);
+        public void DisplayController() {
+            
+            _playerState  = Network_Player.Local.PlayerState;
+            
+            if(_playerState.L_IsInsideBuilding) {
+                ActiveActionControlller();
+            }  else { 
+                ActiveCombatController();
+            }
+
+            _movementJoy.gameObject.SetActive(true);
 
             _touchPanel.enabled = true;
 
             IsActive = true;
         }
 
-        public void HideController()
-        {
+        private void ActiveCombatController() {
+
+            _combatGroup.SetActive(true);
+
+            _actionGroup.SetActive(false);
 
         }
 
-        public void ActiveTestModeController(bool isActive)
-        {
-            _combo1Btn.gameObject.SetActive(isActive);
+        private void ActiveActionControlller() {
+            _combatGroup.SetActive(false);
+
+            _actionGroup.SetActive(true);
         }
+
+        public void HideAllController() {
+
+            _combatGroup.SetActive(false);
+
+            _actionGroup.SetActive(false);
+
+            _movementJoy.gameObject.SetActive(false);
+
+            IsActive = false;
+
+        }
+
 
         public Joystick GetMovementJoystick() => _movementJoy;
 
@@ -100,7 +137,9 @@ namespace SH.Multiplayer
             if(indexToInstance == -1) return;
             
             _interactBtnList[indexToInstance].SetContentOfButton(type, customProperties);
+
             _interactBtnList[indexToInstance].Id = id;
+
 
         }
         public void RemoveInteractionButton(int id)

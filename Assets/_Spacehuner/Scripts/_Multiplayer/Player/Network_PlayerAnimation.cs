@@ -7,13 +7,14 @@ namespace SH.Multiplayer
 {
     public class Network_PlayerAnimation : NetworkBehaviour
     {
-         public Animator Anim;
+        public Animator Anim;
         [SerializeField] private Network_PlayerState _playerState;
         [SerializeField] private Network_PlayerMovement _playerMovement;
         [SerializeField] private Network_PlayerCombat _playerCombat;
         [SerializeField] private Network_PlayerDamageable _playerDamageable;
+        [SerializeField] private Network_WeaponManager _weaponManager;
 
-        
+
         private int _lastVisibleJump;
         private int _lastVisibleAttack;
         private int _lastCombo1Attack;
@@ -35,8 +36,8 @@ namespace SH.Multiplayer
 
         public override void Render()
         {
-            if(Anim == null) return;
-             UpdateAnimations();
+            if (Anim == null) return;
+            UpdateAnimations();
         }
 
 
@@ -44,90 +45,126 @@ namespace SH.Multiplayer
 
         private void UpdateAnimations()
         {
-          
+
+            RenderAttack();
+            RenderCombatInteract();
+            RenderMovement();
+            RenderWeaponManager();
+
+        }
+
+        private void RenderAttack()
+        {
 
             //Render Attack
             if (_lastVisibleAttack < _playerCombat.AttackCount)
-			{
-                if(_playerState.L_IsGrounded) {
+            {
+                if (_playerState.L_IsGrounded)
+                {
                     Anim.SetTrigger(_playerCombat.AttackName[_playerCombat.L_IndexAttack]);
-                } else {
-                    
                 }
-				
-			}
-			else if (_lastVisibleAttack > _playerCombat.AttackCount)
-			{
-				//cancel attack
-			}
+                else
+                {
+
+                }
+
+            }
+            else if (_lastVisibleAttack > _playerCombat.AttackCount)
+            {
+                //cancel attack
+            }
 
 
             _lastVisibleAttack = _playerCombat.AttackCount;
 
             //combo
             if (_lastCombo1Attack < _playerCombat.Combo1Count)
-			{
-                if(_playerState.L_IsGrounded) {
-                    Anim.Play(_playerCombat.Combo1Name,3,0);
-                } else {
-                    
+            {
+                if (_playerState.L_IsGrounded)
+                {
+                    Anim.Play(_playerCombat.Combo1Name, 3, 0);
                 }
-				
-			}
-			else if (_lastCombo1Attack > _playerCombat.Combo1Count)
-			{
+                else
+                {
 
-			}
+                }
+
+            }
+            else if (_lastCombo1Attack > _playerCombat.Combo1Count)
+            {
+
+            }
 
 
             _lastCombo1Attack = _playerCombat.Combo1Count;
 
-             //dash attack
+            //dash attack
             if (_lastDashAttack < _playerCombat.DashAttackCount)
-			{
-                if(_playerState.L_IsGrounded) {
-                    Anim.Play(_playerCombat.DashAttackName,3,0);
-                } else {
-                    
+            {
+                if (_playerState.L_IsGrounded)
+                {
+                    Anim.Play(_playerCombat.DashAttackName, 3, 0);
                 }
-				
-			}
-			else if (_lastDashAttack > _playerCombat.DashAttackCount)
-			{
+                else
+                {
 
-			}
+                }
+
+            }
+            else if (_lastDashAttack > _playerCombat.DashAttackCount)
+            {
+
+            }
 
 
             _lastDashAttack = _playerCombat.DashAttackCount;
 
+        }
+
+        private void RenderCombatInteract()
+        {
 
             //gethit
             if (_lastVisibleGetHit < _playerDamageable.HitCount)
-			{
-                 Anim.Play("GetHit1",3,0);
-			}
-			else if (_lastVisibleGetHit > _playerDamageable.HitCount)
-			{
+            {
+                Anim.Play("GetHit1", 3, 0);
+            }
+            else if (_lastVisibleGetHit > _playerDamageable.HitCount)
+            {
 
-			}
-
-
+            }
             _lastVisibleGetHit = _playerDamageable.HitCount;
+
+
+        }
+
+        private void RenderMovement()
+        {
 
             Anim.SetFloat("movement", _playerMovement.Speed);
 
             Anim.SetBool("onGround", _playerState.L_IsGrounded);
 
             Anim.applyRootMotion = _playerState.L_IsCombo || _playerState.L_IsAction;
-            
 
-            if(_playerState.L_IsCombo || _playerState.L_IsAction) {
+            if (_playerState.L_IsCombo || _playerState.L_IsAction)
+            {
                 transform.position += Anim.deltaPosition;
             }
-           
 
-   
+
         }
+
+        private void RenderWeaponManager()
+        {
+        
+            float targetWeightRightHandLayer = _weaponManager.L_HasEquipWeapon == true ? 0.75f : 0f;
+          
+            Anim.SetLayerWeight(2,targetWeightRightHandLayer);
+        }
+
+
+
 
     }
 

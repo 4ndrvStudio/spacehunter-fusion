@@ -74,7 +74,8 @@ namespace SH.Dialogue
 
             _dialoguePanel.SetActive(true);
 
-            UIControllerManager.Instance.ActiveController(false);
+            //UIControllerManager.Instance.ActiveController(false);
+            UIControllerManager.Instance.HideAllController();
 
             RemoveAllStartChatBtn();
 
@@ -87,7 +88,8 @@ namespace SH.Dialogue
             DialogueIsPlaying = false;
             _dialoguePanel.SetActive(false);
             _dialogueText.text = "";
-            UIControllerManager.Instance.ActiveController(true);
+            //UIControllerManager.Instance.ActiveController(true);
+            UIControllerManager.Instance.DisplayController();
         }
 
         private void ContinueStory()

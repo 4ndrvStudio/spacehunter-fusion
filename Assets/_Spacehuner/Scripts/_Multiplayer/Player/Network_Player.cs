@@ -14,9 +14,16 @@ namespace SH.Multiplayer
 
         [SerializeField] private NetworkRigidbody _netRigid;
         [SerializeField] private Network_PlayerState _playerState;
+        public Network_PlayerState PlayerState => _playerState;
+
         [SerializeField] private Network_PlayerAnimation _playerAnimation;
+        public Network_PlayerAnimation PlayerAnimation => _playerAnimation;
+
         [SerializeField] private Network_WeaponCollider _networkWeaponCollider;
-        [SerializeField] private Network_TestMode _testMode;
+
+        [SerializeField] private Network_PlayerCombat _playerCombat;
+        public Network_PlayerCombat PlayerCombat=> _playerCombat;
+
      
         private GameObject _body;
         [SerializeField] private Transform _lookPoint;
@@ -31,9 +38,15 @@ namespace SH.Multiplayer
         public byte Body {get; set;}
 
 
-
         //Display Data 
         [SerializeField] private TextMeshPro _nameUI;
+
+
+        //fortest  
+        public Network_AnimatorHook AnimatorHook;
+
+
+
 
         public override void Spawned()
         {
@@ -42,13 +55,13 @@ namespace SH.Multiplayer
                 Local = this;
 
                 //RPC_SetBody((int)PlayerDataManager.Character.Data.CharacterInUse.CharacterType);;
-                RPC_SetBody(9);
+                RPC_SetBody(6);
             
 
                 if((int)Runner.CurrentScene > 1 ) 
-                    UIControllerManager.Instance.ActiveController(true);
+                    UIControllerManager.Instance.DisplayController();
                 else 
-                    UIControllerManager.Instance.ActiveController(false);
+                    UIControllerManager.Instance.HideAllController();
 
                 //UIManager.Instance.ShowChat();
 
@@ -56,10 +69,6 @@ namespace SH.Multiplayer
             
             }
         }
-
-      
-
-
 
         public void PlayerLeft(PlayerRef player)
         {
@@ -112,20 +121,20 @@ namespace SH.Multiplayer
             Animator animator = gameObject.GetComponentInChildren<Animator>();
             _playerState.Anim = animator;
             _playerAnimation.Anim = animator;
-            _testMode.Anim = animator;
             
-            Network_AnimatorHook animatorHook = this.gameObject.GetComponentInChildren<Network_AnimatorHook>();
-            animatorHook.SetWeaponCollider(_networkWeaponCollider);
-            animatorHook.SetComboVFXList(_testMode.ComboVFXList);
+            AnimatorHook = this.gameObject.GetComponentInChildren<Network_AnimatorHook>();
+            AnimatorHook.SetWeaponCollider(_networkWeaponCollider);
+            AnimatorHook.SetComboVFXList(_playerCombat.ComboVFXList);
             
-       
-
+           
         }
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_SetBody(int body, RpcInfo info = default)
         {
             this.Body = (byte)body ;
         }
+        
+
     }
 
 }

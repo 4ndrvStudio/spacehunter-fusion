@@ -10,7 +10,6 @@ namespace SH.NPC
     public class NPC_Movement : MonoBehaviour
     {
 
-
         [SerializeField] private NPC_Brain _NPC_Brain;
         [SerializeField] private Transform _body;
 
@@ -35,13 +34,11 @@ namespace SH.NPC
         [SerializeField] private bool _isIdle = false;
         [SerializeField] private bool _isRandomMoving = false;
 
-        [SerializeField] private Sequence npcMovingSequence;
+        private Tween _movingRandomTween;
+        private Tween _movingNextStateTween;
 
 
-        public void Start()
-        {
-            npcMovingSequence = DOTween.Sequence();
-
+        void ExcuteMove() {
             if (_isRandomMoving)
             {
                 MovingRandom();
@@ -97,7 +94,7 @@ namespace SH.NPC
 
             Transform targetPoint = _movingRandomPathContainers[UnityEngine.Random.Range(0, _movingRandomPathContainers.Count)];
             transform.LookAt(targetPoint);
-            npcMovingSequence.Append(
+            _movingRandomTween =
                 transform.DOMove(targetPoint.position, _moveSpeed)
                 .SetEase(Ease.Linear)
                 .SetSpeedBased()
@@ -105,14 +102,14 @@ namespace SH.NPC
                 {
                     _idleDuration = UnityEngine.Random.Range(5, 15);
                     StartCoroutine(Idle());
-                })
-            );
+                });
+        
 
         }
 
         private void MovingNPC(Vector3[] path, PathType targetPath)
         {
-            npcMovingSequence.Append(
+            _movingNextStateTween =
                 transform.DOPath(path, _moveSpeed, targetPath, PathMode.Full3D)
                 .SetEase(Ease.Linear)
                 .SetLookAt(0.01f)
@@ -137,8 +134,8 @@ namespace SH.NPC
 
                     }
                 })
-                .SetAutoKill(true)
-            );
+                .SetAutoKill(true);
+ 
         }
 
 
@@ -149,17 +146,22 @@ namespace SH.NPC
             yield return new WaitForSeconds(_idleDuration);
             _isIdle = false;
 
-            if (_isRandomMoving)
-                MovingRandom();
-            else
-                MovingNextState();
+            ExcuteMove();
 
+        }
+        
+        private void OnEnable() {
+            Debug.Log("called");
+           ExcuteMove();
         }
 
         private void OnDisable()
         {
-            npcMovingSequence.Kill();
-            StopCoroutine(Idle());
+            _movingRandomTween.Kill(false);
+            _movingNextStateTween.Kill(false);
+            StopCoroutine(this.Idle());
+            _isIdle = false;
+            
         }
 
     }
