@@ -10,6 +10,8 @@ namespace SH.Multiplayer
 
         [SerializeField] private List<Network_WeaponConfig> _weaponConfigList = new List<Network_WeaponConfig>();
 
+        [SerializeField] private Network_PlayerState _playerState;
+
         [Networked(OnChanged = nameof(OnWeaponInUseIdChanged))]
         public byte N_WeaponInUseId { get; set; }
         public int L_WeaponInUseId;
@@ -21,6 +23,8 @@ namespace SH.Multiplayer
 
         public override void Spawned() {
 
+            if(Object.HasInputAuthority == false) return;
+            
             RPC_SetEquippedWeapon(true);
 
         }
@@ -28,6 +32,7 @@ namespace SH.Multiplayer
         public override void FixedUpdateNetwork() {
 
             if(Object.HasInputAuthority == false) return;
+            
 
         }
 

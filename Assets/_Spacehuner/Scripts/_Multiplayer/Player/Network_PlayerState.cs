@@ -77,6 +77,7 @@ namespace SH.Multiplayer
         private void OnIsGroundedChanged()
         {
             L_IsGrounded = N_IsGrounded;
+
         }
 
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
@@ -93,17 +94,13 @@ namespace SH.Multiplayer
         private void OnIsInsideBuildingChanged()
         {
             L_IsInsideBuilding = N_IsInsideBuilding;
-
-            //just for test
-            _weaponManager.RPC_SetEquippedWeapon(!L_IsInsideBuilding);
-            Network_Player.Local.AnimatorHook.ActiveWeapon(!L_IsInsideBuilding);
-
         }
 
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_SetIsInsideBuilding(bool isInSideBuilding, RpcInfo info = default)
         {
             this.N_IsInsideBuilding = isInSideBuilding;
+            
         }
 
         public override void Render()
@@ -115,6 +112,9 @@ namespace SH.Multiplayer
             RPC_SetIsAction(Anim.GetBool("isAction"));
 
             RPC_SetIsCombo(Anim.GetCurrentAnimatorStateInfo(3).IsTag("Combo"));
+
+            
+          
 
 
         }

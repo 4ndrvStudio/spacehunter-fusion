@@ -19,7 +19,12 @@ namespace SH.Multiplayer
         [SerializeField] private Network_PlayerAnimation _playerAnimation;
         public Network_PlayerAnimation PlayerAnimation => _playerAnimation;
 
+        [SerializeField] private Network_PlayerMovement _playerMovement;
+        public Network_PlayerMovement PlayerMovement => _playerMovement;
+
         [SerializeField] private Network_WeaponCollider _networkWeaponCollider;
+        [SerializeField] private Network_WeaponManager _weaponManager;
+        public Network_WeaponManager WeaponManager => _weaponManager;
 
         [SerializeField] private Network_PlayerCombat _playerCombat;
         public Network_PlayerCombat PlayerCombat=> _playerCombat;
@@ -53,6 +58,7 @@ namespace SH.Multiplayer
             if (Object.HasInputAuthority)
             {
                 Local = this;
+                UIControllerManager.Instance.ShowGotoMiningBtn(false);
 
                 //RPC_SetBody((int)PlayerDataManager.Character.Data.CharacterInUse.CharacterType);;
                 RPC_SetBody(6);

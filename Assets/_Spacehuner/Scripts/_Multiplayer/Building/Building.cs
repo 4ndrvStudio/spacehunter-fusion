@@ -11,9 +11,9 @@ namespace SH
         public GameObject BuildingObject;
         public GameObject InsideBuildingObject;
         public bool IsEnter;
-        
-        public Transform InsideSpawner;
-        public Transform OutsideSpawner;
+
+        public Vector3 InsideSpawnerPoint;
+        public Vector3 OutsideSpawnerPoint;
 
         public BuildingDoorTrigger EnterTrigger;
         public BuildingDoorTrigger ExitTrigger;

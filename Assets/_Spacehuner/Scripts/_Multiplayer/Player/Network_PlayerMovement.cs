@@ -67,6 +67,8 @@ namespace SH.Multiplayer
             {
                 Movement(input.Value);
             }
+
+            
         }
 
 
@@ -122,6 +124,15 @@ namespace SH.Multiplayer
 
         // For test Mode
         public void SetSpeed(float speed) => this._speed = speed;
+
+        public void SetPosition(Vector3 postion) => RPC_SetPosition(postion);
+
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        public void RPC_SetPosition(Vector3 pos, RpcInfo info = default)
+        {
+            this.transform.position = pos ;
+        }
+
 
 
 
