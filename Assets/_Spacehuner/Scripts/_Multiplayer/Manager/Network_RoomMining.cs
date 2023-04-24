@@ -98,7 +98,7 @@ namespace SH.Multiplayer
             });
 
             _gameState = MiningGameState.Running;
-
+            
         }
 
         public void RespawnMineral()

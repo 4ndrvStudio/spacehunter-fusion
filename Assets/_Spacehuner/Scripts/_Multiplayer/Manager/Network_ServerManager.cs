@@ -14,9 +14,11 @@ namespace SH.Multiplayer
        // Start is called before the first frame update
         [SerializeField] private NetworkRunner _networkRunner;
         [SerializeField] private int Room = -1;
+        
 
         void Start()
-        {
+        {        Debug.Log(Application.version);
+
             if (CommandLineUtils.IsHeadlessMode() == true)
             {
                 if (CommandLineUtils.TryGetArg(out string room, "-room"))
@@ -27,6 +29,7 @@ namespace SH.Multiplayer
             } else {
                 SceneManager.LoadScene(SceneName.SceneLogin);
             }
+    
         }
 
         async void StartGame()
@@ -38,7 +41,7 @@ namespace SH.Multiplayer
             await _networkRunner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.Server,
-                SessionName = scene.ToString() + "test",
+                SessionName = scene.ToString(),
                 Scene = Room,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });

@@ -14,7 +14,6 @@ namespace SH.Multiplayer
     public class Network_PlayerSensitivityEnvironment : NetworkBehaviour
     {
 
-
         [Header("NPC Checker")]
 
         [SerializeField] private Network_PlayerState _playerState;
@@ -42,7 +41,10 @@ namespace SH.Multiplayer
             for(int i = 0 ; i<= npcCollider.Length -1; i++) {
 
                 float dist = Vector3.Distance(this.transform.position,npcCollider[i].transform.position);
+                
                 string npcName = npcCollider[i].gameObject.GetComponent<NPC_Brain>().Name;
+                
+                if(npcCollider[i].gameObject.GetComponent<NPC_Brain>().NpcState != NPCState.Receptionist) return;
 
                 if(DialogueManager.DialogueIsPlaying == true) return;
                 
@@ -52,7 +54,6 @@ namespace SH.Multiplayer
                     Dictionary<string, object> customProperties = new Dictionary<string, object>() {
                         {InteractButtonCustomProperties.Name.ToString(), npcName },
                         {InteractButtonCustomProperties.ChatContent.ToString(), dialogueContent}
-
                     };
 
                     UIControllerManager.Instance.AddInteractButton(npcCollider[i].GetInstanceID(),InteractButtonType.Chat, customProperties);

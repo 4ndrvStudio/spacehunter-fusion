@@ -158,7 +158,6 @@ namespace SH.NPC
         }
         
         private void OnEnable() {
-            Debug.Log("called");
            ExcuteMove();
         }
 
