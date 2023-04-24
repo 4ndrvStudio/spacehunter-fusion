@@ -53,9 +53,9 @@ namespace SH.Define
     {
         scene_init = 0,
         scene_login = 1,
-        scene_stationFusion = 2,
-        scene_miningFusion = 3,
-        scene_spaceFusion = 4,
+        scene_station = 2,
+        scene_mining = 3,
+        scene_space = 4,
     }
 
 

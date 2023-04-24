@@ -7,10 +7,10 @@ using UnityEngine.EventSystems;
 
 namespace SH.Multiplayer
 {
-    public class Network_CameraManager : MonoBehaviour
+    public class CameraManager : MonoBehaviour
     {
 
-        public static Network_CameraManager Instance;
+        public static CameraManager Instance;
 
         [SerializeField] private Camera _mainCam;
         public Camera MainCamera => _mainCam;

@@ -44,15 +44,13 @@ namespace SH.Multiplayer
             _lightRight.transform.DORotate(targetRotate,_rotateSpeed)
                 .SetSpeedBased()
                 .SetEase(Ease.Linear)
-                .OnComplete(async()=> {
-                    //await Task.Delay(2000);
+                .OnComplete(()=> {
                     _rightDone = true;
                 });
              _lightLeft.transform.DORotate(targetRotate,_rotateSpeed)
                 .SetSpeedBased()
                 .SetEase(Ease.Linear)
-                .OnComplete(async()=> {
-                    //await Task.Delay();
+                .OnComplete(()=> {
                     _leftDone = true;
                 });
         }

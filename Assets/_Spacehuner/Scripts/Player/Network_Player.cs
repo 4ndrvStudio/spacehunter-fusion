@@ -118,7 +118,7 @@ namespace SH.Multiplayer
             this._body =  Instantiate(_bodyList[(int)Body -1 ],this.transform);
 
             if(Object.HasInputAuthority) {
-                      Network_CameraManager.Instance.SetAimTarget(_body.transform, _lookPoint);
+                      CameraManager.Instance.SetAimTarget(_body.transform, _lookPoint);
             }
       
 

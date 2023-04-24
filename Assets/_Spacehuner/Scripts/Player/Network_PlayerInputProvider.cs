@@ -145,7 +145,7 @@ namespace SH.Multiplayer
                 _cachedInput.MoveDirection = new Vector2(horizontal, vertical);
             }
             //camera euler
-            _cachedInput.CameraEuler = Network_CameraManager.Instance.GetMainCamEuler(); ;
+            _cachedInput.CameraEuler = CameraManager.Instance.GetMainCamEuler(); ;
         }
 
 

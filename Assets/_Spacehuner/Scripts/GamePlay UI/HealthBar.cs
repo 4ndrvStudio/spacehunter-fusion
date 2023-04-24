@@ -36,7 +36,7 @@ namespace SH.Multiplayer
 
         private void LateUpdate()
         {
-            transform.LookAt(Network_CameraManager.Instance.GetTransform());
+            transform.LookAt(CameraManager.Instance.GetTransform());
             transform.Rotate(0, 180, 0);
         }
     }

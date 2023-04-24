@@ -63,7 +63,7 @@ namespace SH
           
             StartCoroutine(ShowWaiting());
             
-            Network_CameraManager.Instance.ToggleInOutSide(true);
+            CameraManager.Instance.ToggleInOutSide(true);
 
         }
 
@@ -91,7 +91,7 @@ namespace SH
 
             StartCoroutine(ShowWaiting());
 
-            Network_CameraManager.Instance.ToggleInOutSide(false);
+            CameraManager.Instance.ToggleInOutSide(false);
 
         }
         private IEnumerator ShowWaiting() {

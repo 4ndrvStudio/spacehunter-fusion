@@ -8,7 +8,7 @@ namespace SH.Multiplayer
     public class Network_UIFaceToCamera : MonoBehaviour
     {
        void Update() {
-            transform.LookAt(Network_CameraManager.Instance.GetTransform());
+            transform.LookAt(CameraManager.Instance.GetTransform());
        }
     }
 

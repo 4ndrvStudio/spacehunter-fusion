@@ -1,67 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Video;
-using TMPro;
-using SH.Define;
-using SH.Multiplayer;
 using UnityEngine.Events;
+using SH.Multiplayer;
 
 namespace SH
 {
     public class Portal : MonoBehaviour
     {
 
-        [SerializeField] private PortalClass _portalClass;
-        [SerializeField] private TextMeshPro _textMesh;
-        [SerializeField] private GameObject _videoChangeScene;
-
-        private bool _isEnterPortal = false;
-
-        private void Awake()
+        private void OnTriggerStay(Collider other)
         {
-            _textMesh.text = _portalClass.NamePortal.ToString();
-            _textMesh.fontSize = _portalClass.NameSize;
-            _isEnterPortal = false;
+           if(other.tag != "Player") return;
+
+           Network_Player network_Player = other.GetComponent<Network_Player>();
+           
+           if(network_Player.HasInputAuthority) {
+                  UIControllerManager.Instance.ShowGotoMiningBtn(true);
+           }
+            
         }
 
-        private void LateUpdate()
-        {
-            NameFaceToPlayer();
+        private void OnTriggerExit(Collider other) {
+
+            if(other.tag != "Player") return;
+
+           Network_Player network_Player = other.GetComponent<Network_Player>();
+           
+           if(network_Player.HasInputAuthority) {
+                  UIControllerManager.Instance.ShowGotoMiningBtn(false);
+           }
         }
-        
-        private void OnTriggerEnter(Collider other)
-        {   
-
-            if (other.gameObject.tag == "Player")
-            {
-                if (_portalClass.Name == PortalName.Planet_1)
-                {
-                    if (!_isEnterPortal)
-                    {
-                        Debug.Log($"Enter {_portalClass.Name}");
-                        Network_ClientManager.MoveToRoom(SceneDefs.scene_miningFusion);
-                        _isEnterPortal = true;
-                    }
-                }
-                else
-                {
-                    UIManager.Instance.ShowAlert("Feature is coming soon!", AlertType.Normal);
-                }
-            }
-        }
-
-
-        private void NameFaceToPlayer()
-        {
-            _textMesh.transform.LookAt(Network_CameraManager.Instance.GetTransform());
-            _textMesh.transform.Rotate(0, 180f, 0);
-        }
-
-
-
-
-
-
+       
     }
+
 }

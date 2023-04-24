@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SH.Multiplayer
 {
-    public class Network_SlashFX : MonoBehaviour
+    public class SlashFX : MonoBehaviour
     {
        // [SerializeField] private float _destroyTime = 2f;
         void Start()
