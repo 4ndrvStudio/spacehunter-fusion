@@ -4,6 +4,10 @@ using UnityEngine;
 using Fusion;
 using UnityEngine.SceneManagement;
 using SH.Define;
+using SH.AzureFunction;
+using SH.PlayerData;
+using PlayFab;
+using PlayFab.ClientModels;
 
 namespace SH.Multiplayer
 {
@@ -13,10 +17,9 @@ namespace SH.Multiplayer
         [SerializeField] private bool _isRunning;
         [SerializeField] private SceneDefs SceneTest;
 
-        void Start() {
+        async void Start() {
 
-           //StartCoroutine(StartGameTest());
-             
+           //StartCoroutine(StartGameTest());       
             
           
         }

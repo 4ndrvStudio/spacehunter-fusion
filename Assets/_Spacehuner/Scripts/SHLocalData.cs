@@ -27,6 +27,13 @@ namespace SH
             }
         }
 
+        public void Save() {
+            string json = JsonUtility.ToJson(Data);
+            PlayerPrefs.SetString(LocalDataKey, json);
+            Debug.Log($"save {Data.Password}");
+            PlayerPrefs.Save();
+        }
+
         private void OnApplicationQuit()
         {
             string json = JsonUtility.ToJson(Data);
@@ -39,7 +46,7 @@ namespace SH
     {
         public string Email;
         public string Password;
-       
+    
     }
 
 }

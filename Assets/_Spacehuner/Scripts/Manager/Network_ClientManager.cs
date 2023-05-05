@@ -30,8 +30,6 @@ namespace SH.Multiplayer
             _networkGameManager = GetComponent<Network_GameManager>();
             _networkSceneManagerDefault = GetComponent<NetworkSceneManagerDefault>();
 
-
-
         }
 
         public static async void StartGame(SceneDefs sceneDefs)
@@ -42,11 +40,10 @@ namespace SH.Multiplayer
             StartGameResult startGameResult = await _networkRunner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.Client,
-                SessionName = sceneDefs.ToString(),
+                SessionName = sceneDefs.ToString() + "test",
                 Scene = (int)sceneDefs,
                 SceneManager = _networkSceneManagerDefault,
-
-
+                
             });
             Debug.Log("status :  " + startGameResult.ErrorMessage);
             UIManager.Instance.HideWaiting();

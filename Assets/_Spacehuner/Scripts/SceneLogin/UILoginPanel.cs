@@ -45,14 +45,18 @@ namespace SH.Account
             _inputPassword.text = string.Empty;
             _inputEmail.text = string.Empty;
             _toggleRememberAccount.isOn = false;
-        }
 
+        }
 
         private void Start()
         {
             string email = SHLocalData.Instance.Data.Email;
             string password = SHLocalData.Instance.Data.Password;
-            if(!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password) && _autoLogin)
+            Debug.Log(email + " " + password);
+
+            _autoLogin = !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password);
+
+            if (_autoLogin == true)
             {
                 Login(email, password);
             }
@@ -62,7 +66,7 @@ namespace SH.Account
         {
             PlayFabManager.Instance.LoginWithCustomId(email, true, (result) =>
             {
-                PlayerDataManager.CallFunction<AccountLoginRespone>(new AccountLoginRequest(email, password), (result) =>
+                PlayerDataManager.CallFunction<AccountLoginRespone>(new AccountLoginRequest(email, password), async (result) =>
                 {
                     if (!string.IsNullOrEmpty(result.Error))
                     {
@@ -73,9 +77,18 @@ namespace SH.Account
 
                     Debug.Log("Login success!");
 
+                    //check update
+                    bool requireUpdate = await GameManager.Instance.CheckUpdate();
+                    if(requireUpdate) {
+                        Debug.Log("Show update popup");
+                        UIManager.Instance.ShowPopup(PopupName.UpdateNotification);
+                    }
+                    
+
+
                     PlayFabManager.Instance.CheckAccountInfo((result) =>
                     {
-                        if(string.IsNullOrEmpty(result.AccountInfo.TitleInfo.DisplayName))
+                        if (string.IsNullOrEmpty(result.AccountInfo.TitleInfo.DisplayName))
                         {
                             gameObject.SetActive(false);
                             _createPlayerNamePanel.SetActive(true);
@@ -88,11 +101,13 @@ namespace SH.Account
                                 if (string.IsNullOrEmpty(resp.Error))
                                 {
                                     Debug.Log("Get data user success!");
+
                                     PlayerDataManager.Instance.Setup(resp);
                                     if (_toggleRememberAccount.isOn)
                                     {
                                         SHLocalData.Instance.Data.Email = email;
                                         SHLocalData.Instance.Data.Password = password;
+                                        SHLocalData.Instance.Save();
                                     }
                                     gameObject.SetActive(false);
                                     _slotCharacterPanel.SetActive(true);
@@ -128,20 +143,20 @@ namespace SH.Account
                 return;
             }
 
-            if(string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(password))
             {
                 _tmpNotice.SetText("Password invalid");
                 return;
             }
 
-            if(!RegisterAccountUtils.IsValidEmail(email))
+            if (!RegisterAccountUtils.IsValidEmail(email))
             {
                 _tmpNotice.SetText("Email invalid");
                 return;
             }
 
             var validPassword = RegisterAccountUtils.IsValidPassword(password);
-            if(!validPassword.isEnoughLength || !validPassword.hasNumber || !validPassword.hasUpperCase)
+            if (!validPassword.isEnoughLength || !validPassword.hasNumber || !validPassword.hasUpperCase)
             {
                 _tmpNotice.SetText("Password invalid");
                 return;

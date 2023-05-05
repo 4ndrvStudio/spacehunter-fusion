@@ -85,6 +85,7 @@ namespace SH.Multiplayer
         void DeathAnimation()
         {
             _anim.SetBool("isDeath", true);
+            
         }
 
         void MovementAnimation(float speed)
@@ -96,21 +97,22 @@ namespace SH.Multiplayer
         {
             _anim.Play("GetDame", 1, 0);
 
-            // //Effect
-            // _enemyMat.DOColor(Color.white, "_EmissionColor", 0f).OnComplete(() =>
-            // {
-            //     _enemyMat.DOColor(Color.red, "_EmissionColor", 0.1f).OnComplete(() =>
-            //     {
-            //         _enemyMat.DOColor(Color.white, "_EmissionColor", 0.01f).OnComplete(() =>
-            //         {
-            //             _enemyMat.DOColor(Color.red, "_EmissionColor", 0.1f).OnComplete(() =>
-            //             {
-            //                 _enemyMat.DOColor(Color.black, "_EmissionColor", 0);
-            //             });
-            //         });
-            //     });
+            
+            //Effect
+            _enemyMat.DOColor(Color.white, "_EmissionColor", 0f).OnComplete(() =>
+            {
+                _enemyMat.DOColor(Color.red, "_EmissionColor", 0.1f).OnComplete(() =>
+                {
+                    _enemyMat.DOColor(Color.white, "_EmissionColor", 0.01f).OnComplete(() =>
+                    {
+                        _enemyMat.DOColor(Color.red, "_EmissionColor", 0.1f).OnComplete(() =>
+                        {
+                            _enemyMat.DOColor(Color.black, "_EmissionColor", 0);
+                        });
+                    });
+                });
 
-            // });
+            });
         }
         public void PlayAttack(string targetAttack)
         {

@@ -127,7 +127,7 @@ namespace SH.Account
         {
             PlayerDataManager.Character.Data.CharacterInUse = _character;
             //UIManager.Instance.LoadScene(SceneName.SceneStation);
-            Network_ClientManager.StartGame(SceneDefs.scene_stationFusion);
+            Network_ClientManager.StartGame(SceneDefs.scene_station);
             
         }
         #endregion

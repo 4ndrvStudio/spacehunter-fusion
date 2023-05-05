@@ -25,7 +25,7 @@ public class UISceneMining : MonoBehaviour
 
     public void OnBackClick()
     {
-        Network_ClientManager.MoveToRoom(SceneDefs.scene_stationFusion);
+        Network_ClientManager.MoveToRoom(SceneDefs.scene_station);
     }
 
 }

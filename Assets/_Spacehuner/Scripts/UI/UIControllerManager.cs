@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using SH.Define;
+using SH.Multiplayer;
 
-namespace SH.Multiplayer
+namespace SH
 {
     public enum ControllerType {
         Hide,
@@ -57,9 +58,14 @@ namespace SH.Multiplayer
 
         void Start()
         {
-            _inventoryBtn.onClick.AddListener(() => UIManager.Instance.ShowPopup(PopupName.Inventory));
+            _inventoryBtn.onClick.AddListener(() => OpenInventory());
             _gotoMiningBtn.onClick.AddListener(() => GotoMining());
 
+        }
+
+        public void OpenInventory() {
+            HideAllController();
+            UIManager.Instance.ShowPopup(PopupName.Inventory);
         }
 
         public void DisplayController() {
@@ -122,7 +128,7 @@ namespace SH.Multiplayer
 
         public void GotoMining()
         {
-            Network_ClientManager.MoveToRoom(SceneDefs.scene_miningFusion);
+            Network_ClientManager.MoveToRoom(SceneDefs.scene_mining);
         }
 
         public void AddInteractButton(int id, InteractButtonType type,Dictionary<string, object> customProperties)

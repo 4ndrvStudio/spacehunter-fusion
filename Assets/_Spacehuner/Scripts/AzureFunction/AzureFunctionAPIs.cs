@@ -160,4 +160,19 @@ namespace SH.AzureFunction
         public InventoryData InventoryData;
     }
     #endregion
+
+    #region GetVersion
+    public class GetGameInformationRequest: AzureFunctionAPIRequest
+    {
+        public GetGameInformationRequest(): base("GetGameInformation")
+        {
+
+        }
+    }
+
+    public class GetGameInformationRespone: AzureFunctionAPIRespone
+    {
+        public string body;
+    }
+    #endregion
 }

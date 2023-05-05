@@ -28,5 +28,6 @@ public enum PopupName
     None,
     Setting,
     Inventory,
-    Notification
+    Notification,
+    UpdateNotification
 }

@@ -3,38 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
+using System.Threading.Tasks;
 
 namespace SH
 {
     public class GameManager : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        public static GameManager Instance;
+        public string GameVersion;
+
+        void Awake()
         {
-            CheckVersion();
+            if (Instance == null) Instance = this;
+            else Destroy(this);
         }
 
-        // Update is called once per frame
-        void Update()
+        public async Task<bool> CheckUpdate()
         {
-
-        }
-
-        public static void CheckVersion()
-        {
+			TaskCompletionSource<bool> async = new TaskCompletionSource<bool>();
 
             PlayFabClientAPI.GetTitleData(new GetTitleDataRequest(),
-              result =>
-              {
-                  if (result.Data == null || !result.Data.ContainsKey("Test")) Debug.Log("No MonsterName");
-                  else Debug.Log("MonsterName: " + result.Data["Test"]);
-                
-              },
-              error =>
-              {
-                  Debug.Log("Got error getting titleData: ");
-                  Debug.Log(error.GenerateErrorReport());
-              });
+                result =>
+            {
+                if (result.Data == null || !result.Data.ContainsKey("gameVersion")) Debug.Log("No Found GameInformation");
+                else Debug.Log("Version: " + result.Data["gameVersion"]);
+
+                if(result.Data["gameVersion"] != GameVersion) 
+                    async.SetResult(true);
+                else 
+                    async.SetResult(false);
+            },  
+            error =>
+            {
+                Debug.Log("Got error getting titleData:");
+                Debug.Log(error.GenerateErrorReport());
+            }
+            );
+
+            await async.Task;
+
+            return async.Task.Result;
         }
 
     }

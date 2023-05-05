@@ -74,7 +74,7 @@ namespace SH.Multiplayer
                 // Simple Random
                 int randomInt = UnityEngine.Random.Range(0, 20);
 
-                int targetInt = randomInt > 15 &&  randomInt <=19 ? 2 : randomInt > 8  &&  randomInt <=15 ? 1 : 0;
+                int targetInt = randomInt > 15 &&  randomInt <= 19 ? 2 : randomInt > 8  &&  randomInt <=15 ? 1 : 0;
  
                 NetworkPrefabRef targetToSpawn = _mineralObList[targetInt];
 
