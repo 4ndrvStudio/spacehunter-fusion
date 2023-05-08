@@ -34,16 +34,10 @@ namespace SH.Multiplayer
         // Update is called once per frame
         void Update()
         {
-            // _lightSource.spotAngle =_musicManager.OutDbFactor *80;
             _lightSource.intensityGlobal = _musicManager.OutDbFactor * 5;
             _timeTest -=Time.deltaTime;
             _lightSource.enabled = Random.Range(0,3) > 1f && _musicManager.OutDbFactor > 0.5f;
 
-            // if(_timeTest <=0) {
-            //     _lightSource.enabled = !_lightSource.enabled;
-            //     _timeTest = 0.2f;
-
-            // } 
 
         }
 

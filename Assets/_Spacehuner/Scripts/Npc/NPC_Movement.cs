@@ -37,13 +37,8 @@ namespace SH.NPC
         private Tween _movingRandomTween;
         private Tween _movingNextStateTween;
 
-        private Vector3 _rootPosition;
 
-        void Start() {
 
-            _rootPosition = transform.position;
-
-        }
 
         void ExcuteMove() {
             if (_isRandomMoving)
@@ -167,7 +162,7 @@ namespace SH.NPC
             _movingNextStateTween.Kill(false);
             StopCoroutine(this.Idle());
             _isIdle = false;
-            transform.position = _rootPosition;
+
             
         }
 

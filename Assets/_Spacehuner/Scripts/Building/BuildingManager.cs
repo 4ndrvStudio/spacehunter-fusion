@@ -43,20 +43,11 @@ namespace SH
 
         public void EnterBuilding(BuildingName buildingName) {
 
-            //DOTween.KillAll();
-       
-            _outside.SetActive(false);
-
             Building building  = _buildingList.Find(building => building.BuildingName == buildingName);
             
             if ( Network_Player.Local.HasInputAuthority == false) return;
                 
             Network_Player.Local.PlayerMovement.SetPosition(building.InsideSpawnerPoint);
-
-            // Network_Player.Local.PlayerState.RPC_SetIsInsideBuilding(true);
-            // Network_Player.Local.WeaponManager.RPC_SetEquippedWeapon(false);
-            // Network_Player.Local.AnimatorHook.ActiveWeapon(false);
-            
         
 
             building.Enter();
@@ -69,9 +60,7 @@ namespace SH
 
         public void ExitBuilding(BuildingName buildingName) {
 
-            //DOTween.KillAll();
 
-            _outside.SetActive(true);
 
             Building building  = _buildingList.Find(building => building.BuildingName == buildingName);
             
@@ -79,15 +68,7 @@ namespace SH
 
             Network_Player.Local.PlayerMovement.SetPosition(building.OutsideSpawnerPoint);
 
-            // Network_Player.Local.PlayerState.RPC_SetIsInsideBuilding(false);
-            // Network_Player.Local.AnimatorHook.ActiveWeapon(true);
-
-
             building.Exit();
-
-            // Network_Player.Local.WeaponManager.RPC_SetEquippedWeapon(true);
-
-            
 
             StartCoroutine(ShowWaiting());
 

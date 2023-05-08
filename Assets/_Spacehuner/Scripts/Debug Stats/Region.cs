@@ -12,9 +12,7 @@ namespace SH.Multiplayer
 
         public override void FixedUpdateNetwork()
         {   
-
             _regionText.text = Runner.SessionInfo.Region;
-            
         }
     }
 

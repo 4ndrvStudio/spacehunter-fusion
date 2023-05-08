@@ -171,8 +171,6 @@ namespace SH.Multiplayer
 
             _playerTouchVectorOutput = Vector2.zero;
 
-            Debug.Log("Endrag");
-
 
         }
         public void OnDrag(PointerEventData _onDragData)
