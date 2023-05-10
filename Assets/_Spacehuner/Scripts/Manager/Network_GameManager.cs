@@ -23,12 +23,13 @@ namespace SH.Multiplayer
         [SerializeField] private NetworkObject _playerPrefab;
 
         private Dictionary<PlayerRef, NetworkObject> _players = new(100);
-        
-        [SerializeField] private Dictionary<int, Vector3> _spawnPosition = new Dictionary<int, Vector3> {
+
+        [SerializeField]
+        private Dictionary<int, Vector3> _spawnPosition = new Dictionary<int, Vector3> {
             {2 , new Vector3(0.0700000003f,13.6230001f,-70.5400009f)},
             {3 , new Vector3(4.78000021f,-0.349999994f, 114.089996f)}
         };
-        
+
 
         // MONOBEHAVIOUR
 
@@ -44,7 +45,7 @@ namespace SH.Multiplayer
         public void OnConnectedToServer(NetworkRunner runner)
         {
             Debug.Log("Connected To Server");
-            
+
         }
 
         public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
@@ -63,6 +64,9 @@ namespace SH.Multiplayer
 
         public void OnDisconnectedFromServer(NetworkRunner runner)
         {
+            if (Runner.IsClient == false) return;
+
+            GameManager.Instance.RequireReConnect = true;
 
         }
 
@@ -77,31 +81,34 @@ namespace SH.Multiplayer
 
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
         {
+            if (Runner.IsServer == true) return;
+            Debug.Log("Input missing");
         }
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef playerRef)
         {
             if (Runner.IsServer == false)
                 return;
-          
-            Vector3 spawnPos = _spawnPosition[(int) runner.CurrentScene];
-            
+
+            Vector3 spawnPos = _spawnPosition[(int)runner.CurrentScene];
+
 
             var player = Runner.Spawn(_playerPrefab, spawnPos, Quaternion.identity, inputAuthority: playerRef);
 
             _players.Add(playerRef, player);
 
-    
+
             Runner.SetPlayerObject(playerRef, player);
 
             Debug.Log("Player Connected To Room: " + playerRef.PlayerId);
             PlayerJoined?.Invoke();
 
-            
+
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef playerRef)
         {
+
             if (Runner.IsServer == false)
                 return;
 
@@ -115,25 +122,31 @@ namespace SH.Multiplayer
 
         public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data)
         {
+
         }
 
         public void OnSceneLoadDone(NetworkRunner runner)
         {
-            
-           
-            
+
 
             if (Runner.IsServer)
             {
                 Debug.Log("Joined to " + SceneManager.GetActiveScene().name);
-            }else {
-                  UIManager.Instance.HideWaiting(); 
-                   // if(Object.HasInputAuthority == true) {
-                 
             }
-          
+            else
+            {
+
+                StartCoroutine(HideWaiting());
+
+            }
 
 
+        }
+
+        IEnumerator HideWaiting()
+        {
+            yield return new WaitForSeconds(4f);
+            UIManager.Instance.HideLoadScene();
         }
 
         public void OnSceneLoadStart(NetworkRunner runner)
@@ -141,12 +154,11 @@ namespace SH.Multiplayer
             if (Runner.IsServer)
             {
                 Debug.Log("Scene Load to " + SceneManager.GetActiveScene().name);
-            } else {
-                 UIManager.Instance.ShowWaiting();      
             }
-       
-         
-
+            else
+            {
+               // UIManager.Instance.ShowLoadScene(false);
+            }
 
         }
 
@@ -156,7 +168,20 @@ namespace SH.Multiplayer
 
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
-             
+            if (Runner.IsClient == false) return;
+            Debug.Log("is Shutdown");
+
+            
+            if (Network_Player.Local != null)
+            {
+
+                Debug.Log(Network_Player.Local.transform.position);
+
+            }
+
+            if(shutdownReason == ShutdownReason.PhotonCloudTimeout) GameManager.Instance.RequireReConnect = true;
+
+
         }
 
         public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message)
@@ -166,11 +191,10 @@ namespace SH.Multiplayer
 
         public async Task LeaveRom()
         {
-            UIManager.Instance.ShowWaiting();  
-            await Runner.Shutdown(false, ShutdownReason.Ok, true);
-            UIManager.Instance.HideWaiting();  
+            if(Runner.IsRunning) {
+                 await Runner.Shutdown(false, ShutdownReason.Ok, true);
+            }
 
-           
         }
 
         // PRIVATE METHODS

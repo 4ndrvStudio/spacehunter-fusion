@@ -4,7 +4,7 @@ using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
 using System.Threading.Tasks;
-
+using SH.Multiplayer;
 namespace SH
 {
     public class GameManager : MonoBehaviour
@@ -12,15 +12,34 @@ namespace SH
         public static GameManager Instance;
         public string GameVersion;
 
+        public bool RequireReConnect;
+
         void Awake()
         {
             if (Instance == null) Instance = this;
             else Destroy(this);
         }
+        void LateUpdate()
+        {
+
+
+            if (RequireReConnect) CheckReconnect();
+
+        }
+
+        void CheckReconnect()
+        {
+            if (Application.isFocused)
+            {
+                Network_ClientManager.Reconnecting();
+                RequireReConnect = false;
+            }
+        }
+
 
         public async Task<bool> CheckUpdate()
         {
-			TaskCompletionSource<bool> async = new TaskCompletionSource<bool>();
+            TaskCompletionSource<bool> async = new TaskCompletionSource<bool>();
 
             PlayFabClientAPI.GetTitleData(new GetTitleDataRequest(),
                 result =>
@@ -28,11 +47,11 @@ namespace SH
                 if (result.Data == null || !result.Data.ContainsKey("gameVersion")) Debug.Log("No Found GameInformation");
                 else Debug.Log("Version: " + result.Data["gameVersion"]);
 
-                if(result.Data["gameVersion"] != GameVersion) 
+                if (result.Data["gameVersion"] != GameVersion)
                     async.SetResult(true);
-                else 
+                else
                     async.SetResult(false);
-            },  
+            },
             error =>
             {
                 Debug.Log("Got error getting titleData:");
@@ -41,6 +60,8 @@ namespace SH
             );
 
             await async.Task;
+
+
 
             return async.Task.Result;
         }

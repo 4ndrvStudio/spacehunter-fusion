@@ -17,7 +17,9 @@ namespace SH.Multiplayer
         
 
         void Start()
-        {        Debug.Log(Application.version);
+        {   
+                 
+            Debug.Log(Application.version);
 
             if (CommandLineUtils.IsHeadlessMode() == true)
             {
@@ -41,7 +43,7 @@ namespace SH.Multiplayer
             await _networkRunner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.Server,
-                SessionName = scene.ToString()+ "test",
+                SessionName = scene.ToString()+ "test2",
                 Scene = Room,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });

@@ -17,15 +17,10 @@ public class UISceneMining : MonoBehaviour
            // _canvas.worldCamera = UIManager.Instance.UICamera;
         }
     }
-
-    private void Update()
-    {
-        
-    }
-
     public void OnBackClick()
     {
         Network_ClientManager.MoveToRoom(SceneDefs.scene_station);
+        gameObject.SetActive(false);
     }
 
 }

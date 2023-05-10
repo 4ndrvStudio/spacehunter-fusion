@@ -8,6 +8,7 @@ using SH.Define;
 using SH.PlayerData;
 using Fusion.Photon.Realtime;
 using Fusion.Sockets;
+using UnityEngine.SceneManagement;
 
 namespace SH.Multiplayer
 {
@@ -21,6 +22,8 @@ namespace SH.Multiplayer
         [SerializeField] private static Network_GameManager _networkGameManager;
         [SerializeField] private static NetworkSceneManagerDefault _networkSceneManagerDefault;
 
+        [SerializeField] private static SceneDefs _currentScene;
+
 
         void Start()
         {
@@ -29,31 +32,45 @@ namespace SH.Multiplayer
             _networkRunner = GetComponent<NetworkRunner>();
             _networkGameManager = GetComponent<Network_GameManager>();
             _networkSceneManagerDefault = GetComponent<NetworkSceneManagerDefault>();
-
         }
 
         public static async void StartGame(SceneDefs sceneDefs)
         {
-            UIManager.Instance.ShowWaiting();
+            
             _networkRunner.ProvideInput = true;
+
+            UIManager.Instance.ShowLoadScene(false);
 
             StartGameResult startGameResult = await _networkRunner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.Client,
-                SessionName = sceneDefs.ToString() + "test",
+                SessionName = sceneDefs.ToString() + "test2",
                 Scene = (int)sceneDefs,
                 SceneManager = _networkSceneManagerDefault,
                 
             });
-            Debug.Log("status :  " + startGameResult.ErrorMessage);
-            UIManager.Instance.HideWaiting();
+
+            Debug.Log("Load game Status :  " + startGameResult.ErrorMessage);
+
             Application.targetFrameRate = 300;
+
         }
 
         public static async void MoveToRoom(SceneDefs sceneDefs)
         {
+            UIManager.Instance.ShowLoadScene(false);  
             await _networkGameManager.LeaveRom();
             Instance.StartCoroutine(StartGameAsync(sceneDefs));
+        }
+
+        public static async void Reconnecting() 
+        {
+            UIManager.Instance.ShowLoadScene(true);  
+
+            await _networkGameManager.LeaveRom();
+
+            Instance.StartCoroutine(StartGameAsync((SceneDefs) SceneManager.GetActiveScene().buildIndex));
+
         }
 
 
@@ -76,7 +93,6 @@ namespace SH.Multiplayer
             // {
             //     MoveToRoom(SceneDefs.scene_miningFusion);
             // }
-
 
         }
      

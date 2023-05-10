@@ -13,7 +13,9 @@ namespace SH.Account
 {
     public class UILoginPanel : MonoBehaviour
     {
+        [SerializeField] private CanvasGroup _loginCanvas;
         [SerializeField] private GameObject _slotCharacterPanel = default;
+      
 
         [Header("Login")]
 
@@ -45,7 +47,7 @@ namespace SH.Account
             _inputPassword.text = string.Empty;
             _inputEmail.text = string.Empty;
             _toggleRememberAccount.isOn = false;
-
+            
         }
 
         private void Start()
@@ -59,19 +61,24 @@ namespace SH.Account
             if (_autoLogin == true)
             {
                 Login(email, password);
+            } else {
+                _loginCanvas.alpha = 1;
             }
+ 
         }
 
         private void Login(string email, string password)
         {
             PlayFabManager.Instance.LoginWithCustomId(email, true, (result) =>
             {
+                
                 PlayerDataManager.CallFunction<AccountLoginRespone>(new AccountLoginRequest(email, password), async (result) =>
                 {
                     if (!string.IsNullOrEmpty(result.Error))
                     {
                         _tmpNotice.SetText(result.Error);
                         Debug.LogError(result.Error);
+                        if(_autoLogin) _loginCanvas.alpha = 1;
                         return;
                     }
 
@@ -83,7 +90,6 @@ namespace SH.Account
                         Debug.Log("Show update popup");
                         UIManager.Instance.ShowPopup(PopupName.UpdateNotification);
                     }
-                    
 
 
                     PlayFabManager.Instance.CheckAccountInfo((result) =>
@@ -103,6 +109,9 @@ namespace SH.Account
                                     Debug.Log("Get data user success!");
 
                                     PlayerDataManager.Instance.Setup(resp);
+                                    
+                                    Debug.Log(resp.PlayFabId);
+                                    
                                     if (_toggleRememberAccount.isOn)
                                     {
                                         SHLocalData.Instance.Data.Email = email;
@@ -121,6 +130,9 @@ namespace SH.Account
                         }
                     }, (error) =>
                     {
+                        // //display login canvas when auto login
+                        // if(_autoLogin) _loginCanvas.alpha = 1;
+                        
                         UIManager.Instance.ShowAlert(error.ErrorMessage, AlertType.Error);
                     });
                 });

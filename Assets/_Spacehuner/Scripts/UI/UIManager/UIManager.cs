@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UILoading _uiLoading = null;
 
     [SerializeField] private UIWaiting _uiWaiting = null;
+    
+    [SerializeField] private UILoadSceneTest _uiLoadscene = null;
 
     [SerializeField] private UITextAlert _uiTextAlert = null;
 
@@ -79,7 +81,16 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
+    #region LoadScene
+    public void ShowLoadScene(bool isReconnecting) {
 
+         _uiLoadscene.Show(isReconnecting);
+    }
+     public void HideLoadScene()
+    {
+        _uiLoadscene.Hide();
+    }
+    #endregion
 
     #region Loading
     public async void LoadScene(string sceneName)

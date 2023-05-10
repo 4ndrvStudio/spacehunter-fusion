@@ -139,7 +139,7 @@ namespace SH.AzureFunction
 
     public class CreateCharacterRespone: AzureFunctionAPIRespone
     {
-
+        
     }
     #endregion
 

@@ -46,7 +46,7 @@ namespace SH.PlayerData
             Debug.LogWarning($"Request: {JsonConvert.SerializeObject(request)}");
 
             if (showWaiting)
-                UIManager.Instance.ShowWaiting(10);
+                UIManager.Instance.ShowWaiting(20);
 
             var funcRequest = new ExecuteFunctionRequest();
             funcRequest.FunctionName = request.FunctionName;
