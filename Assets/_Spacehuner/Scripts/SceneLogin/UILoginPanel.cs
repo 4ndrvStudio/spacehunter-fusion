@@ -9,13 +9,14 @@ using SH.Define;
 using System.Threading.Tasks;
 using System.Linq;
 
+
 namespace SH.Account
 {
     public class UILoginPanel : MonoBehaviour
     {
         [SerializeField] private CanvasGroup _loginCanvas;
         [SerializeField] private GameObject _slotCharacterPanel = default;
-      
+
 
         [Header("Login")]
 
@@ -91,6 +92,20 @@ namespace SH.Account
                         UIManager.Instance.ShowPopup(PopupName.UpdateNotification);
                     }
 
+                    PlayFabManager.Instance.GetInventoryData(res => {
+                        Debug.Log(res.Inventory.Count);
+                    },
+                    err => {
+                        Debug.Log(err);
+                    });
+
+                    Models.Azure.ClaimItemRequestModel[] claimItemsModel  = new Models.Azure.ClaimItemRequestModel[1];
+                    claimItemsModel[0] = new Models.Azure.ClaimItemRequestModel {
+                        ItemId = "mineral",
+                        Level= 1
+                    };
+
+                    InventoryManager.Instance.AddInventoryItem(claimItemsModel);
 
                     PlayFabManager.Instance.CheckAccountInfo((result) =>
                     {

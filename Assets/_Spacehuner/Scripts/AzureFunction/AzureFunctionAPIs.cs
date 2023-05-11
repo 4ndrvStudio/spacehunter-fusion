@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SH.PlayerData;
+using SH.Models.Azure;
 
 namespace SH.AzureFunction
 {
@@ -18,16 +19,16 @@ namespace SH.AzureFunction
         }
     }
 
-    public class AccountRegisterInfoRespone: AzureFunctionAPIRespone
+    public class AccountRegisterInfoRespone : AzureFunctionAPIRespone
     {
 
     }
 
-    public class AccountRegisterSendCodeRequest: AzureFunctionAPIRequest
+    public class AccountRegisterSendCodeRequest : AzureFunctionAPIRequest
     {
         public string Email;
 
-        public AccountRegisterSendCodeRequest(string email): base("AccountRegisterSendCode")
+        public AccountRegisterSendCodeRequest(string email) : base("AccountRegisterSendCode")
         {
             this.Email = email;
         }
@@ -38,17 +39,17 @@ namespace SH.AzureFunction
 
     }
 
-    public class AccountRegisterVerifyCodeRequest: AzureFunctionAPIRequest
+    public class AccountRegisterVerifyCodeRequest : AzureFunctionAPIRequest
     {
         public string Code;
 
-        public AccountRegisterVerifyCodeRequest(string code): base("AccountRegisterVerifyCode")
+        public AccountRegisterVerifyCodeRequest(string code) : base("AccountRegisterVerifyCode")
         {
             this.Code = code;
         }
     }
 
-    public class AccountRegisterVerifyCodeRespone: AzureFunctionAPIRespone
+    public class AccountRegisterVerifyCodeRespone : AzureFunctionAPIRespone
     {
 
     }
@@ -66,59 +67,59 @@ namespace SH.AzureFunction
 
     }
 
-    public class AccountResetPasswordSendCodeRespone: AzureFunctionAPIRespone
+    public class AccountResetPasswordSendCodeRespone : AzureFunctionAPIRespone
     {
 
     }
 
-    public class AccountResetPasswordUpdateRequest: AzureFunctionAPIRequest
+    public class AccountResetPasswordUpdateRequest : AzureFunctionAPIRequest
     {
         public string Email;
         public string Password;
 
-        public AccountResetPasswordUpdateRequest(string email, string password): base("AccountResetPasswordUpdate")
+        public AccountResetPasswordUpdateRequest(string email, string password) : base("AccountResetPasswordUpdate")
         {
             this.Email = email;
             this.Password = password;
         }
     }
 
-    public class AccountResetPasswordUpdateRespone: AzureFunctionAPIRespone
+    public class AccountResetPasswordUpdateRespone : AzureFunctionAPIRespone
     {
-        
+
     }
 
-    public class AccountResetPasswordVerifyCodeRequest: AzureFunctionAPIRequest
+    public class AccountResetPasswordVerifyCodeRequest : AzureFunctionAPIRequest
     {
         public string Email;
         public string Code;
 
-        public AccountResetPasswordVerifyCodeRequest(string email, string code): base("AccountResetPasswordVerifyCode")
+        public AccountResetPasswordVerifyCodeRequest(string email, string code) : base("AccountResetPasswordVerifyCode")
         {
             this.Email = email;
             this.Code = code;
         }
     }
 
-    public class AccountResetPasswordVerifyCodeRespone: AzureFunctionAPIRespone
+    public class AccountResetPasswordVerifyCodeRespone : AzureFunctionAPIRespone
     {
-        
+
     }
     #endregion
 
     #region Account Login
-    public class AccountLoginRequest: AzureFunctionAPIRequest
+    public class AccountLoginRequest : AzureFunctionAPIRequest
     {
         public string Email;
         public string Password;
-        public AccountLoginRequest(string email, string password): base("AccountLogin")
+        public AccountLoginRequest(string email, string password) : base("AccountLogin")
         {
             this.Email = email;
             this.Password = password;
         }
     }
 
-    public class AccountLoginRespone: AzureFunctionAPIRespone
+    public class AccountLoginRespone : AzureFunctionAPIRespone
     {
 
     }
@@ -137,22 +138,22 @@ namespace SH.AzureFunction
         }
     }
 
-    public class CreateCharacterRespone: AzureFunctionAPIRespone
+    public class CreateCharacterRespone : AzureFunctionAPIRespone
     {
-        
+
     }
     #endregion
 
     #region Get User Data
-    public class GetUserDataRequest: AzureFunctionAPIRequest
+    public class GetUserDataRequest : AzureFunctionAPIRequest
     {
-        public GetUserDataRequest(): base("GetUserData")
+        public GetUserDataRequest() : base("GetUserData")
         {
 
         }
     }
 
-    public class GetUserDataRespone: AzureFunctionAPIRespone
+    public class GetUserDataRespone : AzureFunctionAPIRespone
     {
         public string PlayFabId;
         public string DisplayName;
@@ -162,17 +163,37 @@ namespace SH.AzureFunction
     #endregion
 
     #region GetVersion
-    public class GetGameInformationRequest: AzureFunctionAPIRequest
+    public class GetGameInformationRequest : AzureFunctionAPIRequest
     {
-        public GetGameInformationRequest(): base("GetGameInformation")
+        public GetGameInformationRequest() : base("GetGameInformation")
         {
 
         }
     }
 
-    public class GetGameInformationRespone: AzureFunctionAPIRespone
+    public class GetGameInformationRespone : AzureFunctionAPIRespone
     {
         public string body;
+    }
+    #endregion
+
+    #region ClaimItem
+    public class ClaimItemsRequest : AzureFunctionAPIRequest
+    {
+
+        public ClaimItemRequestModel[] Items;
+
+        public ClaimItemsRequest(ClaimItemRequestModel[] items) : base("ClaimItems")
+        {
+            this.Items = items;
+        }
+
+    }
+
+    public class ClaimItemsRespone : AzureFunctionAPIRespone
+    {
+        public ClaimItemsResponeModel[] Items;
+
     }
     #endregion
 }

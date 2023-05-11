@@ -17,6 +17,7 @@ namespace SH
                 Instance = this;
         }
 
+        //----------------------------------------Account 
         public void LoginWithCustomId(string customId, bool createAccount, Action<LoginResult> onSuccess, Action<PlayFabError> onError)
         {
             LoginWithCustomIDRequest req = new LoginWithCustomIDRequest()
@@ -66,6 +67,14 @@ namespace SH
             };
             PlayFabClientAPI.LoginWithEmailAddress(req, onSuccess, onError);
         }
+
+        //----------------------------------------Inventory 
+        
+        public void GetInventoryData(Action<GetUserInventoryResult> onSuccess, Action<PlayFabError> onError) => 
+                PlayFabClientAPI.GetUserInventory(new GetUserInventoryRequest(),onSuccess,onError);
+        
+        
+
 
 
 

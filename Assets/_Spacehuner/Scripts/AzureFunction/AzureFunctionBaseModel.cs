@@ -17,6 +17,7 @@ namespace SH.AzureFunction
     public class AzureFunctionAPIRespone
     {
         public string Error;
+      
     }
 }
 

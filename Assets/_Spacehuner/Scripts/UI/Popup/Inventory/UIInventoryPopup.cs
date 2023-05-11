@@ -31,6 +31,14 @@ namespace SH
 
 
 
+        private void OnEnable() {
+            InventoryManager.OnInventoryDataChange += UpdateView;
+        }
+        private void OnDisable() {
+            InventoryManager.OnInventoryDataChange -= UpdateView;
+
+        }
+
         private void Start()
         {
             Show();
@@ -62,6 +70,7 @@ namespace SH
         {
             base.Show(customProperties);
             Setup();
+            
         }
 
         public override void Hide()
@@ -76,6 +85,10 @@ namespace SH
             {
                 _init = true;
             }
+        }
+
+        private void UpdateView() {
+            Debug.Log("Update view" + InventoryManager.Instance.Items.Count);
         }
 
 
