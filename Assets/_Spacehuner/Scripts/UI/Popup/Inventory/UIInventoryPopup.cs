@@ -9,6 +9,7 @@ namespace SH
 {
     public class UIInventoryPopup : UIPopup
     {
+        public static UIInventoryPopup Instance;
 
         private bool _init = false;
 
@@ -30,17 +31,32 @@ namespace SH
         [SerializeField] private Sprite _swordImage;
 
 
+        [SerializeField] private UIItemSlot _mainSlot;
 
-        private void OnEnable() {
+        //item
+        [SerializeField] private GameObject _itemPrefab;
+        [SerializeField] private GameObject _inventoryContentHolder;
+
+        [SerializeField] private List<GameObject> _inventoryItemList = new List<GameObject>();
+
+        private void OnEnable()
+        {
+            InventoryManager.Instance.GetInventoryData();
+
             InventoryManager.OnInventoryDataChange += UpdateView;
+
         }
-        private void OnDisable() {
+        private void OnDisable()
+        {
             InventoryManager.OnInventoryDataChange -= UpdateView;
 
         }
 
         private void Start()
         {
+            if (Instance == null)
+                Instance = this;
+
             Show();
 
             //this is for test
@@ -64,13 +80,15 @@ namespace SH
             {
                 Hide();
             });
+
+
         }
 
         public override void Show(object customProperties = null)
         {
             base.Show(customProperties);
             Setup();
-            
+
         }
 
         public override void Hide()
@@ -87,8 +105,48 @@ namespace SH
             }
         }
 
-        private void UpdateView() {
-            Debug.Log("Update view" + InventoryManager.Instance.Items.Count);
+        public void SetMainItem(UIItemSlot uiInventoryItem)
+        {
+            _mainSlot = uiInventoryItem;
+            _displayWeaponImage.sprite = uiInventoryItem.ItemIcon;
+        }
+
+        private void UpdateView()
+        {
+            // Clear UI
+            foreach (var item in _inventoryItemList)
+            {
+                Destroy(item);
+            }
+            _inventoryItemList.Clear();
+
+            // Display items to UI
+            Dictionary<string, GameObject> itemDictionary = new Dictionary<string, GameObject>();
+
+            foreach (var item in InventoryManager.Instance.Items)
+            {
+                int level = int.Parse(item.CustomData["Level"]);
+                string itemKey = item.ItemId + level;
+
+                if (!itemDictionary.ContainsKey(itemKey))
+                {
+                    GameObject inventoryItemEl = Instantiate(_itemPrefab, _inventoryContentHolder.transform);
+                    UIItemSlot inventoryElScript = inventoryItemEl.GetComponent<UIItemSlot>();
+
+                    ItemConfig itemConfig = InventoryManager.Instance.ItemConfigs.Find(itemConfig => itemConfig.ItemId == item.ItemId);
+                    inventoryElScript.Setup(level, itemConfig);
+
+                    _inventoryItemList.Add(inventoryItemEl);
+                    itemDictionary.Add(itemKey, inventoryItemEl);
+                }
+                else
+                {
+                    // Stack item
+                    GameObject stackedItem = itemDictionary[itemKey];
+                    stackedItem.GetComponent<UIItemSlot>().StackItem();
+                }
+            }
+
         }
 
 

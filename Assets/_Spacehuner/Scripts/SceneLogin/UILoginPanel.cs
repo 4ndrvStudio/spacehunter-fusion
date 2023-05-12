@@ -99,13 +99,13 @@ namespace SH.Account
                         Debug.Log(err);
                     });
 
-                    Models.Azure.ClaimItemRequestModel[] claimItemsModel  = new Models.Azure.ClaimItemRequestModel[1];
-                    claimItemsModel[0] = new Models.Azure.ClaimItemRequestModel {
-                        ItemId = "mineral",
-                        Level= 1
-                    };
+                    // Models.Azure.ClaimItemRequestModel[] claimItemsModel  = new Models.Azure.ClaimItemRequestModel[1];
+                    // claimItemsModel[0] = new Models.Azure.ClaimItemRequestModel {
+                    //     ItemId = "mineral",
+                    //     Level= 1
+                    // };
 
-                    InventoryManager.Instance.AddInventoryItem(claimItemsModel);
+                    // InventoryManager.Instance.AddInventoryItem(claimItemsModel);
 
                     PlayFabManager.Instance.CheckAccountInfo((result) =>
                     {
@@ -146,7 +146,7 @@ namespace SH.Account
                     }, (error) =>
                     {
                         // //display login canvas when auto login
-                        // if(_autoLogin) _loginCanvas.alpha = 1;
+                        if(_autoLogin) _loginCanvas.alpha = 1;
                         
                         UIManager.Instance.ShowAlert(error.ErrorMessage, AlertType.Error);
                     });
@@ -154,6 +154,8 @@ namespace SH.Account
             }, (error) =>
             {
                 Debug.LogError(error.ErrorMessage);
+                _loginCanvas.alpha = 1;
+                Debug.Log(_loginCanvas.alpha);
                 UIManager.Instance.ShowAlert(error.ErrorMessage, AlertType.Error);
             });
         }

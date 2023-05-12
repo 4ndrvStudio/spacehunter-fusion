@@ -261,6 +261,7 @@ namespace SH.Account
         public void OnLoginClick()
         {
             gameObject.SetActive(false);
+            _loginPanel.GetComponent<CanvasGroup>().alpha =1;
             _loginPanel.SetActive(true);
         }
         #endregion

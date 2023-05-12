@@ -18,10 +18,13 @@ namespace SH
         [SerializeField] private List<ItemInstance> _items = new List<ItemInstance>();
         [HideInInspector] public List<ItemInstance> Items => _items;
 
-        [SerializeField] private List<Sprite> Itemframe = new List<Sprite>();
+
+        
+        public List<Sprite> MineralFrame = new List<Sprite>();
+
+        public List<ItemConfig> ItemConfigs = new List<ItemConfig>();
 
         public static UnityAction OnInventoryDataChange;
-
 
         void Awake()
         {
@@ -33,7 +36,6 @@ namespace SH
 
         public void GetInventoryData()
         {
-
             PlayFabManager.Instance.GetInventoryData(
                 res =>
                 {
@@ -45,16 +47,13 @@ namespace SH
                     Debug.LogError("Get inventory Error : " + err.ErrorMessage);
                 }
             );
-
-          
         }
 
         public void AddInventoryItem(ClaimItemRequestModel[] requestModels)
         {
-
             ClaimItemsRequest claimItemsRequest = new ClaimItemsRequest(requestModels);
-
-            PlayerDataManager.CallFunction<ClaimItemsRespone>(claimItemsRequest, (res) =>
+            PlayerDataManager.CallFunction<ClaimItemsRespone>(claimItemsRequest, 
+                    (res) =>
                            {
                                if (string.IsNullOrEmpty(res.Error))
                                {
