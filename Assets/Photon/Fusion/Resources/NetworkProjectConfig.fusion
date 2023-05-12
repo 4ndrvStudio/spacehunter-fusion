@@ -33,7 +33,7 @@
     },
     "SceneLoadSpawnMode": 1,
     "DeltaCompressor": 0,
-    "InvokeRenderInBatchMode": false,
+    "InvokeRenderInBatchMode": true,
     "MaxNetworkedObjectCount": 8192,
     "NetworkIdIsObjectName": false,
     "HideNetworkObjectInactivityGuard": false,

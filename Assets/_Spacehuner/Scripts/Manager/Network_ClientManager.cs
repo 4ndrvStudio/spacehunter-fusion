@@ -44,7 +44,7 @@ namespace SH.Multiplayer
             StartGameResult startGameResult = await _networkRunner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.Client,
-                SessionName = sceneDefs.ToString() + "test2",
+                SessionName = sceneDefs.ToString() + "test3",
                 Scene = (int)sceneDefs,
                 SceneManager = _networkSceneManagerDefault,
                 

@@ -19,6 +19,7 @@ namespace SH
         public static BuildingManager Instance;
 
         [SerializeField] private GameObject _outside;
+        [SerializeField] private GameObject _lighting;
         [SerializeField] private List<Building> _buildingList = new List<Building>();
 
           void Awake()
@@ -42,6 +43,8 @@ namespace SH
         }
 
         public void EnterBuilding(BuildingName buildingName) {
+            
+            StartCoroutine(ShowWaiting());
 
             Building building  = _buildingList.Find(building => building.BuildingName == buildingName);
             
@@ -51,8 +54,8 @@ namespace SH
         
 
             building.Enter();
-          
-            StartCoroutine(ShowWaiting());
+            _lighting.SetActive(false);
+            _outside.SetActive(false);
             
             CameraManager.Instance.ToggleInOutSide(true);
 
@@ -60,7 +63,10 @@ namespace SH
 
         public void ExitBuilding(BuildingName buildingName) {
 
+            StartCoroutine(ShowWaiting());
 
+            _lighting.SetActive(true);
+            _outside.SetActive(true);
 
             Building building  = _buildingList.Find(building => building.BuildingName == buildingName);
             
@@ -69,8 +75,6 @@ namespace SH
             Network_Player.Local.PlayerMovement.SetPosition(building.OutsideSpawnerPoint);
 
             building.Exit();
-
-            StartCoroutine(ShowWaiting());
 
             CameraManager.Instance.ToggleInOutSide(false);
 
