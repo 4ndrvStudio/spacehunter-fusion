@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using SH.Multiplayer;
-
+using System.Threading.Tasks;
 namespace SH
 {   
     public enum BuildingName {
@@ -42,14 +42,15 @@ namespace SH
             }
         }
 
-        public void EnterBuilding(BuildingName buildingName) {
+        public async void EnterBuilding(BuildingName buildingName) {
             
             StartCoroutine(ShowWaiting());
 
             Building building  = _buildingList.Find(building => building.BuildingName == buildingName);
             
             if ( Network_Player.Local.HasInputAuthority == false) return;
-                
+
+            await Task.Delay(500);    
             Network_Player.Local.PlayerMovement.SetPosition(building.InsideSpawnerPoint);
         
 
@@ -61,7 +62,7 @@ namespace SH
 
         }
 
-        public void ExitBuilding(BuildingName buildingName) {
+        public async void ExitBuilding(BuildingName buildingName) {
 
             StartCoroutine(ShowWaiting());
 
@@ -72,6 +73,7 @@ namespace SH
             
             if ( Network_Player.Local.HasInputAuthority == false) return;
 
+            await Task.Delay(500);  
             Network_Player.Local.PlayerMovement.SetPosition(building.OutsideSpawnerPoint);
 
             building.Exit();
@@ -85,7 +87,7 @@ namespace SH
 
             UIControllerManager.Instance.HideAllController();
           
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(2.5f);
            
             UIManager.Instance.HideWaiting();
                 
