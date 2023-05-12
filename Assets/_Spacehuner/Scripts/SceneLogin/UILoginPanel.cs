@@ -58,12 +58,12 @@ namespace SH.Account
             Debug.Log(email + " " + password);
 
             _autoLogin = !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password);
-
+         
             if (_autoLogin == true)
             {
                 Login(email, password);
             } else {
-                _loginCanvas.alpha = 1;
+                 _loginCanvas.alpha = 1;
             }
  
         }
@@ -72,7 +72,7 @@ namespace SH.Account
         {
             PlayFabManager.Instance.LoginWithCustomId(email, true, (result) =>
             {
-                
+               
                 PlayerDataManager.CallFunction<AccountLoginRespone>(new AccountLoginRequest(email, password), async (result) =>
                 {
                     if (!string.IsNullOrEmpty(result.Error))

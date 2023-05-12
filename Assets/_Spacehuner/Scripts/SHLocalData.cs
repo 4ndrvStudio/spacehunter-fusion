@@ -33,6 +33,11 @@ namespace SH
             Debug.Log($"save {Data.Password}");
             PlayerPrefs.Save();
         }
+        public void RemoveLoginData() {
+            PlayerPrefs.DeleteKey(LocalDataKey);
+            Data = new LocalData();
+            PlayerPrefs.Save();
+        }
 
         private void OnApplicationQuit()
         {

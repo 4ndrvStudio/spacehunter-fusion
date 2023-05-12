@@ -25,6 +25,7 @@ namespace SH.Account
         public void OnLogoutClick()
         {
             _loginPanel.SetActive(true);
+            SHLocalData.Instance.RemoveLoginData();
             _loginPanel.GetComponent<CanvasGroup>().alpha = 1;
             gameObject.SetActive(false);
         }
