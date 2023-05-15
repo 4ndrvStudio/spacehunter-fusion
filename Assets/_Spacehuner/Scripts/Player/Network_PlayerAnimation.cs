@@ -31,7 +31,6 @@ namespace SH.Multiplayer
             _lastDashAttack = _playerCombat.DashAttackCount;
             _lastVisibleGetHit = _playerDamageable.HitCount;
 
-
         }
 
         public override void Render()

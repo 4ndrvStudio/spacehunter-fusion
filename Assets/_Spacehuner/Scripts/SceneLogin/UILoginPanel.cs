@@ -70,10 +70,11 @@ namespace SH.Account
 
         private void Login(string email, string password)
         {
-            PlayFabManager.Instance.LoginWithCustomId(email, true, (result) =>
+
+             string lowerCaseEmail = email.ToLower();
+            PlayFabManager.Instance.LoginWithCustomId(lowerCaseEmail, true, (result) =>
             {
-               
-                PlayerDataManager.CallFunction<AccountLoginRespone>(new AccountLoginRequest(email, password), async (result) =>
+                PlayerDataManager.CallFunction<AccountLoginRespone>(new AccountLoginRequest(lowerCaseEmail, password), async (result) =>
                 {
                     if (!string.IsNullOrEmpty(result.Error))
                     {

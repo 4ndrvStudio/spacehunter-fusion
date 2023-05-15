@@ -47,6 +47,7 @@ namespace SH.Multiplayer
                 Scene = Room,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
+            Application.targetFrameRate = 60;
         }
 
 

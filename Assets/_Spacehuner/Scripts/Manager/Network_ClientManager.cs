@@ -24,7 +24,6 @@ namespace SH.Multiplayer
 
         [SerializeField] private static SceneDefs _currentScene;
 
-
         void Start()
         {
             if (Instance == null) Instance = this;
@@ -36,7 +35,6 @@ namespace SH.Multiplayer
 
         public static async void StartGame(SceneDefs sceneDefs)
         {
-            
             _networkRunner.ProvideInput = true;
 
             UIManager.Instance.ShowLoadScene(false);
@@ -52,7 +50,7 @@ namespace SH.Multiplayer
 
             Debug.Log("Load game Status :  " + startGameResult.ErrorMessage);
 
-            Application.targetFrameRate = 300;
+            Application.targetFrameRate = 60;
 
         }
 

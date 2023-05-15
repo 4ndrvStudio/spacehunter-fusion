@@ -211,7 +211,7 @@ namespace SH.Account
 
         public void OnVerifyClick()
         {
-            string email = _inputEmail.text;
+            string email = _inputEmail.text.ToLower();
             string password = _inputPassword.text;
             string code = _inputCode.text;
 
