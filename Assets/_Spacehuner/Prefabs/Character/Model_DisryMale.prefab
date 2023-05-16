@@ -34944,13 +34944,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e35ab793ec2a64449c949b37bdea358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectHeight: 0
-  noiseStrength: 0.25
-  endHeight: 0
+  IsDissolved: 1
+  _noiseStrength: 0.25
   _height: 0
-  _dissolveSpeed: 0
-  startDissovle: 0
-  resetHeight: 0
+  _endHeight: -0.51
+  _objectHeight: 1.45
+  _dissolveSpeed: 1
+  _startDissovle: 0
+  _resetHeight: 0
 --- !u!1 &2929351942382846984
 GameObject:
   m_ObjectHideFlags: 0
@@ -90104,7 +90105,7 @@ MonoBehaviour:
   - {fileID: 2929351941471840248}
   _comboVFXList: []
   _weaponObject: {fileID: 2929351942377140502}
-  _weaponDissolve: {fileID: 0}
+  _weaponDissolve: {fileID: 256904025186611536}
   _centerWeapon: {fileID: 2929351943411863807}
   _weaponExistTime: 3
   m_weaponExistTime: 0

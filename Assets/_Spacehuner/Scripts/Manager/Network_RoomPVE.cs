@@ -103,7 +103,6 @@ namespace SH.Multiplayer
 
                     if (enemy.RespawnTimeStarted == false)
                     {
-
                         enemy.RespawnTime = TickTimer.CreateFromSeconds(Runner, 5);
                         enemy.RespawnTimeStarted = true;
                     }
@@ -129,6 +128,7 @@ namespace SH.Multiplayer
             EnemyData enemyData = _enemyDataList.Find(spawn => spawn.EnemySpawned == enemy);
 
             enemyData.EnemySpawned = null;
+
             enemyData.WasSpawn = false;
 
             Runner.Despawn(enemy);

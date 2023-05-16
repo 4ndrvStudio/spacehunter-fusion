@@ -116,8 +116,12 @@ namespace SH.Multiplayer
 
             this._body =  Instantiate(_bodyList[(int)Body -1 ],this.transform);
 
+
             if(Object.HasInputAuthority) {
-                      CameraManager.Instance.SetAimTarget(_body.transform, _lookPoint);
+                    var targetLookPoint = Resources.Load<GameObject>("Camera/LookPoint");
+                    GameObject lookPoint =Instantiate(targetLookPoint);
+                    lookPoint.GetComponent<TargetLookPoint>().TargetFollow = _body.transform;
+                    CameraManager.Instance.SetAimTarget(_body.transform, lookPoint.transform);
             }
       
 

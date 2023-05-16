@@ -266,14 +266,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  _anim: {fileID: 0}
   _weaponColider: {fileID: 0}
   _attackVFXList:
   - {fileID: 6343484538299544968}
   - {fileID: 6343484538920671695}
   - {fileID: 6343484538177370845}
   _comboVFXList: []
-  _weaponObject: {fileID: 6343484538850384410}
+  _weaponObject: {fileID: 6343484538620306101}
+  _weaponDissolve: {fileID: 4858506368756347963}
   _centerWeapon: {fileID: 6343484538872485789}
+  _weaponExistTime: 3
+  m_weaponExistTime: 0
 --- !u!114 &2306872574204512267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36033,6 +36037,7 @@ GameObject:
   - component: {fileID: 6343484538620306098}
   - component: {fileID: 6343484538620306096}
   - component: {fileID: 6343484538620306099}
+  - component: {fileID: 4858506368756347963}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -36083,7 +36088,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d5619818bf00ce541b7ce3bea3aaeda6, type: 2}
+  - {fileID: 2100000, guid: 7b420af3175e56748a385ed54eb93d7f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -36105,6 +36110,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4858506368756347963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6343484538620306101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e35ab793ec2a64449c949b37bdea358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsDissolved: 1
+  _noiseStrength: 0.25
+  _height: 0
+  _endHeight: -0.51
+  _objectHeight: 1.45
+  _dissolveSpeed: 1
+  _startDissovle: 0
+  _resetHeight: 0
 --- !u!1 &6343484538749642672
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,6 +30,10 @@ namespace SH.Multiplayer
         [HideInInspector] public NetworkBool N_IsCombo { get; set; }
         public bool L_IsCombo;
 
+        [Networked(OnChanged = nameof(OnIsDashChanged))]
+        [HideInInspector] public NetworkBool N_IsDash { get; set; }
+        public bool L_IsDash;
+
         [Networked(OnChanged = nameof(OnIsInsideBuildingChanged))]
         [HideInInspector] public NetworkBool N_IsInsideBuilding { get; set; }
         public bool L_IsInsideBuilding;
@@ -66,6 +70,22 @@ namespace SH.Multiplayer
         {
             this.N_IsCombo = isCombo;
         }
+        // Dash   
+        static void OnIsDashChanged(Changed<Network_PlayerState> changed)
+        {
+            changed.Behaviour.OnIsDashChanged();
+        }
+        private void OnIsDashChanged()
+        {
+            L_IsDash = N_IsDash;
+        }
+
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        public void RPC_SetIsDash(bool isDash, RpcInfo info = default)
+        {
+            this.N_IsDash = isDash;
+        }
+
 
 
         // Jump State
@@ -103,19 +123,18 @@ namespace SH.Multiplayer
             
         }
 
-        public override void Render()
+        public override void FixedUpdateNetwork()
         {
             if (Object.HasInputAuthority == false) return;
             RPC_SetIsGrounded(GroundCheck());
             
             if(Anim == null) return;
+
             RPC_SetIsAction(Anim.GetBool("isAction"));
 
             RPC_SetIsCombo(Anim.GetCurrentAnimatorStateInfo(3).IsTag("Combo"));
 
-            
-          
-
+            RPC_SetIsDash(Anim.GetCurrentAnimatorStateInfo(3).IsTag("Dash")); 
 
         }
 

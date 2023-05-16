@@ -18391,7 +18391,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &881212364
 RectTransform:
   m_ObjectHideFlags: 0
@@ -43496,6 +43496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6486a950da39a848a24e6e49dc5abc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _touchfield: {fileID: 1796349534049937226}
   _touchPanel: {fileID: 1796349534049937217}
   _movementJoy: {fileID: 6558196959588182840}
   _attackBtn: {fileID: 1796349534904803516}
@@ -43565,6 +43566,7 @@ GameObject:
   - component: {fileID: 1796349534049937223}
   - component: {fileID: 1796349534049937216}
   - component: {fileID: 1796349534049937217}
+  - component: {fileID: 1796349534049937226}
   - component: {fileID: 1796349534049937224}
   - component: {fileID: 1796349534049937225}
   m_Layer: 5
@@ -43601,7 +43603,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1796349534049937220}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fe93119efff8694aac9596d09d950f0, type: 3}
   m_Name: 
@@ -43651,6 +43653,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1796349534049937226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796349534049937220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8d432b22b8a93540b8ffb5e85e8ce51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TouchDist: {x: 0, y: 0}
+  PointerOld: {x: 0, y: 0}
+  Pressed: 0
 --- !u!222 &1796349534904803396
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -47722,7 +47739,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 285, y: 22.6}
+  m_SizeDelta: {x: 340.08, y: 22.6}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &7105781802884581454
 MonoBehaviour:

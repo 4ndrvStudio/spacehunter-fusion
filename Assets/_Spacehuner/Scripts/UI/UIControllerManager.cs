@@ -20,6 +20,7 @@ namespace SH
 
         [Header("Controller")]
         //combat 
+        [SerializeField] private UITouchField _touchfield;
         [SerializeField] private Image _touchPanel;
         [SerializeField] private Joystick _movementJoy;
         [SerializeField] private UIButtonCustom _attackBtn;
@@ -27,10 +28,9 @@ namespace SH
         [SerializeField] private UIButtonCustom _combo1Btn;
         [SerializeField] private UIButtonCustom _dashAttackBtn;
         [SerializeField] private UIButtonCustom _activeTestModeBtn;
-
+        
         //dance
         [SerializeField] private UIButtonCustom _danceBtn;
-
 
         [SerializeField] private GameObject _combatGroup;
         [SerializeField] private GameObject _actionGroup;
@@ -125,6 +125,8 @@ namespace SH
         public bool GetActiveTestModeBtn() => _activeTestModeBtn.GetComponent<UIButtonCustom>().IsPressed;
 
         public void ShowGotoMiningBtn(bool isActive) => _gotoMiningBtn.gameObject.SetActive(isActive);
+
+        public UITouchField GetTouchField() => _touchfield;
 
         public void GotoMining()
         {

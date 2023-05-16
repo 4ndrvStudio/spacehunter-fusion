@@ -43,7 +43,7 @@ namespace SH.Multiplayer
             });
 
             _isRunning = true;
-               Application.targetFrameRate = 300;
+            Application.targetFrameRate = 60;
         }
 
         private void OnGUI()

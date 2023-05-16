@@ -146,9 +146,10 @@ namespace SH.Multiplayer
 
             Anim.applyRootMotion = _playerState.L_IsCombo || _playerState.L_IsAction;
 
-            if (_playerState.L_IsCombo || _playerState.L_IsAction)
+            if (_playerState.L_IsCombo || _playerState.L_IsAction || _playerState.L_IsDash)
             {
-                transform.position += Anim.deltaPosition;
+                float offset = _playerState.L_IsDash ? 1.5f : 1f; 
+                transform.position += Anim.deltaPosition * offset;
             }
 
             
