@@ -48,7 +48,7 @@ namespace SH.Multiplayer
             RenderAttack();
             RenderCombatInteract();
             RenderMovement();
-            RenderWeaponManager();
+            //RenderWeaponManager();
 
         }
 

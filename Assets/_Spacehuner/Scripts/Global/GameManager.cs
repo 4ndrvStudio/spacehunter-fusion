@@ -5,19 +5,25 @@ using PlayFab;
 using PlayFab.ClientModels;
 using System.Threading.Tasks;
 using SH.Multiplayer;
+using TMPro;
+
 namespace SH
 {
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance;
-        public string GameVersion;
 
+        [SerializeField] private TextMeshProUGUI _versionText;
+        public string GameVersion;
+        
         public bool RequireReConnect;
 
         void Awake()
         {
             if (Instance == null) 
                 Instance = this;
+
+            _versionText.text = GameVersion;
 
         }
         void LateUpdate()

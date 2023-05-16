@@ -7,7 +7,7 @@ namespace SH.Multiplayer
 {
     public class Network_WeaponManager : NetworkBehaviour
     {
-
+            
         [SerializeField] private List<Network_WeaponConfig> _weaponConfigList = new List<Network_WeaponConfig>();
 
         [SerializeField] private Network_PlayerState _playerState;

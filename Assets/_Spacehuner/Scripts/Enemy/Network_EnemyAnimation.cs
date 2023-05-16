@@ -25,7 +25,7 @@ namespace SH.Multiplayer
             Material[] materials = _bodyMesh.materials;
             _bodyMesh.material = new Material(materials[0]);
             _enemyMat = _bodyMesh.materials[0];
-        
+
 
             _lastVisibleAttack = _enemyCombatBrain.AttackCount;
 
@@ -85,7 +85,7 @@ namespace SH.Multiplayer
         void DeathAnimation()
         {
             _anim.SetBool("isDeath", true);
-            
+
         }
 
         void MovementAnimation(float speed)
@@ -97,22 +97,25 @@ namespace SH.Multiplayer
         {
             _anim.Play("GetDame", 1, 0);
 
-            
-            //Effect
-            _enemyMat.DOColor(Color.white, "_EmissionColor", 0f).OnComplete(() =>
+            if (Runner.IsServer == false)
             {
-                _enemyMat.DOColor(Color.red, "_EmissionColor", 0.1f).OnComplete(() =>
+                //Effect
+                _enemyMat.DOColor(Color.white, "_EmissionColor", 0f).OnComplete(() =>
                 {
-                    _enemyMat.DOColor(Color.white, "_EmissionColor", 0.01f).OnComplete(() =>
+                    _enemyMat.DOColor(Color.red, "_EmissionColor", 0.1f).OnComplete(() =>
                     {
-                        _enemyMat.DOColor(Color.red, "_EmissionColor", 0.1f).OnComplete(() =>
+                        _enemyMat.DOColor(Color.white, "_EmissionColor", 0.01f).OnComplete(() =>
                         {
-                            _enemyMat.DOColor(Color.black, "_EmissionColor", 0);
+                            _enemyMat.DOColor(Color.red, "_EmissionColor", 0.1f).OnComplete(() =>
+                            {
+                                _enemyMat.DOColor(Color.black, "_EmissionColor", 0);
+                            });
                         });
                     });
-                });
 
-            });
+                });
+            }
+
         }
         public void PlayAttack(string targetAttack)
         {

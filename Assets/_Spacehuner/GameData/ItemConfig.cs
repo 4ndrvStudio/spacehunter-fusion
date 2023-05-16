@@ -10,6 +10,8 @@ namespace SH
         public string ItemId;
         public Sprite ItemIcon;
 
+        //Check Later
+        public UIInventoryTab TypeTab;
         // custom icon with level
         public List<Sprite> IconWithLevel = new List<Sprite>();
 

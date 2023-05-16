@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemId: mineral
   ItemIcon: {fileID: 0}
+  TypeTab: 3
   IconWithLevel:
   - {fileID: 21300000, guid: b5deba5daad73bd48bf1fcc24f419674, type: 3}
   - {fileID: 21300000, guid: 1eddddc342a0cf3419fc21832bcda869, type: 3}

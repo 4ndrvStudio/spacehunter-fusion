@@ -44,11 +44,9 @@ namespace SH.Multiplayer
 
             if(_playerState.L_IsInsideBuilding) return;
             
-            if (HasHitMineral()) Debug.Log("Hit Mineral");
+            HasHitMineral();
 
-            if (HasHitEnemy()) Debug.Log("Hit Enemy");
-
-           // if (HasHitPlayer()) Debug.Log("Hit Player");
+            HasHitEnemy();
 
         }
 

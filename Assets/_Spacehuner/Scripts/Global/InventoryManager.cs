@@ -20,7 +20,7 @@ namespace SH
 
 
         
-        public List<Sprite> MineralFrame = new List<Sprite>();
+        public List<Sprite> ItemFrame = new List<Sprite>();
 
         public List<ItemConfig> ItemConfigs = new List<ItemConfig>();
 
@@ -69,7 +69,8 @@ namespace SH
                                }
                            });
         }
-
+        
+       
 
 
 

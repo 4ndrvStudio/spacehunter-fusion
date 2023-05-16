@@ -61,8 +61,8 @@ namespace SH.Multiplayer
                 Local = this;
                 UIControllerManager.Instance.ShowGotoMiningBtn(false);
 
-                RPC_SetBody((int)PlayerDataManager.Character.Data.CharacterInUse.CharacterType);
-                //RPC_SetBody(6);
+                //RPC_SetBody((int)PlayerDataManager.Character.Data.CharacterInUse.CharacterType);
+                RPC_SetBody(6);
             
 
                 if((int)Runner.CurrentScene > 1 ) 
@@ -105,11 +105,9 @@ namespace SH.Multiplayer
         }
 
         
-          static void OnBodyChanged(Changed<Network_Player> changed)
+        static void OnBodyChanged(Changed<Network_Player> changed)
         {
-
             changed.Behaviour.OnBodyChanged();
-
         }
 
         private void OnBodyChanged()
