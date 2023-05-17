@@ -30,7 +30,6 @@ namespace SH.Multiplayer
             _lastCombo1Attack = _playerCombat.Combo1Count;
             _lastDashAttack = _playerCombat.DashAttackCount;
             _lastVisibleGetHit = _playerDamageable.HitCount;
-
         }
 
         public override void Render()
@@ -151,10 +150,6 @@ namespace SH.Multiplayer
                 float offset = _playerState.L_IsDash ? 1.5f : 1f; 
                 transform.position += Anim.deltaPosition * offset;
             }
-
-            
-
-
         }
 
         private void RenderWeaponManager()
