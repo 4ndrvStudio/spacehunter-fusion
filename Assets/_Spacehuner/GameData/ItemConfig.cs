@@ -11,7 +11,7 @@ namespace SH
         public Sprite ItemIcon;
 
         //Check Later
-        public UIInventoryTab TypeTab;
+        public UIInventoryTabName TypeTab;
         // custom icon with level
         public List<Sprite> IconWithLevel = new List<Sprite>();
 

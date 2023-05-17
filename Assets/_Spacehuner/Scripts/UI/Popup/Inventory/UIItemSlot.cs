@@ -14,6 +14,7 @@ namespace SH
         //PRIVATE MEMEBER
         [SerializeField] private Button _itemButton;
         [SerializeField] private Image _itemFrameUI;
+        [SerializeField] private GameObject _itemActiveFrame;
         [SerializeField] private Image _itemIconUI;
 
         private ItemConfig _itemConfig;
@@ -25,7 +26,8 @@ namespace SH
 
         void Start() {
             _itemButton.onClick.AddListener(() => {
-                UIInventoryPopup.Instance.SetMainItem(this);
+                UIInventoryPopup.Instance.SetPreUseItem(this);
+                IsPreUse(true);
             });
         }
 
@@ -36,15 +38,20 @@ namespace SH
         }
 
         public void Setup(int level , ItemConfig itemConfig) {
+            
             _itemConfig = itemConfig;
             _quantity = 1;
             Level = level;
-            //setup for mineral "special case";
-            // if(itemConfig.ItemId == "mineral") {
-                 _itemFrameUI.sprite = InventoryManager.Instance.ItemFrame[Level-1];
-                 _itemIconUI.sprite = _itemConfig.IconWithLevel[Level-1];
-            //} 
+          
+            _itemFrameUI.sprite = InventoryManager.Instance.ItemFrame[Level-1];
+            _itemIconUI.sprite = _itemConfig.IconWithLevel[Level-1];
+            
         }
+
+        public void IsPreUse(bool isPreUse) {
+            _itemActiveFrame.SetActive(isPreUse);
+        }
+        
 
 
         

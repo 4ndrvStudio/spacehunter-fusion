@@ -8,7 +8,7 @@ using PlayFab.ClientModels;
 
 namespace SH
 {
-    public enum UIInventoryTab
+    public enum UIInventoryTabName
     {
         All,
         Weapon,
@@ -25,26 +25,25 @@ namespace SH
 
         //View
         [SerializeField] private Button _closeBtn;
-        [SerializeField] private Button _miningBtn;
-        [SerializeField] private Button _swordBtn;
         [SerializeField] private Button _useWeaponBtn;
 
         //pref
-        [SerializeField] private Image _displayWeaponImage;
+        [SerializeField] private Image _displayPreUseSlotImage;
         [SerializeField] private Sprite _mineralAxeImage;
         [SerializeField] private Sprite _swordImage;
-        [SerializeField] private UIItemSlot _mainSlot;
+        
+        private UIItemSlot _preUseSlot;
 
         //Tab
-        [SerializeField] private UIInventoryTab _currentTab;
-        [SerializeField] private Button _weaponTab;
-        [SerializeField] private Button _spaceshipTab;
-        [SerializeField] private Button _mineralTab;
+        [SerializeField] private UIInventoryTabName _currentTab;
+        [SerializeField] private List<UIInventoryTabButton> _tabButtonList  = new List<UIInventoryTabButton>();
+      
 
         //item
         [SerializeField] private GameObject _itemPrefab;
         [SerializeField] private GameObject _inventoryContentHolder;
         [SerializeField] private List<GameObject> _inventoryItemList = new List<GameObject>();
+
 
         private void OnEnable()
         {
@@ -66,17 +65,16 @@ namespace SH
 
             Show();
 
-            _closeBtn.onClick.AddListener(() =>
-            {
-                Hide();
+            _closeBtn.onClick.AddListener(() => Hide());
+            _useWeaponBtn.onClick.AddListener(() => Hide());
+            
+            _tabButtonList.ForEach(tabButton => {
+                tabButton.Button.onClick.AddListener(() => {
+                    ChangeTab(tabButton.TabName);
+                    _tabButtonList.ForEach(tab => tab.SetDeactive());
+                    tabButton.SetActive();
+                });
             });
-            _useWeaponBtn.onClick.AddListener(() =>
-            {
-                Hide();
-            });
-
-            _weaponTab.onClick.AddListener(() => ChangeTab(UIInventoryTab.Weapon));
-            _mineralTab.onClick.AddListener(() => ChangeTab(UIInventoryTab.Mineral));
         }
 
         public override void Show(object customProperties = null)
@@ -101,16 +99,29 @@ namespace SH
         }
 
 
-        public void SetMainItem(UIItemSlot uiInventoryItem)
+        public void SetPreUseItem(UIItemSlot uiInventoryItem)
         {
-            _mainSlot = uiInventoryItem;
-            _displayWeaponImage.sprite = uiInventoryItem.ItemIcon;
+            _preUseSlot = uiInventoryItem;
+         
+             _displayPreUseSlotImage.gameObject.SetActive(false);
+            _displayPreUseSlotImage.sprite = uiInventoryItem.ItemIcon;
+            // _displayPreUseSlotImage.color = new Color(255,255,255,1);
+            _displayPreUseSlotImage.gameObject.SetActive(true);
+            _inventoryItemList.ForEach(item=> {
+                item.GetComponent<UIItemSlot>().IsPreUse(false);
+            });
+
         }
 
-        public void ChangeTab(UIInventoryTab tab)
+        public void ChangeTab(UIInventoryTabName tab)
         {
             _currentTab = tab;
-            InventoryManager.Instance.GetInventoryData();
+            _preUseSlot = null;
+            _displayPreUseSlotImage.sprite = null;
+            // _displayPreUseSlotImage.color = new Color(255,255,255,0);
+            _displayPreUseSlotImage.gameObject.SetActive(false);
+
+            UpdateView();
         }
 
         private void UpdateView()
@@ -126,26 +137,23 @@ namespace SH
             Dictionary<string, GameObject> itemDictionary = new Dictionary<string, GameObject>();
 
             List<ItemInstance> itemList = new List<ItemInstance>();
-
-
-            if (_currentTab != UIInventoryTab.All)
+            Debug.Log(InventoryManager.Instance.Items.Count);
+            switch (_currentTab)
             {
-                switch (_currentTab)
-                {
-                    case UIInventoryTab.Weapon:
-                        itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "weapon");
-                        break;
-                    case UIInventoryTab.Mineral:
-                        itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "mineral");
-                        break;
-                }
+                case UIInventoryTabName.Weapon:
+                    itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "weapon");
+                    break;
+                case UIInventoryTabName.Mineral:
+                    itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "mineral");
+                    break;
+                case UIInventoryTabName.Spaceship:
+                    itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "spaceship");
+                    break;
+                default:
+                    itemList = InventoryManager.Instance.Items;
+                    break;
             }
-            else
-            {
 
-                itemList = InventoryManager.Instance.Items;
-
-            }
 
             foreach (var item in itemList)
             {
