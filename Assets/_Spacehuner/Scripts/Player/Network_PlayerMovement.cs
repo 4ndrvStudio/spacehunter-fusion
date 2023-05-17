@@ -67,7 +67,6 @@ namespace SH.Multiplayer
             {
                 Movement(input.Value);
             }
-
             
         }
 

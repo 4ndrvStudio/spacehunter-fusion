@@ -31,6 +31,7 @@ namespace SH.Multiplayer
             _networkRunner = GetComponent<NetworkRunner>();
             _networkGameManager = GetComponent<Network_GameManager>();
             _networkSceneManagerDefault = GetComponent<NetworkSceneManagerDefault>();
+            
         }
 
         public static async void StartGame(SceneDefs sceneDefs)
@@ -45,7 +46,6 @@ namespace SH.Multiplayer
                 SessionName = sceneDefs.ToString() + "test3",
                 Scene = (int)sceneDefs,
                 SceneManager = _networkSceneManagerDefault,
-                
             });
 
             Debug.Log("Load game Status :  " + startGameResult.ErrorMessage);
@@ -80,19 +80,7 @@ namespace SH.Multiplayer
             StartGame(sceneDefs);
         }
 
-        private void OnGUI()
-        {
-
-            // if (GUI.Button(new Rect(0, 0, 600, 120), "Join Game"))
-            // {
-            //     StartGame(SceneDefs.scene_stationFusion);
-            // }
-            // if (GUI.Button(new Rect(0, 120, 600, 120), "Go To Mining"))
-            // {
-            //     MoveToRoom(SceneDefs.scene_miningFusion);
-            // }
-
-        }
+    
      
 
     }

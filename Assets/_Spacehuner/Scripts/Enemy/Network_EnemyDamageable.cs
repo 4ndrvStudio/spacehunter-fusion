@@ -29,9 +29,6 @@ namespace SH.Multiplayer
         private Interpolator<int> _hitCountInterpolator;
         private int _lastVisibleHit;
 
-
-
-
         public override void Spawned()
         {
             _hitCountInterpolator = GetInterpolator<int>(nameof(HitCount));

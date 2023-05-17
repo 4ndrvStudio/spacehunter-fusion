@@ -9,7 +9,6 @@ namespace SH.Multiplayer
 {
     public class CameraManager : MonoBehaviour
     {
-
         public static CameraManager Instance;
 
         [SerializeField] private Camera _mainCam;
@@ -29,8 +28,6 @@ namespace SH.Multiplayer
         [SerializeField] float _MinX;
         [SerializeField] float _MaxX;
 
-
-
         void Start()
         {
             if (Instance != null && Instance != this)
@@ -48,7 +45,7 @@ namespace SH.Multiplayer
         void Update() {
           
             if(_rotatePoint != null) {
-
+            
                 _xInput += _touchField.TouchDist.x * _touchSpeedSensitivityX;
                 _yInput += _touchField.TouchDist.y * -_touchSpeedSensitivityY;
                 _yInput = Mathf.Clamp(_yInput, _MinX, _MaxX);
@@ -64,6 +61,7 @@ namespace SH.Multiplayer
             {
                 Instance = null;
             }
+
         }
 
 
@@ -75,7 +73,6 @@ namespace SH.Multiplayer
 
         public void ToggleInOutSide(bool isInSide)
         {
-           
                 if (isInSide == true)
                 {
                     _cameraVT.GetCinemachineComponent<Cinemachine3rdPersonFollow>().CameraDistance = 4.5f;
@@ -89,11 +86,6 @@ namespace SH.Multiplayer
         public Vector3 GetMainCamEuler() => _mainCam.transform.eulerAngles;
 
         public Transform GetTransform() => _mainCam.transform;
-
-
-
-
-
 
     }
 

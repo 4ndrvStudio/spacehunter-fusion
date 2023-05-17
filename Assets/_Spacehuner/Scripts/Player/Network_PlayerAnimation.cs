@@ -129,7 +129,7 @@ namespace SH.Multiplayer
             }
             else if (_lastVisibleGetHit > _playerDamageable.HitCount)
             {
-
+                
             }
             _lastVisibleGetHit = _playerDamageable.HitCount;
 
@@ -138,11 +138,10 @@ namespace SH.Multiplayer
 
         private void RenderMovement()
         {
-
             Anim.SetFloat("movement", _playerMovement.Speed);
 
             Anim.SetBool("onGround", _playerState.L_IsGrounded);
-
+            
             Anim.applyRootMotion = _playerState.L_IsCombo || _playerState.L_IsAction;
 
             if (_playerState.L_IsCombo || _playerState.L_IsAction || _playerState.L_IsDash)
