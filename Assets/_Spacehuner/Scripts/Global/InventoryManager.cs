@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using SH.PlayerData;
 using SH.AzureFunction;
 using SH.Models.Azure;
+using System.Linq;
 
 namespace SH
 {
@@ -19,9 +20,9 @@ namespace SH
         [HideInInspector] public List<ItemInstance> Items => _items;
 
 
-        
         public List<Sprite> ItemFrame = new List<Sprite>();
 
+        [HideInInspector]  
         public List<ItemConfig> ItemConfigs = new List<ItemConfig>();
 
         public static UnityAction OnInventoryDataChange;
@@ -32,6 +33,8 @@ namespace SH
             if (Instance == null)
                 Instance = this;
 
+            //Load Item Configs
+            ItemConfigs = Resources.LoadAll<ItemConfig>("Configs/Items").ToList<ItemConfig>();
         }
 
         public void GetInventoryData()
@@ -40,6 +43,11 @@ namespace SH
                 res =>
                 {
                     this._items = res.Inventory;
+
+                    _items.Add(CreateItemToTest("weapon_swordtest","weapon","Normal Sword"));
+                    _items.Add(CreateItemToTest("weapon_mineral_axe","weapon","Mineral Axe"));
+                    _items.Add(CreateItemToTest("spaceshiptest","spaceship","Spaceship E7x"));
+
                     OnInventoryDataChange?.Invoke();
                 },
                 err =>
@@ -47,12 +55,14 @@ namespace SH
                     Debug.LogError("Get inventory Error : " + err.ErrorMessage);
                 }
             );
+
+
         }
 
         public void AddInventoryItem(ClaimItemRequestModel[] requestModels)
         {
             ClaimItemsRequest claimItemsRequest = new ClaimItemsRequest(requestModels);
-            PlayerDataManager.CallFunction<ClaimItemsRespone>(claimItemsRequest, 
+            PlayerDataManager.CallFunction<ClaimItemsRespone>(claimItemsRequest,
                     (res) =>
                            {
                                if (string.IsNullOrEmpty(res.Error))
@@ -69,8 +79,20 @@ namespace SH
                                }
                            });
         }
-        
-       
+
+        private ItemInstance CreateItemToTest(string id, string itemClass, string name)
+        {
+            ItemInstance item = new ItemInstance();
+            item.ItemId = id;
+            item.ItemClass = itemClass;
+            item.CustomData = new Dictionary<string, string> {
+                        {"Level" , "1"}
+                    };
+            item.DisplayName = name;
+            return item;
+        }
+
+
 
 
 

@@ -44,7 +44,11 @@ namespace SH
             Level = level;
           
             _itemFrameUI.sprite = InventoryManager.Instance.ItemFrame[Level-1];
-            _itemIconUI.sprite = _itemConfig.IconWithLevel[Level-1];
+            
+            if(_itemConfig.IconWithLevel.Count > 0) 
+                _itemIconUI.sprite = _itemConfig.IconWithLevel[Level-1];
+            else 
+                _itemIconUI.sprite = _itemConfig.ItemIcon;
             
         }
 

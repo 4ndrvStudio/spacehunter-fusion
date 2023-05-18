@@ -23,6 +23,7 @@ namespace SH
         private bool _init = false;
 
 
+
         //View
         [SerializeField] private Button _closeBtn;
         [SerializeField] private Button _useWeaponBtn;
@@ -44,6 +45,8 @@ namespace SH
         [SerializeField] private GameObject _inventoryContentHolder;
         [SerializeField] private List<GameObject> _inventoryItemList = new List<GameObject>();
 
+        //component
+        [SerializeField] private UIInventoryItemInfo _uiInventoryItemInfo;
 
         private void OnEnable()
         {
@@ -60,6 +63,7 @@ namespace SH
 
         private void Start()
         {
+            _currentTab = UIInventoryTabName.Weapon;
             if (Instance == null)
                 Instance = this;
 
@@ -102,11 +106,9 @@ namespace SH
         public void SetPreUseItem(UIItemSlot uiInventoryItem)
         {
             _preUseSlot = uiInventoryItem;
-         
-             _displayPreUseSlotImage.gameObject.SetActive(false);
-            _displayPreUseSlotImage.sprite = uiInventoryItem.ItemIcon;
-            // _displayPreUseSlotImage.color = new Color(255,255,255,1);
-            _displayPreUseSlotImage.gameObject.SetActive(true);
+            
+            _uiInventoryItemInfo.DisplayItemInfo(uiInventoryItem);
+
             _inventoryItemList.ForEach(item=> {
                 item.GetComponent<UIItemSlot>().IsPreUse(false);
             });
@@ -117,9 +119,8 @@ namespace SH
         {
             _currentTab = tab;
             _preUseSlot = null;
-            _displayPreUseSlotImage.sprite = null;
-            // _displayPreUseSlotImage.color = new Color(255,255,255,0);
-            _displayPreUseSlotImage.gameObject.SetActive(false);
+
+            _uiInventoryItemInfo.ClearDisplay();
 
             UpdateView();
         }
@@ -141,13 +142,13 @@ namespace SH
             switch (_currentTab)
             {
                 case UIInventoryTabName.Weapon:
-                    itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "weapon");
+                    itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemClass == "weapon");
                     break;
                 case UIInventoryTabName.Mineral:
-                    itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "mineral");
+                    itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemClass == "mineral");
                     break;
                 case UIInventoryTabName.Spaceship:
-                    itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "spaceship");
+                    itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemClass == "spaceship");
                     break;
                 default:
                     itemList = InventoryManager.Instance.Items;
