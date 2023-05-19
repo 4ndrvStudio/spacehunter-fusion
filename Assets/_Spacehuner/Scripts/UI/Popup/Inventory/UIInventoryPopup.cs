@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayFab.ClientModels;
+using SH.Multiplayer;
 
 namespace SH
 {
@@ -115,6 +116,10 @@ namespace SH
 
         }
 
+        public void UseItem() {
+            Network_Player.Local.WeaponManager.UseWeapon(_preUseSlot.ItemConfig.ItemId);
+        }
+
         public void ChangeTab(UIInventoryTabName tab)
         {
             _currentTab = tab;
@@ -138,7 +143,7 @@ namespace SH
             Dictionary<string, GameObject> itemDictionary = new Dictionary<string, GameObject>();
 
             List<ItemInstance> itemList = new List<ItemInstance>();
-            Debug.Log(InventoryManager.Instance.Items.Count);
+     
             switch (_currentTab)
             {
                 case UIInventoryTabName.Weapon:

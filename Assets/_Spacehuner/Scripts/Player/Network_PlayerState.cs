@@ -34,9 +34,16 @@ namespace SH.Multiplayer
         [HideInInspector] public NetworkBool N_IsDash { get; set; }
         public bool L_IsDash;
 
+
+         [Networked(OnChanged = nameof(OnIsMiningChanged))]
+        [HideInInspector] public NetworkBool N_IsMining { get; set; }
+        public bool L_IsMining;
+
         [Networked(OnChanged = nameof(OnIsInsideBuildingChanged))]
         [HideInInspector] public NetworkBool N_IsInsideBuilding { get; set; }
         public bool L_IsInsideBuilding;
+
+        
 
         // Action State    
 
@@ -85,6 +92,23 @@ namespace SH.Multiplayer
         {
             this.N_IsDash = isDash;
         }
+
+        // Dash   
+        static void OnIsMiningChanged(Changed<Network_PlayerState> changed)
+        {
+            changed.Behaviour.OnIsMiningChanged();
+        }
+        private void OnIsMiningChanged()
+        {
+            L_IsMining= N_IsMining;
+        }
+
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        public void RPC_SetIsMining(bool isMining, RpcInfo info = default)
+        {
+            this.N_IsMining = isMining;
+        }
+
 
 
 
@@ -135,6 +159,9 @@ namespace SH.Multiplayer
             RPC_SetIsCombo(Anim.GetCurrentAnimatorStateInfo(3).IsTag("Combo"));
 
             RPC_SetIsDash(Anim.GetCurrentAnimatorStateInfo(3).IsTag("Dash")); 
+
+            RPC_SetIsMining(Anim.GetCurrentAnimatorStateInfo(3).IsTag("Mining")); 
+
 
         }
 

@@ -143,8 +143,8 @@ namespace SH.Multiplayer
             Anim.SetBool("onGround", _playerState.L_IsGrounded);
             
             Anim.applyRootMotion = _playerState.L_IsCombo || _playerState.L_IsAction;
-
-            if (_playerState.L_IsCombo || _playerState.L_IsAction || _playerState.L_IsDash)
+            
+            if ((_playerState.L_IsCombo || _playerState.L_IsAction || _playerState.L_IsDash) && !_playerState.L_IsMining)
             {
                 float offset = _playerState.L_IsDash ? 1.5f : 1f; 
                 transform.position += Anim.deltaPosition * offset;

@@ -23,27 +23,20 @@ namespace SH.Multiplayer
         [SerializeField] private LayerMask _mineralCollisionLayer;
         [SerializeField] private LayerMask _enemyCollisionLayer;
         [SerializeField] private LayerMask _playerCollisionLayer;
-        [SerializeField] private Transform _centerOverlapse;
 
-        [SerializeField] private Vector3 _extends;
-
+        [SerializeField] private Weapon _weaponInUse;
 
         private List<LagCompensatedHit> _lagCompensatedHits = new List<LagCompensatedHit>();
 
-        public void SetupCenterOverlapse(Transform centerTransform) => _centerOverlapse  = centerTransform;
-
-        public void SetupDamageZone(Transform centerTransfom, Vector3 extend) {
-            _centerOverlapse = centerTransfom;
-            _extends = extend;
-        }
+        public void SetupWeaponInUse(Weapon weapon) => _weaponInUse = weapon;
 
         public override void FixedUpdateNetwork()
         {
             if (Object.IsProxy == true)
                 return;
 
-            if(_playerState.L_IsInsideBuilding) return;
-            
+            if (_playerState.L_IsInsideBuilding) return;
+
             HasHitMineral();
 
             HasHitEnemy();
@@ -67,12 +60,14 @@ namespace SH.Multiplayer
         {
             if (CanHitMineral == false) return false;
 
-            if(_centerOverlapse == null) return false;
+            if (_weaponInUse == null) return false;
 
             _lagCompensatedHits.Clear();
 
-            var count = Runner.LagCompensation.OverlapBox(_centerOverlapse.transform.position, _extends, Quaternion.LookRotation(_centerOverlapse.transform.up),
-                Object.InputAuthority, _lagCompensatedHits, _mineralCollisionLayer.value);
+            var count = Runner.LagCompensation
+                                .OverlapBox(_weaponInUse.CenterOverlapse.transform.position,
+                                _weaponInUse.OverlapseExtends, Quaternion.LookRotation(_weaponInUse.CenterOverlapse.transform.up),
+                                Object.InputAuthority, _lagCompensatedHits, _mineralCollisionLayer.value);
 
             if (count <= 0) return false;
 
@@ -89,13 +84,15 @@ namespace SH.Multiplayer
         {
             if (CanHitMineral == false) return false;
 
-            if(_centerOverlapse == null) return false;
+            if (_weaponInUse == null) return false;
 
             _lagCompensatedHits.Clear();
 
-            var count = Runner.LagCompensation.OverlapBox(_centerOverlapse.transform.position, _extends, Quaternion.LookRotation(_centerOverlapse.transform.up),
-                Object.InputAuthority, _lagCompensatedHits, _enemyCollisionLayer.value);
-            
+            var count = Runner.LagCompensation
+                                .OverlapBox(_weaponInUse.CenterOverlapse.transform.position,
+                                            _weaponInUse.OverlapseExtends, Quaternion.LookRotation(_weaponInUse.CenterOverlapse.transform.up),
+                                            Object.InputAuthority, _lagCompensatedHits, _enemyCollisionLayer.value);
+
             if (count <= 0) return false;
 
             var networkEnemyDamageable = _lagCompensatedHits[0].GameObject.GetComponentInParent<Network_EnemyDamageable>();
@@ -105,16 +102,19 @@ namespace SH.Multiplayer
             return true;
         }
 
-        public bool HasHitPlayer() {
+        public bool HasHitPlayer()
+        {
 
             if (CanHitMineral == false) return false;
 
-            if(_centerOverlapse == null) return false;
-              _lagCompensatedHits.Clear();
+            if (_weaponInUse == null) return false;
+            _lagCompensatedHits.Clear();
 
-            var count = Runner.LagCompensation.OverlapBox(_centerOverlapse.transform.position, _extends, Quaternion.LookRotation(_centerOverlapse.transform.up),
-                Object.InputAuthority, _lagCompensatedHits, _playerCollisionLayer.value);
-            
+            var count = Runner.LagCompensation
+                        .OverlapBox(_weaponInUse.CenterOverlapse.transform.position,
+                                    _weaponInUse.OverlapseExtends, Quaternion.LookRotation(_weaponInUse.CenterOverlapse.transform.up),
+                                    Object.InputAuthority, _lagCompensatedHits, _playerCollisionLayer.value);
+
             if (count <= 0) return false;
 
             var networkPlayerDamageable = _lagCompensatedHits[0].GameObject.GetComponentInParent<Network_PlayerDamageable>();
@@ -125,7 +125,7 @@ namespace SH.Multiplayer
 
         }
 
-       
+
 
 
 

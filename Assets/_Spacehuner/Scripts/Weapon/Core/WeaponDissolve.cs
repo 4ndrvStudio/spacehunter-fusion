@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer))]
 public class WeaponDissolve : MonoBehaviour
 {
+    public bool AvoidDissolved;
+
     public bool IsDissolved;
 
     [SerializeField] private float _noiseStrength = 0.25f;
@@ -27,6 +29,7 @@ public class WeaponDissolve : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(AvoidDissolved == true) return;
 
         if (_startDissovle)
         {

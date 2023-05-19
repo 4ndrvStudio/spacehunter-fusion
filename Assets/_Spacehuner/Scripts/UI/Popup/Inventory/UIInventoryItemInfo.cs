@@ -17,6 +17,10 @@ namespace SH
         [SerializeField] private Color _useTextActiveColor;
         [SerializeField] private Color _useTextDeactiveColor;
 
+        void Start() {
+            _useButton.onClick.AddListener(()=> UIInventoryPopup.Instance.UseItem());
+        }
+
         public void DisplayItemInfo(UIItemSlot uiInventoryItem) {
             _displayImage.gameObject.SetActive(false);
             _displayImage.sprite = uiInventoryItem.ItemIcon;

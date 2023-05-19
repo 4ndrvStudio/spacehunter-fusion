@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SH.Weapon
+namespace SH
 {
     public class Weapon : MonoBehaviour
     {
@@ -10,7 +10,7 @@ namespace SH.Weapon
         public WeaponDissolve WeaponDissolve;
         public Transform CenterOverlapse;
         public Vector3 OverlapseExtends;
-
+    
         void OnDrawGizmosSelected()
         {
             // Draw a semitransparent red cube at the transforms position

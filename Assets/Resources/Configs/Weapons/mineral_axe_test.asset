@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: mineral_axe_test
   m_EditorClassIdentifier: 
   ItemId: weapon_mineral_axe
-  Prefab: {fileID: 0}
+  Prefab: {fileID: 1346367790595122825, guid: bb335a3ab0ffd9c4dbdd8668488a9df7, type: 3}
   WeaponType: 0
+  Weapon: {fileID: 9087303765512274169, guid: bb335a3ab0ffd9c4dbdd8668488a9df7, type: 3}

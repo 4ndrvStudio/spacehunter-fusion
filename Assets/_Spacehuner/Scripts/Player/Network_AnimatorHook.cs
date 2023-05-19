@@ -12,10 +12,9 @@ namespace SH.Multiplayer
         [SerializeField] private List<GameObject> _attackVFXList;
         [SerializeField] private List<GameObject> _comboVFXList;
 
-        [SerializeField] private GameObject _weaponObject;
-        [SerializeField] private WeaponDissolve _weaponDissolve;
 
-        [SerializeField] private Transform _centerWeapon;
+        private WeaponDissolve _weaponDissolve;
+
 
         //time active weapon
         [SerializeField] private float _weaponExistTime = 3f;
@@ -32,23 +31,28 @@ namespace SH.Multiplayer
 
         void FixedUpdate()
         {
-
-        
-            if (_weaponDissolve.IsDissolved == false)
+            if (_weaponDissolve != null)
             {
-                _anim.SetLayerWeight(2,0.75f);
-                m_weaponExistTime -= Time.fixedDeltaTime;
-
-                if (m_weaponExistTime <= 0)
+                if (_weaponDissolve.IsDissolved == false)
                 {
-                    m_weaponExistTime = _weaponExistTime;
-                   
-                    _weaponDissolve.DissolveWeapon();
-                    
+                    _anim.SetLayerWeight(2, 0.75f);
+                    m_weaponExistTime -= Time.fixedDeltaTime;
+
+                    if (m_weaponExistTime <= 0)
+                    {
+                        m_weaponExistTime = _weaponExistTime;
+
+                        _weaponDissolve.DissolveWeapon();
+
+                    }
                 }
-            } else {
-                _anim.SetLayerWeight(2,0f);
+                else
+                {
+                    _anim.SetLayerWeight(2, 0f);
+                }
             }
+
+
 
 
         }
@@ -56,8 +60,10 @@ namespace SH.Multiplayer
         public void SetWeaponCollider(Network_WeaponCollider weaponColider)
         {
             _weaponColider = weaponColider;
-            weaponColider.SetupCenterOverlapse(_centerWeapon);
         }
+
+        public void SetDissolve(Weapon weapon) => _weaponDissolve = weapon.WeaponDissolve;
+
         public void SetComboVFXList(List<GameObject> comboVFX)
         {
             _comboVFXList = comboVFX;
@@ -65,7 +71,6 @@ namespace SH.Multiplayer
 
         public void EnableCollider(CanHitName canHitName)
         {
-
             _weaponDissolve.ActiveWeapon();
 
             _weaponColider.ToggleActiveCollider(CanHitName.Mineral, true);

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 namespace SH.Multiplayer
 {
     [CreateAssetMenu(fileName = "Weapon Config" , menuName = "Game Data/Weapon/Config")]
@@ -10,6 +9,7 @@ namespace SH.Multiplayer
         public string ItemId;
         public GameObject Prefab;
         public WeaponType WeaponType;
+        public Weapon Weapon;
     }
 
     public enum WeaponType {

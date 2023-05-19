@@ -62,7 +62,7 @@ namespace SH.Multiplayer
                 UIControllerManager.Instance.ShowGotoMiningBtn(false);
 
                 //RPC_SetBody((int)PlayerDataManager.Character.Data.CharacterInUse.CharacterType);
-                RPC_SetBody(6);
+                RPC_SetBody(3);
             
 
                 if((int)Runner.CurrentScene > 1 ) 
@@ -112,8 +112,6 @@ namespace SH.Multiplayer
 
         private void OnBodyChanged()
         {
-
-
             this._body =  Instantiate(_bodyList[(int)Body -1 ],this.transform);
 
 
@@ -132,8 +130,13 @@ namespace SH.Multiplayer
             _playerAnimation.Anim = animator;
             
             AnimatorHook = this.gameObject.GetComponentInChildren<Network_AnimatorHook>();
+
             AnimatorHook.SetWeaponCollider(_networkWeaponCollider);
             AnimatorHook.SetComboVFXList(_playerCombat.ComboVFXList);
+         
+            Network_WeaponHook weaponHook = this.gameObject.GetComponentInChildren<Network_WeaponHook>();
+            
+            _weaponManager.SetupWeapon(weaponHook.WeaponHolder, AnimatorHook);
             
         }
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]

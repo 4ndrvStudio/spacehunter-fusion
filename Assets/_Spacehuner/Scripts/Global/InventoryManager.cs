@@ -8,6 +8,7 @@ using SH.PlayerData;
 using SH.AzureFunction;
 using SH.Models.Azure;
 using System.Linq;
+using SH.Multiplayer;
 
 namespace SH
 {
@@ -18,12 +19,16 @@ namespace SH
 
         [SerializeField] private List<ItemInstance> _items = new List<ItemInstance>();
         [HideInInspector] public List<ItemInstance> Items => _items;
-
+        
+        
 
         public List<Sprite> ItemFrame = new List<Sprite>();
 
         [HideInInspector]  
         public List<ItemConfig> ItemConfigs = new List<ItemConfig>();
+
+        
+        public List<WeaponConfig> WeaponConfigs = new List<WeaponConfig>();
 
         public static UnityAction OnInventoryDataChange;
 
@@ -35,6 +40,10 @@ namespace SH
 
             //Load Item Configs
             ItemConfigs = Resources.LoadAll<ItemConfig>("Configs/Items").ToList<ItemConfig>();
+
+            //Load all Weapon configs;
+            WeaponConfigs = Resources.LoadAll<WeaponConfig>("Configs/Weapons").ToList<WeaponConfig>();
+
         }
 
         public void GetInventoryData()

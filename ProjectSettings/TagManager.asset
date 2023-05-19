@@ -14,6 +14,7 @@ TagManager:
   - Planet
   - FX
   - Cinemachine_Ground Ignore
+  - WallCollider
   layers:
   - Default
   - TransparentFX

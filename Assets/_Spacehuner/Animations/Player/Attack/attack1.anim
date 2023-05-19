@@ -119652,7 +119652,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 1
   m_Events:
-  - time: 0.2
+  - time: 0.15
     functionName: EnableCollider
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -119666,7 +119666,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.35
+  - time: 0.41666666
     functionName: DisableCollider
     data: 
     objectReferenceParameter: {fileID: 0}

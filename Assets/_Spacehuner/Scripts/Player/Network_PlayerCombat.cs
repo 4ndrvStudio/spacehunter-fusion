@@ -24,7 +24,7 @@ namespace SH.Multiplayer
         public bool HasCombo1 { get; private set; }
 
         [Networked, HideInInspector]
-        public int DashAttackCount {get; set; }
+        public int DashAttackCount { get; set; }
 
         public bool HasDashAttack { get; private set; }
 
@@ -39,8 +39,17 @@ namespace SH.Multiplayer
 
         private Interpolator<int> _dashCountInterpolator;
 
+        public string[] NormalAttackNameList;
+       
+        public string[] MiningAttackNameList;
 
         public string[] AttackName;
+
+        //just fortest 
+        [Networked(OnChanged = nameof(OnIsMiningWeaponChanged))]
+        public NetworkBool N_IsMiningWeapon {get; set;}
+        public bool L_IsMiningWeapon;
+        
         public string Combo1Name;
         public string DashAttackName;
 
@@ -103,7 +112,8 @@ namespace SH.Multiplayer
 
                     if (L_IndexAttack >= AttackName.Length) L_IndexAttack = 0;
 
-                    if(Runner.IsServer == false) {
+                    if (Runner.IsServer == false)
+                    {
 
                         RPC_SetIndexAttack(L_IndexAttack);
 
@@ -111,7 +121,7 @@ namespace SH.Multiplayer
 
                     //AimSupport();
                     AttackCount++;
-                    
+
                     _avoidAttackTime = TickTimer.CreateFromSeconds(Runner, 0.2f);
                 }
 
@@ -120,13 +130,15 @@ namespace SH.Multiplayer
             HasCombo1 = input.Buttons.WasPressed(_lastButtonsInput, EInputButtons.Combo1);
             HasDashAttack = input.Buttons.WasPressed(_lastButtonsInput, EInputButtons.DashAttack);
 
-            if(HasCombo1) {
+            if (HasCombo1)
+            {
 
                 Combo1Count++;
 
             }
 
-            if(HasDashAttack) {
+            if (HasDashAttack)
+            {
                 DashAttackCount++;
             }
 
@@ -134,7 +146,7 @@ namespace SH.Multiplayer
 
         }
 
-        
+
         void AimSupport()
         {
             if (_playerAim.SelectedNearest != null)
@@ -160,7 +172,7 @@ namespace SH.Multiplayer
                 // {
                 //     transform.DOMove(transform.position + transform.forward * _attackMoveDis, _attackMoveDuration);
                 // }
-               
+
             }
         }
 
@@ -173,17 +185,41 @@ namespace SH.Multiplayer
         }
         private void OnIndexAttackChanged()
         {
-            // Debug.Log($"Nickname changed for player to {nickName} for player {gameObject.name}");
             L_IndexAttack = N_IndexAttack;
         }
 
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_SetIndexAttack(int indexAttack, RpcInfo info = default)
         {
-            
             this.N_IndexAttack = (byte)indexAttack;
         }
-    
+
+
+
+        //change AttackList
+
+        static void OnIsMiningWeaponChanged(Changed<Network_PlayerCombat> changed)
+        {
+            changed.Behaviour.OnIsMiningWeaponChanged();
+        }
+        private void OnIsMiningWeaponChanged()
+        {
+             L_IsMiningWeapon = N_IsMiningWeapon;
+             
+             if(L_IsMiningWeapon == true) {
+                AttackName = MiningAttackNameList;
+             } else {
+                AttackName = NormalAttackNameList;
+             }
+        }
+
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        public void RPC_SetIsMiningWeapon(bool isMine, RpcInfo info = default)
+        {
+          this.N_IsMiningWeapon = isMine;
+        }
+
+
 
 
 

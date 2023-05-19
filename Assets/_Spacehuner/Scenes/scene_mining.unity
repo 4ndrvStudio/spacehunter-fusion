@@ -5482,7 +5482,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectList:
-  - {fileID: 260531348494057700}
   - {fileID: 346307518}
 --- !u!1001 &323785765
 PrefabInstance:
@@ -23577,7 +23576,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 60.000004
+  field of view: 50
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
