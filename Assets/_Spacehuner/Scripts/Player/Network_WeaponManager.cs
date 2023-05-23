@@ -23,21 +23,14 @@ namespace SH.Multiplayer
         [SerializeField] private WeaponConfig _weaponConfig;
 
         [Networked(OnChanged = nameof(OnWeaponInUseIdChanged))]
-        public byte N_WeaponInUseId { get; set; }
-        public int L_WeaponInUseId;
-
-        [Networked(OnChanged = nameof(OnHasEquipedWeaponChanged))]
-        public NetworkBool N_HasEquipWeapon { get; set; }
-        public bool L_HasEquipWeapon;
+        public NetworkString<_32> N_WeaponInUseId { get; set; }
+        public string L_WeaponInUseId;
 
 
         public override void Spawned()
         {
 
-            if (Object.HasInputAuthority == false) return;
-
-            RPC_SetEquippedWeapon(true);
-            
+            if (Object.HasInputAuthority == false) return;            
        
         }
 
@@ -57,31 +50,49 @@ namespace SH.Multiplayer
         }
         private void OnWeaponInUseIdChanged()
         {
-            L_WeaponInUseId = N_WeaponInUseId;
+            L_WeaponInUseId = N_WeaponInUseId.ToString();
+            
+
+            _weaponConfig = InventoryManager.Instance.WeaponConfigs.Find(config => config.ItemId == L_WeaponInUseId);
+            
+
+            if(_weaponConfig == null) return;
+
+
+            if (_weaponModel != null)
+                Destroy(_weaponModel.gameObject);
+
+            _weaponModel = Instantiate(_weaponConfig.Prefab);
+
+            _weaponModel.transform.SetParent(_weaponHolder.transform);
+            _weaponModel.transform.localPosition = _weaponConfig.Prefab.transform.position;
+            _weaponModel.transform.localRotation = _weaponConfig.Prefab.transform.rotation;
+
+            if (Object.HasInputAuthority)
+            {
+                switch (_weaponConfig.WeaponType)
+                {
+                    case WeaponType.Sword:
+                        _playerCombat.RPC_SetIsMiningWeapon(false);
+                        break;
+                    case WeaponType.MineralAxe:
+                        _playerCombat.RPC_SetIsMiningWeapon(true);
+                        break;
+                }
+            }
+
+            _animatorHook.SetDissolve(_weaponModel.gameObject.GetComponent<Weapon>());
+            _weaponCollider.SetupWeaponInUse(_weaponModel.gameObject.GetComponent<Weapon>());
+
+
         }
 
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-        public void RPC_SetWeaponInUse(int weaponInUseID, RpcInfo info = default)
+        public void RPC_SetWeaponInUse(string weaponInUseID, RpcInfo info = default)
         {
-            this.N_WeaponInUseId = (byte)weaponInUseID;
-        }
-
-        //dectect equiped
-        static void OnHasEquipedWeaponChanged(Changed<Network_WeaponManager> changed)
-        {
-            changed.Behaviour.OnHasEquipedWeaponChanged();
-        }
-        private void OnHasEquipedWeaponChanged()
-        {
-            L_HasEquipWeapon = N_HasEquipWeapon;
-
-            if (L_HasEquipWeapon == false) RPC_SetWeaponInUse(0);
-        }
-
-        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-        public void RPC_SetEquippedWeapon(bool hasEquip, RpcInfo info = default)
-        {
-            this.N_HasEquipWeapon = hasEquip;
+    
+            this.N_WeaponInUseId = weaponInUseID;
+            
         }
 
         public void SetupWeapon(GameObject weaponHolder, Network_AnimatorHook animatorHook)
@@ -90,7 +101,7 @@ namespace SH.Multiplayer
             _animatorHook = animatorHook;
 
             //set default weapon
-            UseWeapon("weapon_swordtest");
+            RPC_SetWeaponInUse("weapon_swordtest");
         }
 
         public void UseWeapon(string weaponId) {
@@ -124,8 +135,6 @@ namespace SH.Multiplayer
 
             _animatorHook.SetDissolve(_weaponModel.gameObject.GetComponent<Weapon>());
             _weaponCollider.SetupWeaponInUse(_weaponModel.gameObject.GetComponent<Weapon>());
-            Debug.Log(_weaponHolder);
-
 
         }
 

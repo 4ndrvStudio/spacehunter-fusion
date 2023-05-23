@@ -61,8 +61,8 @@ namespace SH.Multiplayer
                 Local = this;
                 UIControllerManager.Instance.ShowGotoMiningBtn(false);
 
-                //RPC_SetBody((int)PlayerDataManager.Character.Data.CharacterInUse.CharacterType);
-                RPC_SetBody(3);
+                RPC_SetBody((int)PlayerDataManager.Character.Data.CharacterInUse.CharacterType);
+                //RPC_SetBody(3);
             
 
                 if((int)Runner.CurrentScene > 1 ) 

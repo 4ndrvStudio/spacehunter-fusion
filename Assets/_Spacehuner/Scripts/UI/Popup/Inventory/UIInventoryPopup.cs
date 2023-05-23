@@ -117,7 +117,7 @@ namespace SH
         }
 
         public void UseItem() {
-            Network_Player.Local.WeaponManager.UseWeapon(_preUseSlot.ItemConfig.ItemId);
+            Network_Player.Local.WeaponManager.RPC_SetWeaponInUse(_preUseSlot.ItemConfig.ItemId);
         }
 
         public void ChangeTab(UIInventoryTabName tab)

@@ -154,9 +154,9 @@ namespace SH.Multiplayer
         private void RenderWeaponManager()
         {
         
-            float targetWeightRightHandLayer = _weaponManager.L_HasEquipWeapon == true ? 0.75f : 0f;
+            // float targetWeightRightHandLayer = _weaponManager.L_HasEquipWeapon == true ? 0.75f : 0f;
           
-            Anim.SetLayerWeight(2,targetWeightRightHandLayer);
+            // Anim.SetLayerWeight(2,targetWeightRightHandLayer);
         }
 
 
