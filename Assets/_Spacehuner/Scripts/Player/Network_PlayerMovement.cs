@@ -11,7 +11,6 @@ namespace SH.Multiplayer
         //Component
         [SerializeField] private Network_PlayerState _playerState;
         [SerializeField] private NetworkRigidbody _rigid;
-        [SerializeField] private CharacterController _cc;
 
         //Network
         [Networked, HideInInspector]
@@ -23,7 +22,6 @@ namespace SH.Multiplayer
 
         public float InterpolatedSpeed => _speedInterpolator.Value;
 
-
         // config
         [SerializeField] private float _speed;
         [SerializeField] private float _jumpHeight = 5f;
@@ -33,8 +31,6 @@ namespace SH.Multiplayer
         [SerializeField] private Transform _lookPoint;
         [SerializeField] private Transform _groundCheck;
         [SerializeField] private LayerMask _groundMask;
-
-
 
         // c# out
         private float _speedSmoothVelocity;
@@ -85,22 +81,19 @@ namespace SH.Multiplayer
                 if (!_playerState.L_IsCombo && !_playerState.L_IsMining)
                 {
                     float targetRotation = Mathf.Atan2(moveDir.x, moveDir.y) * Mathf.Rad2Deg + mainCamEuler.y;
+                    
                     Quaternion targetQuaternion = Quaternion.Euler(0f, targetRotation, 0f);
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, targetQuaternion, _turnSmoothTime * Runner.DeltaTime);
                 }
             }
 
-
             float targetspeed = input.MoveDirection.magnitude * _speed;
 
             if (Speed > 0.15f && !_playerState.L_IsAction && !_playerState.L_IsMining)
             {
-                transform.Translate(transform.forward * targetspeed * Runner.DeltaTime, Space.World);
+                //transform.Translate(transform.forward * targetspeed * Runner.DeltaTime, Space.World);
                 //_rigid.Rigidbody.MovePosition(transform.position + transform.forward * targetspeed * Runner.DeltaTime);
-                //_rigid.Rigidbody.velocity = transform.forward * targetspeed * Runner.DeltaTime;
-                
-                //MoveWithCollisionCheck(transform.forward * targetspeed * Runner.DeltaTime, targetspeed * Runner.DeltaTime);
-           
+                MoveWithCollisionCheck(transform.forward * targetspeed * Runner.DeltaTime, targetspeed * Runner.DeltaTime);
             }
 
 
@@ -116,33 +109,46 @@ namespace SH.Multiplayer
                 {
                     HasJumped = false;
                 }
-
             }
 
             HasJumped = !_playerState.L_IsGrounded;
 
-
             _lastButtonsInput = input.Buttons;
 
+            // root motion move
+            if ((_playerState.L_IsCombo || _playerState.L_IsAction || _playerState.L_IsDash) && !_playerState.L_IsMining)
+            {
+                RaycastHit hit;
+
+                if (!Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), transform.forward, out hit, 0.5f, _groundMask))
+                {
+                        float offset = _playerState.L_IsDash ? 1.5f : 1f;
+
+                        transform.position += Network_Player.Local.PlayerAnimation.Anim.deltaPosition * offset;
+
+                } 
+
+
+            }
+
         }
+
 
         private void MoveWithCollisionCheck(Vector3 moveDirection, float moveDistance)
         {
-            // Kiểm tra va chạm trước khi di chuyển
             RaycastHit hit;
-            if (_rigid.Rigidbody.SweepTest(moveDirection, out hit, moveDistance))
-            {
-                Debug.Log(hit.collider.name);
-                if(hit.collider.tag == "WallCollider") {
-                    Debug.Log("isWall");
-                    moveDistance = hit.distance - 0.1f; 
-                }
-                
-            }
 
-            // Di chuyển với khoảng cách đã được điều chỉnh
+            if(Physics.Raycast(transform.position + new Vector3(0,0.5f,0), transform.forward,out hit, 2f, _groundMask)) {
+                
+                if(hit.distance < 0.4f) moveDistance = 0;
+
+            };
+
+         
+
             _rigid.Rigidbody.MovePosition(_rigid.Rigidbody.position + moveDirection.normalized * moveDistance);
         }
+
 
 
         // For test Mode
@@ -155,9 +161,6 @@ namespace SH.Multiplayer
         {
             this.transform.position = pos;
         }
-
-
-
 
     }
 }

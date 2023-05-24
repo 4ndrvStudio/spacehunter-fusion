@@ -129,7 +129,7 @@ namespace SH.Multiplayer
             }
             else if (_lastVisibleGetHit > _playerDamageable.HitCount)
             {
-                
+
             }
             _lastVisibleGetHit = _playerDamageable.HitCount;
 
@@ -141,21 +141,33 @@ namespace SH.Multiplayer
             Anim.SetFloat("movement", _playerMovement.Speed);
 
             Anim.SetBool("onGround", _playerState.L_IsGrounded);
-            
+
             Anim.applyRootMotion = _playerState.L_IsCombo || _playerState.L_IsAction;
-            
-            if ((_playerState.L_IsCombo || _playerState.L_IsAction || _playerState.L_IsDash) && !_playerState.L_IsMining)
-            {
-                float offset = _playerState.L_IsDash ? 1.5f : 1f; 
-                transform.position += Anim.deltaPosition * offset;
-            }
+
+
+            // if ((_playerState.L_IsCombo || _playerState.L_IsAction || _playerState.L_IsDash) && !_playerState.L_IsMining)
+            // {
+            //     RaycastHit hit;
+            //     if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), transform.forward, out hit, 2f, _groundMask))
+            //     {
+
+            //         if (hit.distance < 0.4f)
+            //         {
+            //             float offset = _playerState.L_IsDash ? 1.5f : 1f;
+            //             transform.position += Anim.deltaPosition * offset;
+            //         }
+
+            //     };
+
+
+            // }
         }
 
         private void RenderWeaponManager()
         {
-        
+
             // float targetWeightRightHandLayer = _weaponManager.L_HasEquipWeapon == true ? 0.75f : 0f;
-          
+
             // Anim.SetLayerWeight(2,targetWeightRightHandLayer);
         }
 
