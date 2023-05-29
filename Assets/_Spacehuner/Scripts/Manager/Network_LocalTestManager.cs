@@ -20,8 +20,6 @@ namespace SH.Multiplayer
         async void Start() {
 
            //StartCoroutine(StartGameTest());       
-            
-          
         }
 
 

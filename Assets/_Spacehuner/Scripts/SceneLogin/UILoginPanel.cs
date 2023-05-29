@@ -100,13 +100,6 @@ namespace SH.Account
                         Debug.Log(err);
                     });
 
-                    // Models.Azure.ClaimItemRequestModel[] claimItemsModel  = new Models.Azure.ClaimItemRequestModel[1];
-                    // claimItemsModel[0] = new Models.Azure.ClaimItemRequestModel {
-                    //     ItemId = "mineral",
-                    //     Level= 1
-                    // };
-
-                    // InventoryManager.Instance.AddInventoryItem(claimItemsModel);
 
                     PlayFabManager.Instance.CheckAccountInfo((result) =>
                     {

@@ -23,6 +23,7 @@ namespace SH.Multiplayer
         [SerializeField] private HealthBar _healthBar;
         [SerializeField] private GameObject _body;
         [SerializeField] private GameObject _destroyFX;
+        [SerializeField] private GameObject _awardObject;
 
 
 
@@ -60,7 +61,6 @@ namespace SH.Multiplayer
         public override void FixedUpdateNetwork()
         {
 
-
             if (Object.HasStateAuthority && _wasHit)
             {
                 _wasHit = false;
@@ -69,10 +69,13 @@ namespace SH.Multiplayer
 
                 if (_hp <= 0)
                 {
-
                     MineralDestroy();
-
-
+                }
+            }
+            if(Object.HasInputAuthority) {
+                  if (_hp <= 0)
+                {
+                      SpawnAward();
                 }
             }
 
@@ -80,8 +83,16 @@ namespace SH.Multiplayer
 
         async void MineralDestroy()
         {
+     
+          
             await Task.Delay(2000);
+            
             Network_RoomMining.MineralCollected(Object);
+        }
+
+        private void SpawnAward() {
+            Debug.Log("Award Spawned");
+            Instantiate(_awardObject, this.transform.position, Quaternion.identity);
         }
 
 

@@ -480,7 +480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1948375778727468466}
   - component: {fileID: 183396696189257182}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Minimap Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24573,6 +24573,7 @@ MonoBehaviour:
   _healthBar: {fileID: 9185772165435558541}
   _body: {fileID: 8512008002792989096}
   _destroyFX: {fileID: 6120695370420253659}
+  _awardObject: {fileID: 150714379677885132, guid: c1c946d233d99744eb3d18835d2cd88e, type: 3}
 --- !u!114 &6012496251642522686
 MonoBehaviour:
   m_ObjectHideFlags: 0
