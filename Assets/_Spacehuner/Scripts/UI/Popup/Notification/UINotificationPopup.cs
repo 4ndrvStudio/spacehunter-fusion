@@ -18,9 +18,15 @@ public class UINotificationPopup : UIPopup
     [SerializeField] private GameObject _noBtn;
     [SerializeField] private GameObject _closeBtn;
 
+    [SerializeField] private Color _completeColor;
+        [SerializeField] private Color _failColor;
+
     private void Start()
     {
         Show();
+
+        _okBtn.GetComponent<Button>().onClick.AddListener(() => Hide());
+
     }
 
     public override void Show(object customProperties = null)
@@ -43,6 +49,9 @@ public class UINotificationPopup : UIPopup
                         break;
                 case NotifyProperty.CloseBtn : _closeBtn.SetActive(bool.Parse(property.Value));
                         break;
+                case NotifyProperty.State : 
+                        _title.color =bool.Parse(property.Value) ?  _completeColor : _failColor;
+                        break;
                 case NotifyProperty.TargetConfirm:   
                         _okBtn.GetComponent<Button>().onClick.AddListener(()=> { ReturnToStation(property.Value);});
                         _yesBtn.GetComponent<Button>().onClick.AddListener(()=> { ReturnToStation(property.Value);});
@@ -61,6 +70,7 @@ public class UINotificationPopup : UIPopup
     public void ReturnToStation(string sceneName) 
     {
         Debug.Log(sceneName);
+        
     }
 }
 
@@ -72,5 +82,6 @@ public enum NotifyProperty {
         NoBtn,
         CloseBtn,
         TargetConfirm,
+        State
 }
 

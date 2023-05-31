@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class UIPopup : MonoBehaviour
 {
     [SerializeField] private PopupName _popupName = PopupName.None;
@@ -11,6 +11,10 @@ public class UIPopup : MonoBehaviour
 
     public virtual void Show(object customProperties = null)
     {
+        this._customProperties = customProperties;
+        gameObject.SetActive(true);
+    }
+    public virtual void ShowWithCallback(object customProperties = null, UnityAction callback = null) {
         this._customProperties = customProperties;
         gameObject.SetActive(true);
     }
@@ -25,9 +29,11 @@ public class UIPopup : MonoBehaviour
 
 public enum PopupName
 {
-    None,
-    Setting,
-    Inventory,
-    Notification,
-    UpdateNotification
+    None=0,
+    Setting=1,
+    Inventory=2,
+    Notification=3,
+    UpdateNotification=4,
+
+    SuiNotification=999
 }

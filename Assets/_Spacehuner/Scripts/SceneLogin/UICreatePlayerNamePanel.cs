@@ -13,7 +13,8 @@ namespace SH.Account
     {
         [SerializeField] private TMP_InputField _inputName = default;
         [SerializeField] private GameObject _slotCharacterPanel = default;
-
+        [SerializeField] private GameObject _createSuiWalletPanel = default;
+ 
         private void OnEnable()
         {
             _inputName.text = null;
@@ -49,7 +50,8 @@ namespace SH.Account
                         Debug.Log("Get data user success!");
                         PlayerDataManager.Instance.Setup(resp);
                         gameObject.SetActive(false);
-                        _slotCharacterPanel.SetActive(true);
+                        //_slotCharacterPanel.SetActive(true);
+                        _createSuiWalletPanel.SetActive(true);
                     }
                     else
                     {

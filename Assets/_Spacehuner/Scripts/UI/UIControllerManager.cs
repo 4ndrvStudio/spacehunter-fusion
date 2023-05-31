@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SH.Define;
 using SH.Multiplayer;
+using TMPro;
 
 namespace SH
 {
@@ -28,6 +29,7 @@ namespace SH
         [SerializeField] private UIButtonCustom _combo1Btn;
         [SerializeField] private UIButtonCustom _dashAttackBtn;
         [SerializeField] private UIButtonCustom _activeTestModeBtn;
+
         
         //dance
         [SerializeField] private UIButtonCustom _danceBtn;
@@ -48,6 +50,13 @@ namespace SH
         
         public bool IsActive = false;
 
+        [Header("SUI Properties")]
+        [SerializeField] private TextMeshProUGUI _suiAddressText;
+        [SerializeField] private TextMeshProUGUI _suiBalanceText;
+        [SerializeField] private Button _suiAddressCoppyButton;
+        [SerializeField] private Button _suiBalanceRefreshButton;
+
+
         void Awake()
         {
             if (Instance == null)
@@ -60,8 +69,30 @@ namespace SH
         {
             _inventoryBtn.onClick.AddListener(() => OpenInventory());
             _gotoMiningBtn.onClick.AddListener(() => GotoMining());
-
+            SetupSUI();
         }
+
+        private void SetupSUI() {
+            
+            SetupBalance();
+            string suiAddress = SuiWallet.GetActiveAddress();
+            _suiAddressText.text = suiAddress.Substring(0, 11) + "..." + suiAddress.Substring(suiAddress.Length - 5);
+
+            _suiAddressCoppyButton.onClick.AddListener(()=> {
+                UniClipboard.SetText(SuiWallet.GetActiveAddress());
+                UIManager.Instance.ShowAlert("Your address has been coppied!",AlertType.Normal);
+            });
+
+            _suiBalanceRefreshButton.onClick.AddListener(() => {
+                SetupBalance();
+            });
+        }
+        
+        private async void SetupBalance() {
+             string balance = await SuiWalletManager.GetSuiWalletBalance();
+            _suiBalanceText.text = $"{balance} SUI";
+        }
+
 
         public void OpenInventory() {
             HideAllController();

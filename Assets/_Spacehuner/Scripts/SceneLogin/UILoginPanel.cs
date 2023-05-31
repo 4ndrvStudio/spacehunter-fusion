@@ -85,7 +85,7 @@ namespace SH.Account
                     }
 
                     Debug.Log("Login success!");
-
+            
                     //check update
                     bool requireUpdate = await GameManager.Instance.CheckUpdate();
                     if(requireUpdate) {
@@ -93,8 +93,9 @@ namespace SH.Account
                         UIManager.Instance.ShowPopup(PopupName.UpdateNotification);
                     }
 
-                    PlayFabManager.Instance.GetInventoryData(res => {
+                    PlayFabManager.Instance.GetInventoryData( res => {
                         Debug.Log(res.Inventory.Count);
+                   
                     },
                     err => {
                         Debug.Log(err);

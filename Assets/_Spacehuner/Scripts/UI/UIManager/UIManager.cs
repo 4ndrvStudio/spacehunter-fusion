@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
 using SH.Networking.Chat;
+using UnityEngine.Events;
 
 public class UIManager : MonoBehaviour
 {
@@ -53,6 +54,19 @@ public class UIManager : MonoBehaviour
 
         popup.Show(customProperties);
     }
+     public void ShowPopupWithCallback(PopupName name, object customProperties = null, UnityAction callback = null)
+    {
+        var popup = _lstPopup.FirstOrDefault((popup) => popup.PopupName == name);
+        if(popup == null)
+        {
+            Debug.LogError("Invalid popup name");
+            return;
+        }
+
+        popup.ShowWithCallback(customProperties, callback);
+    }
+
+
 
 
     public void HidePopup(PopupName name)

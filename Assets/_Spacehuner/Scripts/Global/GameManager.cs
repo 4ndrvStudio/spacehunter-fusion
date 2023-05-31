@@ -25,7 +25,10 @@ namespace SH
 
             _versionText.text = GameVersion;
 
+            
+
         }
+
         void LateUpdate()
         {
 
