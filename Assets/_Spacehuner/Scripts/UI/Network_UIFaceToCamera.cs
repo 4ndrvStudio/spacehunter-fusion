@@ -7,9 +7,14 @@ namespace SH.Multiplayer
 {
     public class Network_UIFaceToCamera : MonoBehaviour
     {
-       void Update() {
-            transform.LookAt(CameraManager.Instance.GetTransform());
-       }
+        void Update()
+        {
+            if (Application.isBatchMode == false)
+            {
+                transform.LookAt(CameraManager.Instance.GetTransform());
+            }
+
+        }
     }
 
 }

@@ -43,6 +43,7 @@ namespace SH
 
             //Load all Weapon configs;
             WeaponConfigs = Resources.LoadAll<WeaponConfig>("Configs/Weapons").ToList<WeaponConfig>();
+            
 
         }
 

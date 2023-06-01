@@ -48,13 +48,10 @@ namespace SH.Multiplayer
             if (Object == null) return;
             if (Object.HasStateAuthority == false) return;
             if (_wasHit) return;
-
-
+       
             if (Runner.TryGetPlayerObject(player, out var playerNetworkObject))
             {
-
                 playerNetworkObject.GetComponentInChildren<Network_WeaponCollider>().ToggleActiveCollider(CanHitName.Mineral, false);
-
             }
             _wasHit = true;
         }
@@ -65,7 +62,7 @@ namespace SH.Multiplayer
             {
                 _wasHit = false;
                 _hp--;
-
+                Debug.Log("Hit Mineral Minus");
 
                 if (_hp <= 0)
                 {

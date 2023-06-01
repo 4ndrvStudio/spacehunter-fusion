@@ -217,6 +217,7 @@ namespace SH.Multiplayer
         public void RPC_SetIsMiningWeapon(bool isMine, RpcInfo info = default)
         {
           this.N_IsMiningWeapon = isMine;
+        
         }
 
 

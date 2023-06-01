@@ -23,7 +23,7 @@ namespace SH.Multiplayer
             _currentHealth = currentHealth;
             _sliderHealth.maxValue = _maxHealth;
             _sliderHealth.value = _maxHealth;
-           // _tmpHealth.SetText($"{_currentHealth}/{_maxHealth}");
+            // _tmpHealth.SetText($"{_currentHealth}/{_maxHealth}");
         }
 
         public void UpdateHealth(int currentHealth)
@@ -36,8 +36,12 @@ namespace SH.Multiplayer
 
         private void LateUpdate()
         {
-            transform.LookAt(CameraManager.Instance.GetTransform());
-            transform.Rotate(0, 180, 0);
+            if (Application.isBatchMode == false)
+            {
+                transform.LookAt(CameraManager.Instance.GetTransform());
+                transform.Rotate(0, 180, 0);
+            }
+
         }
     }
 }

@@ -145,22 +145,14 @@ namespace SH.Multiplayer
             Anim.applyRootMotion = _playerState.L_IsCombo || _playerState.L_IsAction;
 
 
-            // if ((_playerState.L_IsCombo || _playerState.L_IsAction || _playerState.L_IsDash) && !_playerState.L_IsMining)
-            // {
-            //     RaycastHit hit;
-            //     if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), transform.forward, out hit, 2f, _groundMask))
-            //     {
+            if ((_playerState.L_IsCombo || _playerState.L_IsAction || _playerState.L_IsDash) && !_playerState.L_IsMining)
+            {
+               
+              
+                        float offset = _playerState.L_IsDash ? 1.5f : 1f;
+                        transform.position += Anim.deltaPosition * offset;
 
-            //         if (hit.distance < 0.4f)
-            //         {
-            //             float offset = _playerState.L_IsDash ? 1.5f : 1f;
-            //             transform.position += Anim.deltaPosition * offset;
-            //         }
-
-            //     };
-
-
-            // }
+            }
         }
 
         private void RenderWeaponManager()

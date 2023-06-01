@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using System.Linq;
+// using SH.Core;
 
 namespace SH.Multiplayer
 {
@@ -26,18 +27,28 @@ namespace SH.Multiplayer
         public NetworkString<_32> N_WeaponInUseId { get; set; }
         public string L_WeaponInUseId;
 
-
+        public void Start() {
+         
+        }
         public override void Spawned()
         {
+        
+            if (Object.HasInputAuthority == false) return;  
 
-            if (Object.HasInputAuthority == false) return;            
-       
+             if(Object.HasInputAuthority) {
+                //set default weapon
+                RPC_SetWeaponInUse("weapon_mineral_axe");
+            }
+           
+                   
         }
 
         public override void FixedUpdateNetwork()
         {
 
             if (Object.HasInputAuthority == false) return;
+
+           
 
 
         }
@@ -53,7 +64,7 @@ namespace SH.Multiplayer
             L_WeaponInUseId = N_WeaponInUseId.ToString();
             
 
-            _weaponConfig = InventoryManager.Instance.WeaponConfigs.Find(config => config.ItemId == L_WeaponInUseId);
+            _weaponConfig = _weaponConfigList.Find(config => config.ItemId == L_WeaponInUseId);
             
 
             if(_weaponConfig == null) return;
@@ -90,9 +101,7 @@ namespace SH.Multiplayer
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_SetWeaponInUse(string weaponInUseID, RpcInfo info = default)
         {
-    
             this.N_WeaponInUseId = weaponInUseID;
-            
         }
 
         public void SetupWeapon(GameObject weaponHolder, Network_AnimatorHook animatorHook)
@@ -100,14 +109,18 @@ namespace SH.Multiplayer
             _weaponHolder  = weaponHolder;
             _animatorHook = animatorHook;
 
-            //set default weapon
-            RPC_SetWeaponInUse("weapon_swordtest");
+           
         }
 
         public void UseWeapon(string weaponId) {
-
-            _weaponConfig = InventoryManager.Instance.WeaponConfigs.Find(config => config.ItemId == weaponId);
             
+           
+            // if(Runner.IsServer == true) {
+            //     _weaponConfig = Global.WeaponConfigs.Find(config => config.ItemId == weaponId);
+            // } else {
+            //     _weaponConfig = InventoryManager.Instance.WeaponConfigs.Find(config => config.ItemId == weaponId);
+            // }
+
             if(_weaponConfig == null) return;
 
 

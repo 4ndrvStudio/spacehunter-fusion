@@ -28,11 +28,23 @@ namespace SH.Multiplayer
 
         private List<LagCompensatedHit> _lagCompensatedHits = new List<LagCompensatedHit>();
 
-        public void SetupWeaponInUse(Weapon weapon) => _weaponInUse = weapon;
+        public void SetupWeaponInUse(Weapon weapon)
+        {
+            _weaponInUse = weapon;
+            Debug.Log("Weapon change + " + _weaponInUse.gameObject.name);
+        }
 
         public override void FixedUpdateNetwork()
         {
-            if (Object.IsProxy == true)
+            if (Runner.IsClient)
+            {
+                if(_weaponInUse != null)
+                Debug.Log("Weapon Position " + _weaponInUse.CenterOverlapse.transform.position);
+            }
+
+
+
+            if (Runner.IsServer == false)
                 return;
 
             if (_playerState.L_IsInsideBuilding) return;
@@ -52,9 +64,7 @@ namespace SH.Multiplayer
                     CanHitMineral = isActive;
                     break;
             }
-
         }
-
 
         public bool HasHitMineral()
         {
@@ -69,8 +79,11 @@ namespace SH.Multiplayer
                                 _weaponInUse.OverlapseExtends, Quaternion.LookRotation(_weaponInUse.CenterOverlapse.transform.up),
                                 Object.InputAuthority, _lagCompensatedHits, _mineralCollisionLayer.value);
 
+            
             if (count <= 0) return false;
 
+           // Debug.Log(transform.parent.root.gameObject.name + "hit: "  + count);
+            
             _lagCompensatedHits.SortDistance();
 
             var networkMineral = _lagCompensatedHits[0].GameObject.GetComponentInParent<Network_Mineral>();

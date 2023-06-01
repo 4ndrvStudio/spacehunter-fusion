@@ -13,7 +13,7 @@ namespace SH.Multiplayer
         [SerializeField] private List<GameObject> _comboVFXList;
 
 
-        private WeaponDissolve _weaponDissolve;
+       [SerializeField] private WeaponDissolve _weaponDissolve;
 
 
         //time active weapon
@@ -43,7 +43,6 @@ namespace SH.Multiplayer
                         m_weaponExistTime = _weaponExistTime;
 
                         _weaponDissolve.DissolveWeapon();
-
                     }
                 }
                 else

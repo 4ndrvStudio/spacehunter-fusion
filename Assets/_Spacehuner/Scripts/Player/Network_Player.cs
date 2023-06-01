@@ -50,9 +50,6 @@ namespace SH.Multiplayer
         //fortest  
         public Network_AnimatorHook AnimatorHook;
 
-
-
-
         public override void Spawned()
         {
             if (Object.HasInputAuthority)
@@ -136,7 +133,10 @@ namespace SH.Multiplayer
          
             Network_WeaponHook weaponHook = this.gameObject.GetComponentInChildren<Network_WeaponHook>();
             
+           
             _weaponManager.SetupWeapon(weaponHook.WeaponHolder, AnimatorHook);
+            
+          
             
         }
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]

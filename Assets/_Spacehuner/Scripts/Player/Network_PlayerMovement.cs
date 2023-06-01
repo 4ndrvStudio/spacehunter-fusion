@@ -9,6 +9,7 @@ namespace SH.Multiplayer
     {
 
         //Component
+    
         [SerializeField] private Network_PlayerState _playerState;
         [SerializeField] private NetworkRigidbody _rigid;
 
@@ -56,6 +57,18 @@ namespace SH.Multiplayer
             if (Object.IsProxy == true)
                 return;
 
+            //  // root motion move
+            // if ((_playerState.L_IsCombo || _playerState.L_IsAction || _playerState.L_IsDash) && !_playerState.L_IsMining)
+            // {
+            //     RaycastHit hit;
+
+            //     if (!Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), transform.forward, out hit, 0.5f, _groundMask))
+            //     {
+            //             float offset = _playerState.L_IsDash ? 1.5f : 1f;
+
+            //             transform.position += Network_Player.Local.PlayerAnimation.Anim.deltaPosition * offset;
+            //     } 
+            // }
 
             var input = GetInput<PlayerInput>();
 
@@ -114,22 +127,6 @@ namespace SH.Multiplayer
             HasJumped = !_playerState.L_IsGrounded;
 
             _lastButtonsInput = input.Buttons;
-
-            // root motion move
-            if ((_playerState.L_IsCombo || _playerState.L_IsAction || _playerState.L_IsDash) && !_playerState.L_IsMining)
-            {
-                RaycastHit hit;
-
-                if (!Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), transform.forward, out hit, 0.5f, _groundMask))
-                {
-                        float offset = _playerState.L_IsDash ? 1.5f : 1f;
-
-                        transform.position += Network_Player.Local.PlayerAnimation.Anim.deltaPosition * offset;
-
-                } 
-
-
-            }
 
         }
 

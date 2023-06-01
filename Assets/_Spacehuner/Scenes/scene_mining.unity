@@ -32079,7 +32079,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!20 &1498151810406152024
 Camera:
   m_ObjectHideFlags: 0
@@ -32633,6 +32633,10 @@ PrefabInstance:
     - target: {fileID: 8123432444671615214, guid: 4d8367d1bb4e52a4b9a2127527014112, type: 3}
       propertyPath: m_Name
       value: TPS Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 8123432444671615214, guid: 4d8367d1bb4e52a4b9a2127527014112, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8123432444671615215, guid: 4d8367d1bb4e52a4b9a2127527014112, type: 3}
       propertyPath: m_RootOrder
