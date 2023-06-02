@@ -133,6 +133,7 @@ namespace SH
             if (_preUseSlot.ItemConfig.TypeTab == UIInventoryTabName.Reward)
             {
                 UseRewardBox(_preUseSlot.ItemConfig.ItemInstanceId);
+
             }
 
         }
@@ -170,9 +171,9 @@ namespace SH
                 UIManager.Instance.ShowPopupWithCallback(PopupName.SuiNotification, modelPopup);
 
                 InventoryManager.Instance.ConsumeItem(itemInstanceId,1);
-
+               
             }
-          
+             _uiInventoryItemInfo.ClearDisplay();
 
 
         }

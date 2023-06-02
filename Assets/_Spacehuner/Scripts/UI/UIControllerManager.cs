@@ -79,6 +79,7 @@ namespace SH
         private void SetupSUI() {
             
             SetupBalance();
+            
             string suiAddress = SuiWallet.GetActiveAddress();
             _suiAddressText.text = suiAddress.Substring(0, 11) + "..." + suiAddress.Substring(suiAddress.Length - 5);
 
@@ -93,6 +94,7 @@ namespace SH
         }
         
         private async void SetupBalance() {
+            if(SuiWallet.GetActiveAddress() == null) return;
             string balance = await SuiWalletManager.GetSuiWalletBalance();
             _suiBalanceText.text = $"{balance} SUI";
         }
