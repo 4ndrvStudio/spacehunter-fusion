@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using SH.Define;
 using SH.Multiplayer;
 using TMPro;
+using UnityEngine.Events;
 
 namespace SH
 {
@@ -56,6 +57,7 @@ namespace SH
         [SerializeField] private Button _suiAddressCoppyButton;
         [SerializeField] private Button _suiBalanceRefreshButton;
 
+        public static UnityAction<bool> UIControllerEvent;
 
         void Awake()
         {
@@ -69,7 +71,9 @@ namespace SH
         {
             _inventoryBtn.onClick.AddListener(() => OpenInventory());
             _gotoMiningBtn.onClick.AddListener(() => GotoMining());
-            SetupSUI();
+
+
+       
         }
 
         private void SetupSUI() {
@@ -89,12 +93,13 @@ namespace SH
         }
         
         private async void SetupBalance() {
-             string balance = await SuiWalletManager.GetSuiWalletBalance();
+            string balance = await SuiWalletManager.GetSuiWalletBalance();
             _suiBalanceText.text = $"{balance} SUI";
         }
 
 
         public void OpenInventory() {
+            UIControllerEvent?.Invoke(false);
             HideAllController();
             UIManager.Instance.ShowPopup(PopupName.Inventory);
         }
@@ -102,7 +107,7 @@ namespace SH
         public void DisplayController() {
             
             _playerState  = Network_Player.Local.PlayerState;
-            
+            SetupSUI();
             if(_playerState.L_IsInsideBuilding) {
                 ActiveActionControlller();
             }  else { 
@@ -112,8 +117,9 @@ namespace SH
             _movementJoy.gameObject.SetActive(true);
 
             _touchPanel.enabled = true;
-
+            UIControllerEvent?.Invoke(true);
             IsActive = true;
+  
         }
 
         private void ActiveCombatController() {
@@ -128,6 +134,7 @@ namespace SH
             _combatGroup.SetActive(false);
 
             _actionGroup.SetActive(true);
+          
         }
 
         public void HideAllController() {
@@ -139,6 +146,7 @@ namespace SH
             _movementJoy.gameObject.SetActive(false);
 
             IsActive = false;
+     
 
         }
 

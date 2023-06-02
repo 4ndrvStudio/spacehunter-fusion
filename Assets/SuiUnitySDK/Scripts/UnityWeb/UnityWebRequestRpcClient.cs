@@ -16,18 +16,20 @@ public class UnityWebRequestRpcClient : IRpcClient
 
     public UnityWebRequestRpcClient(string url)
     {
+        Debug.Log(url);
         Endpoint = new Uri(url);
+        Debug.Log(Endpoint.Port);
     }
 
     public async Task<RpcResult<T>> SendAsync<T>(JsonRpcRequest request)
     {
       
         var requestJson = JsonConvert.SerializeObject(request, new Newtonsoft.Json.Converters.StringEnumConverter());
-         Debug.Log(requestJson);
         try
         {
             var requestData = Encoding.UTF8.GetBytes(requestJson);
-            Debug.Log(Endpoint);
+          
+         
             using (var unityWebRequest = new UnityWebRequest(Endpoint, "POST"))
             {
                 unityWebRequest.uploadHandler = new UploadHandlerRaw(requestData);
@@ -65,7 +67,6 @@ public class UnityWebRequestRpcClient : IRpcClient
 
     private RpcResult<T> HandleResult<T>(DownloadHandler downloadHandler, JsonRpcRequest request)
     {   
-        Debug.Log(downloadHandler.text);
   
         var result = new RpcResult<T>();
         try

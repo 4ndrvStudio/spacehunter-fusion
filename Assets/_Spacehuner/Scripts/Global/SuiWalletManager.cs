@@ -27,16 +27,13 @@ namespace SH
         {    
             string coinType ="0x2::sui::SUI";
 
-            Debug.Log(SuiWallet.GetActiveAddress());
 
             var balanceResult = await SuiApi.Client.GetBalanceAsync(SuiWallet.GetActiveAddress(),coinType);
             
-            Debug.Log(balanceResult.Result.LockedBalance);
-            Debug.Log(balanceResult.Result.TotalBalance);
             float balance =  ((float)balanceResult.Result.TotalBalance)/1000000000;
           
             
-            return balance.ToString("0.####");
+            return balance.ToString("0.#########");
         }
 
         public static async Task<RpcResult<TransactionBlockResponse>> MintHunterNFT() {
