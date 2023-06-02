@@ -10,7 +10,7 @@ namespace SH
         public bool CanUse;
         public string ItemId;
         public Sprite ItemIcon;
-
+        public string ItemInstanceId;
         //Check Later
         public UIInventoryTabName TypeTab;
         // custom icon with level

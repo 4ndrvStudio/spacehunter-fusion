@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e0e2db5d27cdb0409c192b30b11c391, type: 3}
   m_Name: ticket
   m_EditorClassIdentifier: 
+  CanUse: 0
   ItemId: ticket
   ItemIcon: {fileID: 0}
   TypeTab: 3

@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using Fusion;
-using UnityEngine.EventSystems;
+
 
 namespace SH.Multiplayer
 {
@@ -30,6 +29,7 @@ namespace SH.Multiplayer
 
         void Start()
         {
+
             if (Instance != null && Instance != this)
             {
                 Destroy(this);
@@ -43,7 +43,6 @@ namespace SH.Multiplayer
 
         }
         void Update() {
-          
             if(_rotatePoint != null) {
             
                 _xInput += _touchField.TouchDist.x * _touchSpeedSensitivityX;

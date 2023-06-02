@@ -43,6 +43,7 @@ namespace SH.Multiplayer
         [HideInInspector] public NetworkBool N_IsInsideBuilding { get; set; }
         public bool L_IsInsideBuilding;
 
+        public bool isMinted;
         
 
         // Action State    
@@ -109,6 +110,10 @@ namespace SH.Multiplayer
             this.N_IsMining = isMining;
         }
 
+        public void CollectedMineral() {
+            Debug.Log("Collected Mineral");
+        }
+
 
 
 
@@ -169,6 +174,8 @@ namespace SH.Multiplayer
         private bool GroundCheck() => Physics.CheckSphere(_groundCheck.position, _groundCheckRange, _groundMask);
 
 
+
+        
     }
 
 }

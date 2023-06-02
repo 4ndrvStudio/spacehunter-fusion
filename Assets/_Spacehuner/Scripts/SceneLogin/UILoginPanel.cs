@@ -8,6 +8,7 @@ using SH.AzureFunction;
 using SH.Define;
 using System.Threading.Tasks;
 using System.Linq;
+using SH.Models.Azure;
 
 
 namespace SH.Account
@@ -48,7 +49,7 @@ namespace SH.Account
             _inputPassword.text = string.Empty;
             _inputEmail.text = string.Empty;
             _toggleRememberAccount.isOn = false;
-            
+
         }
 
         private void Start()
@@ -58,20 +59,22 @@ namespace SH.Account
             Debug.Log(email + " " + password);
 
             _autoLogin = !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password);
-         
+
             if (_autoLogin == true)
             {
                 Login(email, password);
-            } else {
-                 _loginCanvas.alpha = 1;
             }
- 
+            else
+            {
+                _loginCanvas.alpha = 1;
+            }
+
         }
 
         private void Login(string email, string password)
         {
 
-             string lowerCaseEmail = email.ToLower();
+            string lowerCaseEmail = email.ToLower();
             PlayFabManager.Instance.LoginWithCustomId(lowerCaseEmail, true, (result) =>
             {
                 PlayerDataManager.CallFunction<AccountLoginRespone>(new AccountLoginRequest(lowerCaseEmail, password), async (result) =>
@@ -80,24 +83,28 @@ namespace SH.Account
                     {
                         _tmpNotice.SetText(result.Error);
                         Debug.LogError(result.Error);
-                        if(_autoLogin) _loginCanvas.alpha = 1;
+                        if (_autoLogin) _loginCanvas.alpha = 1;
                         return;
                     }
 
+
                     Debug.Log("Login success!");
-            
+
                     //check update
                     bool requireUpdate = await GameManager.Instance.CheckUpdate();
-                    if(requireUpdate) {
+                    if (requireUpdate)
+                    {
                         Debug.Log("Show update popup");
                         UIManager.Instance.ShowPopup(PopupName.UpdateNotification);
                     }
 
-                    PlayFabManager.Instance.GetInventoryData( res => {
+                    PlayFabManager.Instance.GetInventoryData(res =>
+                    {
                         Debug.Log(res.Inventory.Count);
-                   
+
                     },
-                    err => {
+                    err =>
+                    {
                         Debug.Log(err);
                     });
 
@@ -119,9 +126,9 @@ namespace SH.Account
                                     Debug.Log("Get data user success!");
 
                                     PlayerDataManager.Instance.Setup(resp);
-                                    
+
                                     Debug.Log(resp.PlayFabId);
-                                    
+
                                     if (_toggleRememberAccount.isOn)
                                     {
                                         SHLocalData.Instance.Data.Email = email;
@@ -141,8 +148,8 @@ namespace SH.Account
                     }, (error) =>
                     {
                         // //display login canvas when auto login
-                        if(_autoLogin) _loginCanvas.alpha = 1;
-                        
+                        if (_autoLogin) _loginCanvas.alpha = 1;
+
                         UIManager.Instance.ShowAlert(error.ErrorMessage, AlertType.Error);
                     });
                 });

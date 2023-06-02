@@ -6317,7 +6317,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &346307519
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23508,7 +23508,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1585479775}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 32.832, z: -0.015}
 --- !u!114 &1543688585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32640,7 +32640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8123432444671615215, guid: 4d8367d1bb4e52a4b9a2127527014112, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8123432444671615215, guid: 4d8367d1bb4e52a4b9a2127527014112, type: 3}
       propertyPath: m_LocalPosition.x

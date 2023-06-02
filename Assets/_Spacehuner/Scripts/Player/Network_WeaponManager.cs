@@ -35,22 +35,21 @@ namespace SH.Multiplayer
         
             if (Object.HasInputAuthority == false) return;  
 
-             if(Object.HasInputAuthority) {
+            if(Object.HasInputAuthority) {
                 //set default weapon
-                RPC_SetWeaponInUse("weapon_mineral_axe");
+                RPC_SetWeaponInUse("weapon_swordtest");
+                
             }
            
                    
         }
 
+
         public override void FixedUpdateNetwork()
         {
 
             if (Object.HasInputAuthority == false) return;
-
            
-
-
         }
 
 

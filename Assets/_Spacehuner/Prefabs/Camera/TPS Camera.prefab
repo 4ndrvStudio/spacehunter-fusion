@@ -114,7 +114,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8123432444671615215
 Transform:
   m_ObjectHideFlags: 0
@@ -122,7 +122,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8123432444671615214}
-  m_LocalRotation: {x: 0.051446807, y: 0.28220877, z: -0.015297725, w: 0.95785046}
+  m_LocalRotation: {x: 0.05144448, y: 0.28220874, z: -0.015292798, w: 0.9578507}
   m_LocalPosition: {x: 25.357815, y: 4.6139226, z: 86.540405}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -130,7 +130,7 @@ Transform:
   - {fileID: 8123432443895274001}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 6.153, y: 32.832, z: -0.015}
 --- !u!114 &8123432444671615212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +183,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainCam: {fileID: 0}
   _cameraVT: {fileID: 8123432444671615212}
-  _touchInput: {fileID: 0}
   _touchField: {fileID: 0}
   _rotatePoint: {fileID: 0}
   _touchSpeedSensitivityX: 0.2

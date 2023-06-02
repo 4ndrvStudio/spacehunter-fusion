@@ -29,12 +29,12 @@ namespace SH
         private string _objectID;
         private UnityAction _callback;
         private bool IsMinted;
-        public override async void ShowWithCallback(object customProperties, UnityAction callback)
+        public override async void ShowWithCallback(object customProperties, UnityAction callback = null)
         {
             base.ShowWithCallback(customProperties, callback);
 
             SuiNotificationModel suiNotificationModel = customProperties as SuiNotificationModel;
-            Debug.Log(suiNotificationModel.IsSuccess);
+            Debug.Log(suiNotificationModel.ErrorDescription);
            
             if (suiNotificationModel.IsSuccess == true)
             {
@@ -64,7 +64,9 @@ namespace SH
         }
         void ConfirmClick()
         {
-            if(IsMinted) _callback?.Invoke();
+            if(_callback != null) 
+                if(IsMinted) _callback?.Invoke();
+           
             Hide();
         }
 

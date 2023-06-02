@@ -3,9 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using System.Threading.Tasks;
+using Suinet.Rpc.Types;
+using Newtonsoft.Json;
+using SH.Models.Azure;
 
 namespace SH.Multiplayer
 {
+    public class MineralNFTModel
+    {
+        public string DataType { get; set; }
+        public string Type { get; set; }
+        public bool HasPublicTransfer { get; set; }
+        public MineralNFTFieldModel Fields { get; set; }
+
+    }
+    public class MineralNFTFieldModel
+    {
+
+        public FieldId Id;
+        public string Owner;
+
+        [JsonProperty("collection_name")]
+        public string Name;
+
+        [JsonProperty("image_url")]
+        public string ImageURL;
+
+        [JsonProperty("collection_description")]
+        public string Description;
+        // public string Project_url;
+    }
+    public class FieldId
+    {
+        public string Id;
+    }
 
     public class Network_Mineral : NetworkBehaviour
     {
@@ -25,7 +56,7 @@ namespace SH.Multiplayer
         [SerializeField] private GameObject _destroyFX;
         [SerializeField] private GameObject _awardObject;
 
-
+        private PlayerRef _lastHitPlayer;
 
         public override void Spawned()
         {
@@ -48,10 +79,11 @@ namespace SH.Multiplayer
             if (Object == null) return;
             if (Object.HasStateAuthority == false) return;
             if (_wasHit) return;
-       
+            _lastHitPlayer = player;
             if (Runner.TryGetPlayerObject(player, out var playerNetworkObject))
             {
                 playerNetworkObject.GetComponentInChildren<Network_WeaponCollider>().ToggleActiveCollider(CanHitName.Mineral, false);
+
             }
             _wasHit = true;
         }
@@ -62,17 +94,18 @@ namespace SH.Multiplayer
             {
                 _wasHit = false;
                 _hp--;
-                Debug.Log("Hit Mineral Minus");
 
                 if (_hp <= 0)
                 {
                     MineralDestroy();
+                    RPC_MineralCollected(_lastHitPlayer, "ColledItem");
                 }
             }
-            if(Object.HasInputAuthority) {
-                  if (_hp <= 0)
+            if (Object.HasInputAuthority)
+            {
+                if (_hp <= 0)
                 {
-                      SpawnAward();
+                    SpawnAward();
                 }
             }
 
@@ -80,14 +113,15 @@ namespace SH.Multiplayer
 
         async void MineralDestroy()
         {
-     
-          
+
+
             await Task.Delay(2000);
-            
+
             Network_RoomMining.MineralCollected(Object);
         }
 
-        private void SpawnAward() {
+        private void SpawnAward()
+        {
             Debug.Log("Award Spawned");
             Instantiate(_awardObject, this.transform.position, Quaternion.identity);
         }
@@ -108,6 +142,27 @@ namespace SH.Multiplayer
             _healthBar.UpdateHealth(_hp);
 
         }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void RPC_MineralCollected([RpcTarget] PlayerRef player, string message, RpcInfo info = default)
+        {
+            ClaimItemRequestModel[] ls2 = new ClaimItemRequestModel[1] {
+                new ClaimItemRequestModel(){
+                    ItemId = "mineral_ticket",
+                    Level = 1
+                }
+            };
+            InventoryManager.Instance.AddInventoryItem(ls2);
+            
+          
+
+        }
+
+
+
+
+
+
 
 
 

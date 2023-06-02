@@ -31,18 +31,11 @@ namespace SH.Multiplayer
         public void SetupWeaponInUse(Weapon weapon)
         {
             _weaponInUse = weapon;
-            Debug.Log("Weapon change + " + _weaponInUse.gameObject.name);
         }
 
         public override void FixedUpdateNetwork()
         {
-            if (Runner.IsClient)
-            {
-                if(_weaponInUse != null)
-                Debug.Log("Weapon Position " + _weaponInUse.CenterOverlapse.transform.position);
-            }
-
-
+         
 
             if (Runner.IsServer == false)
                 return;
@@ -82,7 +75,6 @@ namespace SH.Multiplayer
             
             if (count <= 0) return false;
 
-           // Debug.Log(transform.parent.root.gameObject.name + "hit: "  + count);
             
             _lagCompensatedHits.SortDistance();
 
