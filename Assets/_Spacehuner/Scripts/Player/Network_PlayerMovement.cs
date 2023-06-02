@@ -104,9 +104,9 @@ namespace SH.Multiplayer
 
             if (Speed > 0.15f && !_playerState.L_IsAction && !_playerState.L_IsMining)
             {
-                //transform.Translate(transform.forward * targetspeed * Runner.DeltaTime, Space.World);
+                transform.Translate(transform.forward * targetspeed * Runner.DeltaTime, Space.World);
                 //_rigid.Rigidbody.MovePosition(transform.position + transform.forward * targetspeed * Runner.DeltaTime);
-                MoveWithCollisionCheck(transform.forward * targetspeed * Runner.DeltaTime, targetspeed * Runner.DeltaTime);
+               // MoveWithCollisionCheck(transform.forward * targetspeed * Runner.DeltaTime, targetspeed * Runner.DeltaTime);
             }
 
 
