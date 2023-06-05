@@ -17,6 +17,12 @@ namespace Suinet.NftProtocol.Examples
 
         public string Function { get; set; }
 
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public string Url { get; set; }
+
         public Dictionary<string, object> Attributes { get; set; } = new Dictionary<string, object>();
 
         public string Recipient { get; set; }
@@ -31,7 +37,12 @@ namespace Suinet.NftProtocol.Examples
                 Function = Function,
                 TypeArguments = Array.Empty<string>(),
                 Arguments = ArgumentBuilder.BuildArguments(
-                    Attributes.Values.ToArray()
+                    Name,
+                    Description,
+                    Url,
+                    Attributes.Keys.ToArray(),
+                    Attributes.Values.ToArray(),
+                    Recipient
                     ),
                 Gas = gas,
                 GasBudget = gasBudget,

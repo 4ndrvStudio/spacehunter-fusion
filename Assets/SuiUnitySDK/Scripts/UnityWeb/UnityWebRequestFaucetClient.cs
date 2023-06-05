@@ -10,7 +10,7 @@ public class UnityWebRequestFaucetClient : IFaucetClient
 {
     public Uri Endpoint { get; private set; }
 
-    public UnityWebRequestFaucetClient(string url = "https://faucet.testnet.sui.io/gas")
+    public UnityWebRequestFaucetClient(string url = "https://faucet.devnet.sui.io/gas")
     {
         Endpoint = new Uri(url);
     }

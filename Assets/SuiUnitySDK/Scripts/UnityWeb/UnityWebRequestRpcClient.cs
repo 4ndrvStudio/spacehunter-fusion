@@ -1,7 +1,4 @@
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Text.RegularExpressions;
-
 using Suinet.Rpc;
 using Suinet.Rpc.Http;
 using Suinet.Rpc.JsonRpc;
@@ -10,49 +7,43 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
+
 public class UnityWebRequestRpcClient : IRpcClient
 {
     public Uri Endpoint { get; private set; }
 
     public UnityWebRequestRpcClient(string url)
     {
-        Debug.Log(url);
         Endpoint = new Uri(url);
-        Debug.Log(Endpoint.Port);
     }
 
     public async Task<RpcResult<T>> SendAsync<T>(JsonRpcRequest request)
     {
-      
         var requestJson = JsonConvert.SerializeObject(request, new Newtonsoft.Json.Converters.StringEnumConverter());
+
         try
         {
             var requestData = Encoding.UTF8.GetBytes(requestJson);
-          
-         
+
             using (var unityWebRequest = new UnityWebRequest(Endpoint, "POST"))
             {
                 unityWebRequest.uploadHandler = new UploadHandlerRaw(requestData);
                 unityWebRequest.downloadHandler = new DownloadHandlerBuffer();
                 unityWebRequest.SetRequestHeader("Content-Type", "application/json");
-                unityWebRequest.SendWebRequest();
 
+                unityWebRequest.SendWebRequest();
                 while (!unityWebRequest.isDone)
                 {
                     await Task.Yield();
                 }
 
-                var result = HandleResult<T>(unityWebRequest.downloadHandler, request);
-
-
+                var result = HandleResult<T>(unityWebRequest.downloadHandler);
                 result.RawRpcRequest = requestJson;
-
                 return result;
             }
         }
         catch (Exception e)
         {
-
             var result = new RpcResult<T>
             {
                 ErrorMessage = e.Message,
@@ -65,16 +56,15 @@ public class UnityWebRequestRpcClient : IRpcClient
         }
     }
 
-    private RpcResult<T> HandleResult<T>(DownloadHandler downloadHandler, JsonRpcRequest request)
-    {   
-  
+    private RpcResult<T> HandleResult<T>(DownloadHandler downloadHandler)
+    {
         var result = new RpcResult<T>();
         try
         {
             result.RawRpcResponse = downloadHandler.text;
-            var res = JsonConvert.DeserializeObject<JsonRpcValidResponse<T>>(downloadHandler.text);
-            
-    
+            //Debug.Log($"Result: {result.RawRpcResponse}");
+            var res = JsonConvert.DeserializeObject<JsonRpcValidResponse<T>>(result.RawRpcResponse);
+
             if (res.Result != null)
             {
                 result.Result = res.Result;
@@ -102,7 +92,4 @@ public class UnityWebRequestRpcClient : IRpcClient
 
         return result;
     }
-
-
-
 }

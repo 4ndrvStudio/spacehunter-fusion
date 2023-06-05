@@ -79,8 +79,9 @@ namespace SH
         private void SetupSUI() {
             
             SetupBalance();
-            
+
             string suiAddress = SuiWallet.GetActiveAddress();
+            Debug.Log(suiAddress);
             _suiAddressText.text = suiAddress.Substring(0, 11) + "..." + suiAddress.Substring(suiAddress.Length - 5);
 
             _suiAddressCoppyButton.onClick.AddListener(()=> {

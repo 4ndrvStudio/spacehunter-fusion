@@ -12,7 +12,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-using SH;
+
 /// <summary>
 /// Mint an NFT using Origin Byte NFT Protocol
 /// </summary>
@@ -28,7 +28,7 @@ public class NftProtocolMintUIController : MonoBehaviour
     
     private void Start()
     {
-        NFTPackageObjectIdField.text = "0x201e77838a6f75d1e6b6808052d0049bb38e880fba41fd7b6d2cde99150edd6a";
+        NFTPackageObjectIdField.text = "0xb11eda772add7178d97d98fbcb5dc73ea1afec0bb94705416c43efdbedba6e4b";
         TargetWalletAddressInputField.text = SuiWallet.GetActiveAddress();
         
         MintNFTButton.onClick.AddListener(async () =>
@@ -45,15 +45,17 @@ public class NftProtocolMintUIController : MonoBehaviour
             {
                 Attributes = new Dictionary<string, object>()
                 {
-                    { "nft_ob", "0x05843aeab83f3f144d138d3294eec3037dad24e58e05342714bed90b4db59bed" },
+                    { "nft_type", "face" },
                 },
-                ModuleName =  "SpaceHunter",
-                Function = "mint_nft",
+                Description = "You can use this as a face of your character in the game!",
+                Recipient = TargetWalletAddressInputField.text,
+                ModuleName =  "suitraders",
+                Function = "airdrop_nft",
+                Name = $"Face {randomFaceIndex}",
                 PackageObjectId = NFTPackageObjectIdField.text,
                 Signer = keypair.PublicKeyAsSuiAddress,
+                Url = $"https://suiunitysdksample.blob.core.windows.net/nfts/face{randomFaceIndex}.png"
             };
-
-        
 
             // if we pass null, it will automatically select a gas object
             var mintRpcResult = await nftProtocolClient.MintNftAsync(txParams, null);

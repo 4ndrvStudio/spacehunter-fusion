@@ -6,11 +6,11 @@ namespace Suinet.Rpc.Types
     {
         public string Bcs { get; set; }
 
-        public EventId Id { get; set; }
+        public string Id { get; set; }
 
         public ObjectId PackageId { get; set; }
 
-        public ParsedJson ParsedJson { get; set; }
+        public string ParsedJson { get; set; }
 
         public SuiAddress Sender { get; set; }
 

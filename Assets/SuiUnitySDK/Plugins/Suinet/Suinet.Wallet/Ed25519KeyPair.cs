@@ -24,9 +24,7 @@ namespace Suinet.Wallet
             Array.Copy(privateKey, 0, first32Bytes, 0, 32);
             PrivateKeyBase64 = CryptoBytes.ToBase64String(first32Bytes);
 
-            //PublicKeyAsSuiAddress = ToSuiAddress(publicKey);
-            PublicKeyAsSuiAddress = SuiAddressConverter.ToSuiAddress(publicKey,"ED25519");
-
+            PublicKeyAsSuiAddress = ToSuiAddress(publicKey);
         }
 
         public string ToSuiAddress(byte[] publicKeyBytes)

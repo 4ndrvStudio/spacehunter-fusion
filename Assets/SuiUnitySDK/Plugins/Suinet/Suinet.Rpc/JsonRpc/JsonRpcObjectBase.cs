@@ -15,6 +15,5 @@ namespace Suinet.Rpc.JsonRpc
         }
 
         public int Id { get; set; }
-        
     }
 }

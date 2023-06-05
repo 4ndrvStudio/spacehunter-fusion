@@ -78,12 +78,7 @@ namespace SH
                             };
                             item.CustomData = itemCustomData;
                             this._items.Add(item);
-
                         } 
-                        
-
-                    
-
                     });
                     
 

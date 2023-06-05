@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Suinet.NftProtocol
 {
@@ -23,48 +22,28 @@ namespace Suinet.NftProtocol
         {
             _jsonRpcApiClient = jsonRpcApiClient;
             _keypair = keypair;
-            
         }
 
         public async Task<RpcResult<TransactionBlockResponse>> MintNftAsync(MintSuitradersNft txParams, string gasObjectId)
         {
-            Debug.Log(txParams);
             return await ExecuteTxAsync(txParams, gasObjectId);
         }
 
         public async Task<RpcResult<TransactionBlockResponse>> EnableSalesAsync(EnableSales txParams, string gasObjectId = null)
         {
-            
             return await ExecuteTxAsync(txParams, gasObjectId);
-
         }
 
         private async Task<RpcResult<TransactionBlockResponse>> ExecuteTxAsync(IMoveCallTransactionBuilder txBuilder, string gasObjectId = null)
         {
             var moveCallResult = await _jsonRpcApiClient.MoveCallAsync(txBuilder.BuildMoveCallTransaction(gasObjectId));
-         
-            var txResponse = new RpcResult<TransactionBlockResponse>();
-            
-            if (moveCallResult.IsSuccess == false)
-            {
-                var tx = new TransactionBlockResponse
-                {
-                    Transaction = null,
-                    RawTransaction = null
-                };
 
-                txResponse = new RpcResult<TransactionBlockResponse>();
-                txResponse.IsSuccess = false;
-                txResponse.ErrorMessage = moveCallResult.ErrorMessage;
-               
-            }
-            else
-            {
-                var txBytes = moveCallResult.Result.TxBytes;
-                var rawSigner = new RawSigner(_keypair);
-                var signature = rawSigner.SignData(Intent.GetMessageWithIntent(txBytes));
-                txResponse = await _jsonRpcApiClient.ExecuteTransactionBlockAsync(txBytes, new[] { signature.Value }, TransactionBlockResponseOptions.ShowAll(), ExecuteTransactionRequestType.WaitForLocalExecution);
-            }
+            var txBytes = moveCallResult.Result.TxBytes;
+            var rawSigner = new RawSigner(_keypair);
+            var signature = rawSigner.SignData(Intent.GetMessageWithIntent(txBytes));
+
+            var txResponse = await _jsonRpcApiClient.ExecuteTransactionBlockAsync(txBytes, new[] { signature.Value }, TransactionBlockResponseOptions.ShowAll(), ExecuteTransactionRequestType.WaitForLocalExecution);
+
             return txResponse;
         }
 
@@ -109,7 +88,7 @@ namespace Suinet.NftProtocol
             {
                 var objectFieldInfo = dynamicFields.Result.Data.FirstOrDefault(d => d.ObjectType.Struct == nameof(UrlDomain));
 
-                if (objectFieldInfo != null)
+                if (objectFieldInfo != null) 
                 {
                     var domainResult = await _jsonRpcApiClient.GetDynamicFieldObjectAsync<UrlDomain>(parentObjectId, objectFieldInfo.Name, null);
                     if (domainResult != null && domainResult.IsSuccess)

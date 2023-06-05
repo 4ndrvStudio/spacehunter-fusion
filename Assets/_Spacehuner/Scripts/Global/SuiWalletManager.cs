@@ -9,6 +9,9 @@ using Suinet.Rpc.Types;
 using Suinet.Faucet;
 using SH.Multiplayer;
 using Newtonsoft.Json;
+using BigInteger = System.Numerics.BigInteger;
+using Suinet.Wallet;
+
 
 namespace SH
 {
@@ -36,57 +39,76 @@ namespace SH
             return balance.ToString("0.#########");
         }
 
-        public static async Task<RpcResult<TransactionBlockResponse>> MintHunterNFT() {
-
-            var keypair = SuiWallet.GetActiveKeyPair();
-            var nftProtocolClient = new NftProtocolClient(SuiApi.Client, SuiWallet.GetActiveKeyPair());
-           
-            var txParams = new MintSuitradersNft()
+        public static async Task<RpcResult<TransactionBlockResponse>> MintHunterNFT() 
+        {
+            var mintRpcResult = new RpcResult<TransactionBlockResponse>();
+            var signer = SuiWallet.GetActiveAddress();
+            var packageObjectId = _nftCharacterPackageId;
+            var module = "SpaceHunter";
+            var function = "mint_nft";
+            var typeArgs = System.Array.Empty<string>();
+            var args = new object[] { _nftCharacterId};
+            var gasBudget = BigInteger.Parse("1000000");
+            
+            var rpcResult = await SuiApi.Client.MoveCallAsync(signer, packageObjectId, module, function, typeArgs, args, gasBudget);
+            if (rpcResult.IsSuccess)
             {
-                Attributes = new Dictionary<string, object>()
-                {
-                    { "nft_ob", _nftCharacterId },
-                },
-                ModuleName =  "SpaceHunter",
-                Function = "mint_nft",
-                PackageObjectId = _nftCharacterPackageId,
-                Signer = keypair.PublicKeyAsSuiAddress,
-            };
+                var keyPair = SuiWallet.GetActiveKeyPair();
 
-            var mintRpcResult = await nftProtocolClient.MintNftAsync(txParams, null);
-   
+                var txBytes = rpcResult.Result.TxBytes;
+                var rawSigner = new RawSigner(keyPair);
+                var signature = rawSigner.SignData(Intent.GetMessageWithIntent(txBytes));
+
+                mintRpcResult = await SuiApi.Client.ExecuteTransactionBlockAsync(txBytes, new[] {signature.Value}, TransactionBlockResponseOptions.ShowAll(), ExecuteTransactionRequestType.WaitForLocalExecution);
+            }
+            else
+            {
+                Debug.LogError("Something went wrong with the move call: " + rpcResult.ErrorMessage);
+            }
+
             return mintRpcResult;
         }   
         public static async Task<RpcResult<TransactionBlockResponse>> MintMineral() {
             
             ulong amount = 1;
 
-            var keypair = SuiWallet.GetActiveKeyPair();
-            var nftProtocolClient = new NftProtocolClient(SuiApi.Client, SuiWallet.GetActiveKeyPair());
+            var mintRpcResult = new RpcResult<TransactionBlockResponse>();
 
-            var txParams = new MintSuitradersNft()
+            var signer = SuiWallet.GetActiveAddress();
+            var packageObjectId = _nftMineralPackageId;
+            var module = "stone";
+            var function = "claim_stone";
+            var typeArgs = System.Array.Empty<string>();
+            var args = new object[] { _nftMineralId, amount};
+            var gasBudget = BigInteger.Parse("1000000");
+            
+            var rpcResult = await SuiApi.Client.MoveCallAsync(signer, packageObjectId, module, function, typeArgs, args, gasBudget);
+            if (rpcResult.IsSuccess)
             {
-                Attributes = new Dictionary<string, object>()
-                {
-                    { "arg0", _nftMineralId},
-                    { "arg1", amount}
-                },
-                ModuleName =  "stone",
-                Function = "claim_stone",
-                PackageObjectId = _nftMineralPackageId,
-                Signer = keypair.PublicKeyAsSuiAddress,
-            };
+                var keyPair = SuiWallet.GetActiveKeyPair();
 
-            var mintRpcResult = await nftProtocolClient.MintNftAsync(txParams, null);
+                var txBytes = rpcResult.Result.TxBytes;
+                var rawSigner = new RawSigner(keyPair);
+                var signature = rawSigner.SignData(Intent.GetMessageWithIntent(txBytes));
+
+                mintRpcResult = await SuiApi.Client.ExecuteTransactionBlockAsync(txBytes, new[] {signature.Value}, TransactionBlockResponseOptions.ShowAll(), ExecuteTransactionRequestType.WaitForLocalExecution);
+            }
+            else
+            {
+                Debug.LogError("Something went wrong with the move call: " + rpcResult.ErrorMessage);
+            }
    
             return mintRpcResult;
         }   
         
         public static async Task<RpcResult<Page_for_SuiObjectResponse_and_ObjectID>> GetAllNFT() {
+           
             ObjectDataOptions optionsReq = new ObjectDataOptions();
+           
             optionsReq.ShowContent = true;
             var allObject = await SuiApi.Client.GetOwnedObjectsAsync(SuiWallet.GetActiveAddress(),  
                 new ObjectResponseQuery() { Options =  optionsReq},null,null);
+            Debug.Log(allObject.RawRpcResponse);
             return allObject;
         }
       
