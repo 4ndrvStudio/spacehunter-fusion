@@ -39,19 +39,19 @@ namespace SH.Multiplayer
         {
             Movement();
 
-            //Render Attack
-            if (_lastVisibleAttack < _enemyCombatBrain.AttackCount)
-            {
+            // //Render Attack
+            // if (_lastVisibleAttack < _enemyCombatBrain.AttackCount)
+            // {
 
-                _anim.SetTrigger(_enemyCombatBrain.Attack_List[_enemyCombatBrain.L_IndexAttack]);
+            //     _anim.SetTrigger(_enemyCombatBrain.Attack_List[_enemyCombatBrain.L_IndexAttack]);
 
-            }
-            else if (_lastVisibleAttack > _enemyCombatBrain.AttackCount)
-            {
-                //cancel attack
-            }
+            // }
+            // else if (_lastVisibleAttack > _enemyCombatBrain.AttackCount)
+            // {
+            //     //cancel attack
+            // }
 
-            _lastVisibleAttack = _enemyCombatBrain.AttackCount;
+            // _lastVisibleAttack = _enemyCombatBrain.AttackCount;
 
         }
 
@@ -97,8 +97,9 @@ namespace SH.Multiplayer
         {
             _anim.Play("GetDame", 1, 0);
 
-            if (Runner.IsServer == false)
-            {
+            // //Fix Here later
+            // if (Runner.IsServer == false)
+            // {
                 //Effect
                 _enemyMat.DOColor(Color.white, "_EmissionColor", 0f).OnComplete(() =>
                 {
@@ -114,7 +115,7 @@ namespace SH.Multiplayer
                     });
 
                 });
-            }
+            //}
 
         }
         public void PlayAttack(string targetAttack)

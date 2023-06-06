@@ -7,7 +7,6 @@ namespace SH.Multiplayer
 {
     public class Network_PlayerMovement : NetworkBehaviour, ISpawned
     {
-
         //Component
     
         [SerializeField] private Network_PlayerState _playerState;
@@ -54,7 +53,7 @@ namespace SH.Multiplayer
 
         public override void FixedUpdateNetwork()
         {
-            if (Object.IsProxy == true)
+            if (Object.IsProxy == true || _playerState.L_IsDeath == true)
                 return;
 
             //  // root motion move
@@ -136,13 +135,8 @@ namespace SH.Multiplayer
             RaycastHit hit;
 
             if(Physics.Raycast(transform.position + new Vector3(0,0.5f,0), transform.forward,out hit, 2f, _groundMask)) {
-                
                 if(hit.distance < 0.4f) moveDistance = 0;
-
             };
-
-         
-
             _rigid.Rigidbody.MovePosition(_rigid.Rigidbody.position + moveDirection.normalized * moveDistance);
         }
 

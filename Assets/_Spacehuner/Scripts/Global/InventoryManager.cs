@@ -22,8 +22,6 @@ namespace SH
         [SerializeField] private List<ItemInstance> _items = new List<ItemInstance>();
         [HideInInspector] public List<ItemInstance> Items => _items;
 
-
-
         public List<Sprite> ItemFrame = new List<Sprite>();
 
         [HideInInspector]
@@ -33,6 +31,8 @@ namespace SH
         public List<WeaponConfig> WeaponConfigs = new List<WeaponConfig>();
 
         public static UnityAction OnInventoryDataChange;
+
+        public WeaponConfig CurrentWeaponInUse = null;
 
         void Awake()
         {
@@ -56,7 +56,7 @@ namespace SH
                     this._items = res.Inventory;
 
                     _items.Add(CreateItemToTest("weapon_swordtest", "weapon", "Normal Sword"));
-                    //_items.Add(CreateItemToTest("weapon_mineral_axe","weapon","Mineral Axe"));
+                    _items.Add(CreateItemToTest("weapon_mineral_axe","weapon","Mineral Axe"));
                     _items.Add(CreateItemToTest("spaceshiptest", "spaceship", "Spaceship E7x"));
                     
                     //Get NFT

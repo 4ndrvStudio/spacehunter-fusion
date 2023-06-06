@@ -37,7 +37,12 @@ namespace SH.Multiplayer
 
             if(Object.HasInputAuthority) {
                 //set default weapon
-                RPC_SetWeaponInUse("weapon_swordtest");
+                if(InventoryManager.Instance.CurrentWeaponInUse == null) {
+                    RPC_SetWeaponInUse("weapon_swordtest");
+                } else {
+                    RPC_SetWeaponInUse(InventoryManager.Instance.CurrentWeaponInUse.ItemId);
+                }
+                
                 
             }
            
@@ -92,8 +97,9 @@ namespace SH.Multiplayer
             }
 
             _animatorHook.SetDissolve(_weaponModel.gameObject.GetComponent<Weapon>());
-            _weaponCollider.SetupWeaponInUse(_weaponModel.gameObject.GetComponent<Weapon>());
 
+            _weaponCollider.SetupWeaponInUse(_weaponModel.gameObject.GetComponent<Weapon>(), _weaponConfig );
+            InventoryManager.Instance.CurrentWeaponInUse = _weaponConfig;
 
         }
 
@@ -107,8 +113,7 @@ namespace SH.Multiplayer
         {
             _weaponHolder  = weaponHolder;
             _animatorHook = animatorHook;
-
-           
+        
         }
 
         public void UseWeapon(string weaponId) {
@@ -146,7 +151,7 @@ namespace SH.Multiplayer
             }
 
             _animatorHook.SetDissolve(_weaponModel.gameObject.GetComponent<Weapon>());
-            _weaponCollider.SetupWeaponInUse(_weaponModel.gameObject.GetComponent<Weapon>());
+            _weaponCollider.SetupWeaponInUse(_weaponModel.gameObject.GetComponent<Weapon>(),_weaponConfig);
 
         }
 

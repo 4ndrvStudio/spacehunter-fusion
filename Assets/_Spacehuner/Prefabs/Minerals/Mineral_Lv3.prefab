@@ -28947,6 +28947,7 @@ MonoBehaviour:
   _healthBar: {fileID: 2836117342522831735}
   _body: {fileID: 7665144537995056959}
   _destroyFX: {fileID: 8364920807866011164}
+  _awardObject: {fileID: 0}
 --- !u!114 &7408166450466894974
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -257,11 +257,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   Network_RoomMining: {fileID: 0}
-  __hp: 10
+  __hp: 15
   _wasSetupHp: 0
   _healthBar: {fileID: 5385405049829758640}
   _body: {fileID: 4158294108132981588}
   _destroyFX: {fileID: 8752021327255674664}
+  _awardObject: {fileID: 0}
 --- !u!114 &2263939023282961170
 MonoBehaviour:
   m_ObjectHideFlags: 0

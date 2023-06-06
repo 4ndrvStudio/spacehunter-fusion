@@ -300,10 +300,16 @@ namespace SH.Multiplayer
             {
                 Transform player = _enemyBrain.PlayersInRange[i].transform;
                 Vector3 dirToPlayer = (player.position - transform.position).normalized;
+                Network_PlayerState _playerState = player.GetComponent<Network_PlayerState>();
+              
 
                 if (Vector3.Angle(transform.forward, dirToPlayer) < _viewAngle / 2)
                 {
-                    if (_enemyBrain.SelectedPlayer == null) _enemyBrain.SelectedPlayer = _enemyBrain.PlayersInRange[i];
+                    if(_enemyBrain.SelectedPlayer != null && _playerState.L_IsDeath) 
+                        _enemyBrain.SelectedPlayer = null;
+                    
+                    if (_enemyBrain.SelectedPlayer == null&& !_playerState.L_IsDeath) 
+                        _enemyBrain.SelectedPlayer = _enemyBrain.PlayersInRange[i];
                 }
             }
 

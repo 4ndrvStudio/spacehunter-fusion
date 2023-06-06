@@ -14,7 +14,6 @@ namespace SH.Multiplayer
         [SerializeField] private Network_PlayerDamageable _playerDamageable;
         [SerializeField] private Network_WeaponManager _weaponManager;
 
-
         private int _lastVisibleJump;
         private int _lastVisibleAttack;
         private int _lastCombo1Attack;
@@ -43,6 +42,7 @@ namespace SH.Multiplayer
 
         private void UpdateAnimations()
         {
+            if(_playerState.L_IsDeath == true) return;
 
             RenderAttack();
             RenderCombatInteract();
@@ -125,7 +125,12 @@ namespace SH.Multiplayer
             //gethit
             if (_lastVisibleGetHit < _playerDamageable.HitCount)
             {
-                Anim.Play("GetHit1", 3, 0);
+                if (!Anim.GetCurrentAnimatorStateInfo(3).IsName("GetHit1"))
+                {
+                    Anim.Play("GetHit1", 3, 0);
+                }
+
+
             }
             else if (_lastVisibleGetHit > _playerDamageable.HitCount)
             {
@@ -133,7 +138,10 @@ namespace SH.Multiplayer
             }
             _lastVisibleGetHit = _playerDamageable.HitCount;
 
+        }
 
+        public void PlayDeathAnimation() {
+            Anim.Play("IsDeath", 3, 0);
         }
 
         private void RenderMovement()
@@ -144,14 +152,10 @@ namespace SH.Multiplayer
 
             Anim.applyRootMotion = _playerState.L_IsCombo || _playerState.L_IsAction;
 
-
             if ((_playerState.L_IsCombo || _playerState.L_IsAction || _playerState.L_IsDash) && !_playerState.L_IsMining)
             {
-               
-              
-                        float offset = _playerState.L_IsDash ? 1.5f : 1f;
-                        transform.position += Anim.deltaPosition * offset;
-
+                float offset = _playerState.L_IsDash ? 1.5f : 1f;
+                transform.position += Anim.deltaPosition * offset;
             }
         }
 

@@ -25,12 +25,15 @@ namespace SH.Multiplayer
         [SerializeField] private LayerMask _playerCollisionLayer;
 
         [SerializeField] private Weapon _weaponInUse;
+        [SerializeField] private WeaponConfig _weaponConfig;
 
         private List<LagCompensatedHit> _lagCompensatedHits = new List<LagCompensatedHit>();
 
-        public void SetupWeaponInUse(Weapon weapon)
+
+        public void SetupWeaponInUse(Weapon weapon, WeaponConfig weaponConfig)
         {
             _weaponInUse = weapon;
+            _weaponConfig = weaponConfig;
         }
 
         public override void FixedUpdateNetwork()
@@ -79,8 +82,10 @@ namespace SH.Multiplayer
             _lagCompensatedHits.SortDistance();
 
             var networkMineral = _lagCompensatedHits[0].GameObject.GetComponentInParent<Network_Mineral>();
+           
+            int targetDame = _weaponConfig.WeaponType == WeaponType.Sword ? 5: 3;
 
-            networkMineral.HitMineral(Object.InputAuthority);
+            networkMineral.HitMineral(Object.InputAuthority, targetDame);
 
             return true;
         }
@@ -101,34 +106,34 @@ namespace SH.Multiplayer
             if (count <= 0) return false;
 
             var networkEnemyDamageable = _lagCompensatedHits[0].GameObject.GetComponentInParent<Network_EnemyDamageable>();
-
-            networkEnemyDamageable.HitEnemy(Object.InputAuthority, Object.transform);
+            int targetDame = _weaponConfig.WeaponType == WeaponType.Sword ? 7: 5;
+            networkEnemyDamageable.HitEnemy(Object.InputAuthority, Object.transform,targetDame);
 
             return true;
         }
 
-        public bool HasHitPlayer()
-        {
+        // public bool HasHitPlayer()
+        // {
 
-            if (CanHitMineral == false) return false;
+        //     if (CanHitMineral == false) return false;
 
-            if (_weaponInUse == null) return false;
-            _lagCompensatedHits.Clear();
+        //     if (_weaponInUse == null) return false;
+        //     _lagCompensatedHits.Clear();
 
-            var count = Runner.LagCompensation
-                        .OverlapBox(_weaponInUse.CenterOverlapse.transform.position,
-                                    _weaponInUse.OverlapseExtends, Quaternion.LookRotation(_weaponInUse.CenterOverlapse.transform.up),
-                                    Object.InputAuthority, _lagCompensatedHits, _playerCollisionLayer.value);
+        //     var count = Runner.LagCompensation
+        //                 .OverlapBox(_weaponInUse.CenterOverlapse.transform.position,
+        //                             _weaponInUse.OverlapseExtends, Quaternion.LookRotation(_weaponInUse.CenterOverlapse.transform.up),
+        //                             Object.InputAuthority, _lagCompensatedHits, _playerCollisionLayer.value);
 
-            if (count <= 0) return false;
+        //     if (count <= 0) return false;
 
-            var networkPlayerDamageable = _lagCompensatedHits[0].GameObject.GetComponentInParent<Network_PlayerDamageable>();
+        //     var networkPlayerDamageable = _lagCompensatedHits[0].GameObject.GetComponentInParent<Network_PlayerDamageable>();
 
-            networkPlayerDamageable.HitPlayer(Object.InputAuthority);
+        //     networkPlayerDamageable.HitPlayer(Object.InputAuthority);
 
-            return true;
+        //     return true;
 
-        }
+        // }
 
 
 

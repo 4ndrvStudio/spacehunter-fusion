@@ -55,8 +55,9 @@ namespace SH.Multiplayer
         [SerializeField] private GameObject _body;
         [SerializeField] private GameObject _destroyFX;
         [SerializeField] private GameObject _awardObject;
-
+        
         private PlayerRef _lastHitPlayer;
+        private int _currentDame=0;
 
         public override void Spawned()
         {
@@ -74,16 +75,16 @@ namespace SH.Multiplayer
 
 
 
-        public void HitMineral(PlayerRef player)
+        public void HitMineral(PlayerRef player, int dame = 0)
         {
             if (Object == null) return;
             if (Object.HasStateAuthority == false) return;
             if (_wasHit) return;
             _lastHitPlayer = player;
+            _currentDame = dame;
             if (Runner.TryGetPlayerObject(player, out var playerNetworkObject))
             {
                 playerNetworkObject.GetComponentInChildren<Network_WeaponCollider>().ToggleActiveCollider(CanHitName.Mineral, false);
-
             }
             _wasHit = true;
         }
@@ -93,7 +94,7 @@ namespace SH.Multiplayer
             if (Object.HasStateAuthority && _wasHit)
             {
                 _wasHit = false;
-                _hp--;
+                _hp-= (byte)_currentDame;
 
                 if (_hp <= 0)
                 {

@@ -55,7 +55,6 @@ namespace SH.Multiplayer
                         {InteractButtonCustomProperties.Name.ToString(), npcName },
                         {InteractButtonCustomProperties.ChatContent.ToString(), dialogueContent}
                     };
-
                     UIControllerManager.Instance.AddInteractButton(npcCollider[i].GetInstanceID(),InteractButtonType.Chat, customProperties);
 
                 } else {

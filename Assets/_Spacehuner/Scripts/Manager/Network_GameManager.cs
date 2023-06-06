@@ -95,7 +95,7 @@ namespace SH.Multiplayer
 
             var player = Runner.Spawn(_playerPrefab, spawnPos, Quaternion.identity, inputAuthority: playerRef);
 
-            _players.Add(playerRef, player);
+            //_players.Add(playerRef, player);
 
 
             Runner.SetPlayerObject(playerRef, player);
@@ -117,7 +117,7 @@ namespace SH.Multiplayer
 
             Runner.Despawn(player);
             Debug.Log("Player Left Room: " + playerRef.PlayerId);
-            _players.Remove(playerRef);
+            //_players.Remove(playerRef);
         }
 
         public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data)
@@ -132,6 +132,7 @@ namespace SH.Multiplayer
             if (Runner.IsServer)
             {
                 Debug.Log("Joined to " + SceneManager.GetActiveScene().name);
+                   StartCoroutine(HideWaiting());
             }
             else
             {
@@ -145,7 +146,7 @@ namespace SH.Multiplayer
 
         IEnumerator HideWaiting()
         {
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(1f);
             UIManager.Instance.HideLoadScene();
         }
 

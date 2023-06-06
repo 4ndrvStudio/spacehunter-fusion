@@ -12,7 +12,6 @@ namespace SH.Multiplayer
         [SerializeField] private Network_PlayerState _playerState;
         [SerializeField] private Network_PlayerAimingAssistant _playerAim;
 
-
         [Networked, HideInInspector]
         public int AttackCount { get; set; }
 
@@ -83,7 +82,7 @@ namespace SH.Multiplayer
 
         public override void FixedUpdateNetwork()
         {
-            if (Object.IsProxy == true)
+            if (Object.IsProxy == true || _playerState.L_IsDeath == true)
                 return;
 
             var input = GetInput<PlayerInput>();

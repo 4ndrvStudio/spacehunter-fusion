@@ -34,8 +34,13 @@ namespace SH.Multiplayer
         [HideInInspector] public NetworkBool N_IsDash { get; set; }
         public bool L_IsDash;
 
+        [Networked(OnChanged = nameof(OnIsDeathChanged))]
+        [HideInInspector] public NetworkBool N_IsDeath { get; set; }
+        public bool L_IsDeath;
 
-         [Networked(OnChanged = nameof(OnIsMiningChanged))]
+
+
+        [Networked(OnChanged = nameof(OnIsMiningChanged))]
         [HideInInspector] public NetworkBool N_IsMining { get; set; }
         public bool L_IsMining;
 
@@ -44,6 +49,8 @@ namespace SH.Multiplayer
         public bool L_IsInsideBuilding;
 
         public bool isMinted;
+
+        
         
 
         // Action State    
@@ -92,6 +99,23 @@ namespace SH.Multiplayer
         public void RPC_SetIsDash(bool isDash, RpcInfo info = default)
         {
             this.N_IsDash = isDash;
+        }
+        //Set is Death
+
+        static void OnIsDeathChanged(Changed<Network_PlayerState> changed)
+        {
+            changed.Behaviour.OnIsDeathChanged();
+        }
+        private void OnIsDeathChanged()
+        {
+            L_IsDeath = N_IsDeath;
+        }
+
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        public void RPC_SetIsDeath(bool isDeath, RpcInfo info = default)
+        {
+            Debug.Log("Set is Death" + isDeath);
+            this.N_IsDeath = isDeath;
         }
 
         // Dash   

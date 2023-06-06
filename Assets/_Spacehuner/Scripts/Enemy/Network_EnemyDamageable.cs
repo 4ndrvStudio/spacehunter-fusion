@@ -28,6 +28,7 @@ namespace SH.Multiplayer
 
         private Interpolator<int> _hitCountInterpolator;
         private int _lastVisibleHit;
+        private int _currentDame;
 
         public override void Spawned()
         {
@@ -37,20 +38,19 @@ namespace SH.Multiplayer
         }
 
 
-        public void HitEnemy(PlayerRef player, Transform hisFromPos)
+        public void HitEnemy(PlayerRef player, Transform hisFromPos, int dame = 0)
         {
             if (Object == null) return;
             if (Object.HasStateAuthority == false) return;
             if (_wasHit) return;
-
+            
+            _currentDame = dame;
 
             N_HitFromPosition = hisFromPos.position;
 
             if (Runner.TryGetPlayerObject(player, out var playerNetworkObject))
             {
-
                 playerNetworkObject.GetComponentInChildren<Network_WeaponCollider>().ToggleActiveCollider(CanHitName.Mineral, false);
-
             }
 
             _wasHit = true;
@@ -64,7 +64,7 @@ namespace SH.Multiplayer
             {
                 _wasHit = false;
 
-                _enemyStats.ReduceHealth(1);
+                _enemyStats.ReduceHealth(_currentDame);
 
                 HitCount++;
 
