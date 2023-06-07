@@ -66,11 +66,13 @@ namespace SH.Dialogue
         }
 
 
-        public void EnterDialogueMode(TextAsset inkJson)
+        public void EnterDialogueMode(TextAsset inkJson= null)
         {
             if (DialogueIsPlaying == true) return;
-
-            _currentStory = new Story(inkJson.text);
+            
+            if(inkJson != null) {
+                _currentStory = new Story(inkJson.text);
+            }
             DialogueIsPlaying = true;
 
             _dialoguePanel.SetActive(true);
@@ -84,16 +86,19 @@ namespace SH.Dialogue
         }
 
 
-        private void ExitDialogueMode()
+        private void ExitDialogueMode(bool isCanCountinue = false)
         {
             DialogueIsPlaying = false;
             _dialoguePanel.SetActive(false);
             _dialogueText.text = "";
-            //UIControllerManager.Instance.ActiveController(true);
-            UIControllerManager.Instance.DisplayController();
+            HideChoice();
+            if(isCanCountinue == false) {
+                UIControllerManager.Instance.DisplayController();
+            }
+        
         }
 
-        private void ContinueStory()
+        public void ContinueStory()
         {
             if (_currentStory.canContinue)
             {
@@ -184,20 +189,21 @@ namespace SH.Dialogue
             _startChatBtnList.Remove(targetBtn);
 
             Destroy(targetBtn);
-
         }
 
         public void MakeChoice(int index)
         {
             if (_currentStory.currentChoices[index].text.Contains("Crafting"))
             {
-                Debug.Log("Showing Crafting Popup");
+               UIManager.Instance.ShowPopup(PopupName.Crafting);
+                _currentStory.ChooseChoiceIndex(index); 
+                ExitDialogueMode(true);
+            } else {
+                _currentStory.ChooseChoiceIndex(index);    
+                ContinueStory();
             }
-
-            _currentStory.ChooseChoiceIndex(index);
-            
-            ContinueStory();
         }
+
     }
 
 }

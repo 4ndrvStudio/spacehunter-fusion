@@ -1,25 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using SH.Dialogue;
 namespace SH.Multiplayer
 {
     public class UICraftingPopup : UIPopup
     {
-        [SerializeField] private GameObject _chooseWeaponToCraftPanel;
+
+        [SerializeField] private CraftingType _currentCraftType;
+        [SerializeField] private GameObject _craftingChooseCraftPanel;
         [SerializeField] private GameObject _craftingPanel;
-        
-        // Start is called before the first frame update
-        void Start()
+        [SerializeField] private GameObject _craftingSuccessPanel;
+
+        public override void Show(object customProperties = null)
+        {
+            base.Show(customProperties);
+            _craftingChooseCraftPanel.SetActive(true);
+        }
+
+        //Button;
+        public void TakeToCraft(CraftingType craftingType)
+        {
+            _craftingChooseCraftPanel.SetActive(false);
+            _craftingSuccessPanel.SetActive(false);
+            _craftingPanel.SetActive(true);
+          //  DialogueManager.Instance.EnterDialogueMode();
+        }
+
+        public void TakeToSuccess()
         {
 
         }
 
-        // Update is called once per frame
-        void Update()
-        {
 
-        }
     }
 
 }
