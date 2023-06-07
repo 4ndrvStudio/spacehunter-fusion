@@ -5,6 +5,7 @@ using TMPro;
 using Ink.Runtime;
 using UnityEngine.UI;
 using SH.Multiplayer;
+using Newtonsoft.Json;
 
 namespace SH.Dialogue
 {
@@ -17,7 +18,7 @@ namespace SH.Dialogue
         [SerializeField] private GameObject _choiceBtnOb;
         [SerializeField] private GameObject _dialogueStartChatPanel;
         [SerializeField] private GameObject _startChatBtnOb;
-       
+
         [SerializeField] private TextMeshProUGUI _dialogueText;
 
         [SerializeField] private List<Choice> _currentChoicesList = new List<Choice>();
@@ -63,7 +64,7 @@ namespace SH.Dialogue
             });
 
         }
-   
+
 
         public void EnterDialogueMode(TextAsset inkJson)
         {
@@ -101,6 +102,7 @@ namespace SH.Dialogue
                 if (_currentStory.currentChoices.Count > 0)
                 {
                     DisplayChoice();
+
                 }
                 else
                 {
@@ -142,35 +144,31 @@ namespace SH.Dialogue
                 DialogueChoiceButton choiceButtonScript = choiceBtn.GetComponent<DialogueChoiceButton>();
 
                 choiceButtonScript.Index = index;
-
                 choiceButtonScript.SetContent(choice.text);
 
                 _currentChoicesBtnList.Add(choiceBtn);
 
                 index++;
             }
-
         }
         private void HideChoice() => _dialogueChoicePanel.SetActive(false);
 
         public void AddStartChatBtn(string name, TextAsset content)
         {
-          
-
-            if(_startChatBtnList.FindIndex(btn => btn.GetComponent<DialogueStartChatButton>().Name  == name) != -1)
+            if (_startChatBtnList.FindIndex(btn => btn.GetComponent<DialogueStartChatButton>().Name == name) != -1)
                 return;
 
-            GameObject startChatBtn = Instantiate(_startChatBtnOb,_dialogueStartChatPanel.transform);
-            
-            startChatBtn.GetComponent<DialogueStartChatButton>().SetButtonContent(name,content);
+            GameObject startChatBtn = Instantiate(_startChatBtnOb, _dialogueStartChatPanel.transform);
+
+            startChatBtn.GetComponent<DialogueStartChatButton>().SetButtonContent(name, content);
 
             _startChatBtnList.Add(startChatBtn);
-            
-
         }
 
-        public void RemoveAllStartChatBtn() {
-            _startChatBtnList.ForEach(startChatBtn => {
+        public void RemoveAllStartChatBtn()
+        {
+            _startChatBtnList.ForEach(startChatBtn =>
+            {
                 Destroy(startChatBtn);
             });
             _startChatBtnList.Clear();
@@ -178,22 +176,25 @@ namespace SH.Dialogue
 
         public void RemoveStartChatBtn(string name)
         {
-
             GameObject targetBtn = _startChatBtnList.Find(startChatBtn =>
                  startChatBtn.GetComponent<DialogueStartChatButton>().Name == name);
-           
-            if(targetBtn == null) return;
-            
+
+            if (targetBtn == null) return;
+
             _startChatBtnList.Remove(targetBtn);
-            
+
             Destroy(targetBtn);
 
         }
 
         public void MakeChoice(int index)
         {
-            _currentStory.ChooseChoiceIndex(index);
+            if (_currentStory.currentChoices[index].text.Contains("Crafting"))
+            {
+                    Debug.Log("Showing Crafting Popup");
+            }
 
+            _currentStory.ChooseChoiceIndex(index);
             ContinueStory();
         }
     }

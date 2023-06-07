@@ -19,8 +19,7 @@ namespace SH.Dialogue
         {
             _choiceBtn.onClick.AddListener(() => DialogueManager.Instance.MakeChoice(Index));
         }
-
-
+        
         public void SetContent(string content) => _choiceTextContent.text = content;
 
     }

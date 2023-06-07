@@ -108,7 +108,6 @@ namespace SH.Multiplayer
 
                     if (mineral.RespawnTimeStarted == false)
                     {
-
                         mineral.RespawnTime = TickTimer.CreateFromSeconds(Runner, 10);
                         mineral.RespawnTimeStarted = true;
                     }

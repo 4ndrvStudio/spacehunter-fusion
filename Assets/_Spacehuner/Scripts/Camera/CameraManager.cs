@@ -48,9 +48,7 @@ namespace SH.Multiplayer
                 _xInput += _touchField.TouchDist.x * _touchSpeedSensitivityX;
                 _yInput += _touchField.TouchDist.y * -_touchSpeedSensitivityY;
                 _yInput = Mathf.Clamp(_yInput, _MinX, _MaxX);
-
                 _rotatePoint.rotation = Quaternion.Euler(_yInput, _xInput, 0f);
-
             }
         }
 
@@ -60,7 +58,6 @@ namespace SH.Multiplayer
             {
                 Instance = null;
             }
-
         }
 
 

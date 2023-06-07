@@ -8,7 +8,6 @@ namespace SH.NPC
     {
         public NPCState NpcState;
         public string Name;
-
     }
 
     public enum NPCState {
