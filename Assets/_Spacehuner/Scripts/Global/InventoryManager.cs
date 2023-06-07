@@ -27,12 +27,14 @@ namespace SH
         [HideInInspector]
         public List<ItemConfig> ItemConfigs = new List<ItemConfig>();
 
-
         public List<WeaponConfig> WeaponConfigs = new List<WeaponConfig>();
 
         public static UnityAction OnInventoryDataChange;
 
         public WeaponConfig CurrentWeaponInUse = null;
+
+        [HideInInspector] public int MineralCollectedCount;
+        [HideInInspector] public int ExpCollectedCount;
 
         void Awake()
         {

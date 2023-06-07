@@ -7,16 +7,16 @@ using SH.Define;
 
 namespace SH.Multiplayer
 {
-        public enum MiningGameState
-        {
-            Starting,
-            Running,
-            Ending
-        }
+    public enum MiningGameState
+    {
+        Starting,
+        Running,
+        Ending
+    }
+
+
     public class Network_RoomMining : NetworkBehaviour
     {
-    
-
         [System.Serializable]
         public class MineralData
         {
@@ -25,19 +25,15 @@ namespace SH.Multiplayer
             [HideInInspector] public NetworkObject MineralSpawned;
             [Networked] public TickTimer RespawnTime { get; set; }
             public bool RespawnTimeStarted;
-
         }
-
 
         [SerializeField] private List<MineralData> _mineralDataList = new List<MineralData>();
 
         [SerializeField] private List<NetworkPrefabRef> _mineralObList = new List<NetworkPrefabRef>();
 
-
-
         [Networked] private MiningGameState _gameState { get; set; }
 
-
+        public int MineralCollectedCount = 0;
 
         public override void Spawned()
         {
@@ -48,7 +44,7 @@ namespace SH.Multiplayer
         }
         public override void FixedUpdateNetwork()
         {
-            if(Runner.IsServer == false) return;
+            if (Runner.IsServer == false) return;
 
             switch (_gameState)
             {
@@ -66,25 +62,25 @@ namespace SH.Multiplayer
             }
         }
 
+        public void SpawnMineral(MineralData mineral)
+        {
 
-        public void SpawnMineral(MineralData mineral) {
+            Network_SpawnPoint spawnPoint = mineral.SpawnPoint;
 
-                Network_SpawnPoint spawnPoint = mineral.SpawnPoint;
+            // Simple Random
+            int randomInt = UnityEngine.Random.Range(0, 20);
 
-                // Simple Random
-                int randomInt = UnityEngine.Random.Range(0, 20);
+            int targetInt = randomInt > 15 && randomInt <= 19 ? 2 : randomInt > 8 && randomInt <= 15 ? 1 : 0;
 
-                int targetInt = randomInt > 15 &&  randomInt <= 19 ? 2 : randomInt > 8  &&  randomInt <=15 ? 1 : 0;
- 
-                NetworkPrefabRef targetToSpawn = _mineralObList[targetInt];
+            NetworkPrefabRef targetToSpawn = _mineralObList[targetInt];
 
-                var mineralSpawned = Runner.Spawn(targetToSpawn, spawnPoint.GetSpawnPosition(), Quaternion.identity , PlayerRef.None);
+            var mineralSpawned = Runner.Spawn(targetToSpawn, spawnPoint.GetSpawnPosition(), Quaternion.identity, PlayerRef.None);
 
-                mineral.WasSpawn = true;
+            mineral.WasSpawn = true;
 
-                mineralSpawned.GetComponent<Network_Mineral>().Network_RoomMining = this;
+            mineralSpawned.GetComponent<Network_Mineral>().Network_RoomMining = this;
 
-                mineral.MineralSpawned = mineralSpawned;
+            mineral.MineralSpawned = mineralSpawned;
 
         }
 
@@ -98,7 +94,7 @@ namespace SH.Multiplayer
             });
 
             _gameState = MiningGameState.Running;
-            
+
         }
 
         public void RespawnMineral()
@@ -142,9 +138,9 @@ namespace SH.Multiplayer
 
             Runner.Despawn(mineral);
 
+            MineralCollectedCount++;
+
         }
-
-
 
     }
 

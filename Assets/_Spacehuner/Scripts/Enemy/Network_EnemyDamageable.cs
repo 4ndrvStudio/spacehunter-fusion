@@ -65,7 +65,7 @@ namespace SH.Multiplayer
                 _wasHit = false;
 
                 _enemyStats.ReduceHealth(_currentDame);
-
+                
                 HitCount++;
 
 

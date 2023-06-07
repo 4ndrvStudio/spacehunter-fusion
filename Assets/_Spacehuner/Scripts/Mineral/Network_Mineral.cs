@@ -40,7 +40,6 @@ namespace SH.Multiplayer
 
     public class Network_Mineral : NetworkBehaviour
     {
-
         [HideInInspector] public Network_RoomMining Network_RoomMining = default;
 
         //network 
@@ -58,6 +57,10 @@ namespace SH.Multiplayer
         
         private PlayerRef _lastHitPlayer;
         private int _currentDame=0;
+
+      
+
+
 
         public override void Spawned()
         {
@@ -114,10 +117,7 @@ namespace SH.Multiplayer
 
         async void MineralDestroy()
         {
-
-
             await Task.Delay(2000);
-
             Network_RoomMining.MineralCollected(Object);
         }
 

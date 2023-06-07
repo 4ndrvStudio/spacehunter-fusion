@@ -34,6 +34,7 @@ namespace SH.Multiplayer
 
         [Networked] private PVEGameState _gameState { get; set; }
 
+        public int ExpCollectedCount;
         
         public override void Spawned()
         {
@@ -131,8 +132,13 @@ namespace SH.Multiplayer
 
             enemyData.WasSpawn = false;
 
+            int exp = UnityEngine.Random.Range(500, 1000);
+            ExpCollectedCount += exp;
+            
             Runner.Despawn(enemy);
 
+        
+            
         }
 
 

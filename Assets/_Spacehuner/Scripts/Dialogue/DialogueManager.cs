@@ -172,8 +172,6 @@ namespace SH.Dialogue
             _startChatBtnList.Add(startChatBtn);
             
 
-            
-
         }
 
         public void RemoveAllStartChatBtn() {
