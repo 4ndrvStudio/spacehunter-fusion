@@ -21,9 +21,7 @@ namespace SH.Multiplayer
 
         public override void Spawned()
         {
-
             _lastVisibleGetHit = _playerDamageable.HitCount;
-
             UIControllerManager.Instance.SetHP(HP);
             WasSetup = true;
 
@@ -70,6 +68,7 @@ namespace SH.Multiplayer
             }
             UIControllerManager.Instance.SetHP(HP);
         }
+        
         public void Death()
         {
             _playerAnimation.PlayDeathAnimation();
@@ -80,7 +79,6 @@ namespace SH.Multiplayer
             //Death in Mining Room
             if((int)Runner.CurrentScene == 3) {
                 //UIManager.Instance.ShowPopupWithCallback()
-                
             }
 
         }

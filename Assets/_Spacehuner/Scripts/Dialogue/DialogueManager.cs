@@ -100,16 +100,12 @@ namespace SH.Dialogue
 
                 if (_currentStory.currentChoices.Count > 0)
                 {
-
                     DisplayChoice();
-
                 }
                 else
                 {
-
                     HideChoice();
                 }
-
             }
             else
             {
@@ -122,7 +118,6 @@ namespace SH.Dialogue
         {
 
             _currentChoicesList.Clear();
-
 
             _currentChoicesBtnList.ForEach(choiceBtn =>
             {
