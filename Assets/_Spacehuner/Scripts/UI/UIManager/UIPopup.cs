@@ -34,6 +34,6 @@ public enum PopupName
     Inventory=2,
     Notification=3,
     UpdateNotification=4,
-
+    Crafting=5,
     SuiNotification=999
 }

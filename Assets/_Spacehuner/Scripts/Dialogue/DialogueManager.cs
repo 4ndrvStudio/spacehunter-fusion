@@ -191,10 +191,11 @@ namespace SH.Dialogue
         {
             if (_currentStory.currentChoices[index].text.Contains("Crafting"))
             {
-                    Debug.Log("Showing Crafting Popup");
+                Debug.Log("Showing Crafting Popup");
             }
 
             _currentStory.ChooseChoiceIndex(index);
+            
             ContinueStory();
         }
     }

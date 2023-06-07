@@ -27,8 +27,6 @@ namespace SH
 
         private bool _init = false;
 
-
-
         //View
         [SerializeField] private Button _closeBtn;
         [SerializeField] private Button _useWeaponBtn;
