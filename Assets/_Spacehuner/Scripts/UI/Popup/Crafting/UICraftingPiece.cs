@@ -6,9 +6,13 @@ using TMPro;
 
 namespace SH.UI
 {
-    public class UICraftItemSlot : MonoBehaviour
+    public class UICraftingPiece : MonoBehaviour
     {
         [SerializeField] private UICraftingPanel _craftingPanel;
+        [HideInInspector] public UICraftItemSlot _craftItemSlot;
+
+        [SerializeField] private GameObject _hasItemOb;
+        [SerializeField] private GameObject _nullItemOb;
         //PUBLIC MEMEBER
         [HideInInspector] public int Level;
         public Sprite ItemIcon => _itemIconUI.sprite;
@@ -21,38 +25,29 @@ namespace SH.UI
 
         private ItemConfig _itemConfig;
         public ItemConfig ItemConfig => _itemConfig;
-
+        
         [SerializeField] private Image _quantityFrameUI;
         [SerializeField] private TextMeshProUGUI _quantityTextUI;
         [SerializeField] private int _quantity = 1;
 
+        public bool HasPiece = false;
+
         void Start()
         {
             _itemButton.onClick.AddListener(() =>
-            {   
-                if(_quantity <= 0 ) return;
-            
-                _craftingPanel.AddItemToCrafting(this);
+            {    
+                Reset();
+                _craftingPanel.CheckCanCraft();
+                _craftItemSlot.StackItem();
             });
         }
 
-        public void StackItem()
+        public void Setup(UICraftItemSlot craftItemSlot)
         {
-            _quantity++;
-            _quantityTextUI.text = _quantity.ToString();
-            _quantityFrameUI.gameObject.SetActive(true);
-        }
-        public void GetItemToCraft() {
-            _quantity--;
-            _quantityTextUI.text = _quantity.ToString();
-        }
-
-        public void Setup(int level, ItemConfig itemConfig , UICraftingPanel craftingPanel)
-        {
-            _craftingPanel = craftingPanel;
-            _itemConfig = itemConfig;
+            _craftItemSlot = craftItemSlot;
+            _itemConfig = craftItemSlot.ItemConfig;
             _quantity = 1;
-            Level = level;
+            Level = craftItemSlot.Level;
 
             _itemFrameUI.sprite = InventoryManager.Instance.ItemFrame[Level - 1];
 
@@ -60,8 +55,22 @@ namespace SH.UI
                 _itemIconUI.sprite = _itemConfig.IconWithLevel[Level - 1];
             else
                 _itemIconUI.sprite = _itemConfig.ItemIcon;
+            
+            _nullItemOb.SetActive(false);
+            _hasItemOb.SetActive(true);
+            HasPiece = true;
         }
 
+        public void Reset() {
+            _itemConfig = null;
+            _quantity = 0;
+            Level = 0;
+            _itemFrameUI.sprite = null;
+            _itemIconUI.sprite = null;
+            _nullItemOb.SetActive(true);
+            _hasItemOb.SetActive(false);
+            HasPiece = false;
+        }
     }
 
 }

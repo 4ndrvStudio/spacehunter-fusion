@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace SH
+namespace SH.UI
 {
     public class UIInventoryItemInfo : MonoBehaviour
     {

@@ -12,7 +12,7 @@ using SH.Multiplayer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace SH
+namespace SH.UI
 {
     public class InventoryManager : MonoBehaviour
     {
@@ -82,7 +82,6 @@ namespace SH
                             this._items.Add(item);
                         } 
                     });
-                    
 
                     OnInventoryDataChange?.Invoke();
                 },

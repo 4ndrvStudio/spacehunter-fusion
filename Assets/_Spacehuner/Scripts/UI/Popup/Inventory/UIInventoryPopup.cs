@@ -10,7 +10,7 @@ using PlayFab;
 using Newtonsoft.Json;
 using Suinet.Rpc.Types;
 
-namespace SH
+namespace SH.UI
 {
     public enum UIInventoryTabName
     {

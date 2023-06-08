@@ -86,7 +86,7 @@ namespace SH.Dialogue
         }
 
 
-        private void ExitDialogueMode(bool isCanCountinue = false)
+        public void ExitDialogueMode(bool isCanCountinue = false)
         {
             DialogueIsPlaying = false;
             _dialoguePanel.SetActive(false);

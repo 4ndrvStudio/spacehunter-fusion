@@ -3,19 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayFab.ClientModels;
-namespace SH.Multiplayer
+using SH.Multiplayer;
+using DG.Tweening;
+
+namespace SH.UI
 {
     public class UICraftingPanel : MonoBehaviour
     {
         [SerializeField] private Button _closeBtn;
-
+        [SerializeField] private UICraftingPopup _craftingPopup;
         //item
         [SerializeField] private GameObject _itemPrefab;
         [SerializeField] private GameObject _inventoryContentHolder;
         [SerializeField] private List<GameObject> _craftingItemList = new List<GameObject>();
-        
-        [SerializeField] private List<GameObject> _targetItemList = new List<GameObject>();
-        
+
+        //Crafting Setup 
+        [SerializeField] private List<UICraftingPiece> _craftingItemPieceList = new List<UICraftingPiece>();
+        [SerializeField] private UICraftingButton _craftingButton;
+        [SerializeField] private Image _processBarImage;
+
+        private void Start() {
+            _closeBtn.onClick.AddListener(() => {
+                ResetPanel();
+                _craftingPopup.CloseCrafting();
+                
+            });
+        }
+
 
         private void OnEnable()
         {
@@ -25,6 +39,15 @@ namespace SH.Multiplayer
         private void OnDisable()
         {
             InventoryManager.OnInventoryDataChange += UpdateView;
+        }
+
+        private void ResetPanel() {
+                    
+                _processBarImage.fillAmount = 0;
+               _craftingItemPieceList.ForEach(item => {
+                    item.Reset();
+                 });
+                _craftingButton.ProcessState(ECraftingButtonState.Disable);
         }
         public void UpdateView()
         {
@@ -70,6 +93,47 @@ namespace SH.Multiplayer
             }
 
         }
+
+        public void AddItemToCrafting(UICraftItemSlot craftItemSlot)
+        {
+            int indexToPlace = _craftingItemPieceList.FindIndex(piece => piece.HasPiece == false);
+            if (indexToPlace == -1) return;
+            _craftingItemPieceList[indexToPlace].Setup(craftItemSlot);
+            craftItemSlot.GetItemToCraft();
+            CheckCanCraft();
+        }
+
+        public void RemoveItemFromCrafting(int index)
+        {
+
+        }
+
+        public bool CheckCanCraft()
+        {
+            int indexToPlace = _craftingItemPieceList.FindIndex(piece => piece.HasPiece == false);
+            
+            bool canCraft = indexToPlace == -1;
+
+            _craftingButton.ProcessState(canCraft ? ECraftingButtonState.Enable : ECraftingButtonState.Disable);
+
+            return canCraft;
+        }
+
+        public void CraftItem()
+        {
+            _craftingButton.ProcessState(ECraftingButtonState.Processing);
+        
+            DOTween.To(() => _processBarImage.fillAmount, x=> _processBarImage.fillAmount = x,0.82f,5f)
+                .OnComplete(() => {
+                    DOTween.To(() => _processBarImage.fillAmount, x=> _processBarImage.fillAmount = x,1f,1.5f)
+                        .OnComplete(() => {
+                            Debug.Log("Display Claim");
+                            ResetPanel();
+                            _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.None);
+                        });
+                });
+        }
+
     }
 
 }

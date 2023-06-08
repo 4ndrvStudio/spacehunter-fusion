@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SH
+namespace SH.UI
 {
     [CreateAssetMenu(fileName = "ItemConfig", menuName = "Game Data/Item/Item Config")]
     public class ItemConfig : ScriptableObject
