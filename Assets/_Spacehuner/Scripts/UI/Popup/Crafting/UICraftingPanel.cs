@@ -69,7 +69,9 @@ namespace SH.UI
         public void UpdateView()
         {
             _loaderIcon.SetActive(true);
-        
+
+            ClearUI();
+
             // Display items to UI
             Dictionary<string, GameObject> itemDictionary = new Dictionary<string, GameObject>();
 
@@ -116,12 +118,7 @@ namespace SH.UI
             craftItemSlot.GetItemToCraft();
             CheckCanCraft();
         }
-
-        public void RemoveItemFromCrafting(int index)
-        {
-
-        }
-
+        
         public bool CheckCanCraft()
         {
             int indexToPlace = _craftingItemPieceList.FindIndex(piece => piece.HasPiece == false);
