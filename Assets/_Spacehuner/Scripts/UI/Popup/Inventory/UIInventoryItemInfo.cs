@@ -16,7 +16,6 @@ namespace SH.UI
 
         [SerializeField] private Color _useTextActiveColor;
         [SerializeField] private Color _useTextDeactiveColor;
-
         void Start() {
             _useButton.onClick.AddListener(()=> UIInventoryPopup.Instance.UseItem());
         }

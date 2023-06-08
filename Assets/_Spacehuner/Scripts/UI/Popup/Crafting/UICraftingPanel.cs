@@ -16,23 +16,27 @@ namespace SH.UI
         [SerializeField] private GameObject _itemPrefab;
         [SerializeField] private GameObject _inventoryContentHolder;
         [SerializeField] private List<GameObject> _craftingItemList = new List<GameObject>();
-
+        [SerializeField] private GameObject _loaderIcon;
         //Crafting Setup 
         [SerializeField] private List<UICraftingPiece> _craftingItemPieceList = new List<UICraftingPiece>();
         [SerializeField] private UICraftingButton _craftingButton;
         [SerializeField] private Image _processBarImage;
+        [SerializeField] private bool _isCrafting;
 
-        private void Start() {
-            _closeBtn.onClick.AddListener(() => {
+        private void Start()
+        {
+            _closeBtn.onClick.AddListener(() =>
+            {
+                if (_isCrafting == true) return;
                 ResetPanel();
                 _craftingPopup.CloseCrafting();
-                
             });
         }
 
 
         private void OnEnable()
         {
+            _loaderIcon.SetActive(true);
             InventoryManager.Instance.GetInventoryData();
             InventoryManager.OnInventoryDataChange += UpdateView;
         }
@@ -41,22 +45,31 @@ namespace SH.UI
             InventoryManager.OnInventoryDataChange += UpdateView;
         }
 
-        private void ResetPanel() {
-                    
-                _processBarImage.fillAmount = 0;
-               _craftingItemPieceList.ForEach(item => {
-                    item.Reset();
-                 });
-                _craftingButton.ProcessState(ECraftingButtonState.Disable);
-        }
-        public void UpdateView()
+        private void ResetPanel()
         {
-            // Clear UI
+            _isCrafting = false;
+            _processBarImage.fillAmount = 0;
+            _craftingItemPieceList.ForEach(item =>
+            {
+                item.Reset();
+            });
+            _craftingButton.ProcessState(ECraftingButtonState.Disable);
+           
+            ClearUI();
+        }
+
+        private void ClearUI() {
+                // Clear UI
             foreach (var item in _craftingItemList)
             {
                 Destroy(item);
             }
             _craftingItemList.Clear();
+        }
+        public void UpdateView()
+        {
+            _loaderIcon.SetActive(true);
+        
             // Display items to UI
             Dictionary<string, GameObject> itemDictionary = new Dictionary<string, GameObject>();
 
@@ -91,6 +104,7 @@ namespace SH.UI
                     stackedItem.GetComponent<UICraftItemSlot>().StackItem();
                 }
             }
+            _loaderIcon.SetActive(false);
 
         }
 
@@ -111,7 +125,7 @@ namespace SH.UI
         public bool CheckCanCraft()
         {
             int indexToPlace = _craftingItemPieceList.FindIndex(piece => piece.HasPiece == false);
-            
+
             bool canCraft = indexToPlace == -1;
 
             _craftingButton.ProcessState(canCraft ? ECraftingButtonState.Enable : ECraftingButtonState.Disable);
@@ -121,15 +135,19 @@ namespace SH.UI
 
         public void CraftItem()
         {
+            _isCrafting = true;
             _craftingButton.ProcessState(ECraftingButtonState.Processing);
-        
-            DOTween.To(() => _processBarImage.fillAmount, x=> _processBarImage.fillAmount = x,0.82f,5f)
-                .OnComplete(() => {
-                    DOTween.To(() => _processBarImage.fillAmount, x=> _processBarImage.fillAmount = x,1f,1.5f)
-                        .OnComplete(() => {
+
+            DOTween.To(() => _processBarImage.fillAmount, x => _processBarImage.fillAmount = x, 0.82f, 5f)
+                .OnComplete(() =>
+                {
+                    DOTween.To(() => _processBarImage.fillAmount, x => _processBarImage.fillAmount = x, 1f, 1.5f)
+                        .OnComplete(() =>
+                        {
                             Debug.Log("Display Claim");
                             ResetPanel();
                             _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.None);
+
                         });
                 });
         }

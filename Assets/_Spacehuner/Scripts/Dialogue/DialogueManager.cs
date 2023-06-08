@@ -31,6 +31,7 @@ namespace SH.Dialogue
         private Story _currentStory;
 
         public static bool DialogueIsPlaying;
+        public static bool IsCanCountinue;
 
         void Awake()
         {
@@ -68,7 +69,7 @@ namespace SH.Dialogue
 
         public void EnterDialogueMode(TextAsset inkJson= null)
         {
-            if (DialogueIsPlaying == true) return;
+            if (DialogueIsPlaying == true && IsCanCountinue == false) return;
             
             if(inkJson != null) {
                 _currentStory = new Story(inkJson.text);
@@ -88,13 +89,18 @@ namespace SH.Dialogue
 
         public void ExitDialogueMode(bool isCanCountinue = false)
         {
-            DialogueIsPlaying = false;
+            IsCanCountinue = isCanCountinue;
+
             _dialoguePanel.SetActive(false);
             _dialogueText.text = "";
+            DialogueIsPlaying = false;
+
             HideChoice();
+
             if(isCanCountinue == false) {
-                UIControllerManager.Instance.DisplayController();
-            }
+                    UIControllerManager.Instance.DisplayController();
+            } 
+              
         
         }
 

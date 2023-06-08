@@ -51,8 +51,12 @@ namespace SH.UI
         //component
         [SerializeField] private UIInventoryItemInfo _uiInventoryItemInfo;
 
+        [SerializeField] private GameObject _loadingIcon;
+
+
         private void OnEnable()
-        {
+        {   
+            _loadingIcon.SetActive(true);
             InventoryManager.Instance.GetInventoryData();
 
             InventoryManager.OnInventoryDataChange += UpdateView;
@@ -96,7 +100,9 @@ namespace SH.UI
         public override void Hide()
         {
             base.Hide();
+            ClearUI();
             UIControllerManager.Instance.DisplayController();
+      
         }
 
         private void Setup()
@@ -186,15 +192,18 @@ namespace SH.UI
             UpdateView();
         }
 
-        private void UpdateView()
-        {
-
-            // Clear UI
+        private void ClearUI() {
+              // Clear UI
             foreach (var item in _inventoryItemList)
             {
                 Destroy(item);
             }
             _inventoryItemList.Clear();
+        }
+        private void UpdateView()
+        {
+             ClearUI();
+            _loadingIcon.SetActive(true);
 
             // Display items to UI
             Dictionary<string, GameObject> itemDictionary = new Dictionary<string, GameObject>();
@@ -248,7 +257,7 @@ namespace SH.UI
                     stackedItem.GetComponent<UIItemSlot>().StackItem();
                 }
             }
-
+         _loadingIcon.SetActive(false);
         }
 
 

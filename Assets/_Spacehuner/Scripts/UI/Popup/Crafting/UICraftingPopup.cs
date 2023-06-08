@@ -28,6 +28,7 @@ namespace SH.UI
 
         public void ProcessNextStep(ECraftingState craftingState, ECraftingType craftingType)
         {
+            Debug.Log("next step " + craftingState.ToString());
             _craftingChooseCraftPanel.SetActive(false);
             _craftingSuccessPanel.SetActive(false);
             _craftingPanel.SetActive(false);
