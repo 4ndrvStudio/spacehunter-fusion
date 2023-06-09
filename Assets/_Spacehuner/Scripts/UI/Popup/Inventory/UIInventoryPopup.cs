@@ -18,7 +18,8 @@ namespace SH
         Weapon,
         Spaceship,
         Mineral,
-        Reward
+        Reward,
+        Gear
     }
 
     public class UIInventoryPopup : UIPopup
