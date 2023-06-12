@@ -251,8 +251,9 @@ namespace VLB
             Instance.RefreshShader(RefreshShaderFlags.All);
 #endif
 
-            if(Instance.hasRenderPipelineMismatch)
-                Debug.LogError("It looks like the 'Render Pipeline' is not correctly set in the config. Please make sure to select the proper value depending on your pipeline in use.", Instance);
+            // if(Instance.hasRenderPipelineMismatch)
+            //     Debug.LogError("It looks like the 'Render Pipeline' is not correctly set in the config. Please make sure to select the proper value depending on your pipeline in use.", Instance);
+        
         }
 
         public void Reset()

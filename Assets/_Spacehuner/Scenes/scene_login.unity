@@ -35703,7 +35703,7 @@ RectTransform:
   - {fileID: 1538611308277447511}
   - {fileID: 1538611309023536122}
   m_Father: {fileID: 1538611308032557336}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -74379,7 +74379,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1538611307298611004
 RectTransform:
   m_ObjectHideFlags: 0
@@ -74417,6 +74417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8055b3201a19584f818744394459f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _slotCharacterPanel: {fileID: 933132071}
   _selectMethodPanel: {fileID: 1538611307763303287}
   _createSuiWalletPanel: {fileID: 1538611308032557319}
   _importExistingWalletPanel: {fileID: 1538611308094065763}
@@ -74589,7 +74590,7 @@ RectTransform:
   - {fileID: 1538611309149113466}
   - {fileID: 1538611309306096773}
   m_Father: {fileID: 1538611308032557336}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -76323,6 +76324,8 @@ GameObject:
   - component: {fileID: 1538611307763303240}
   - component: {fileID: 1538611307763303242}
   - component: {fileID: 1538611307763303241}
+  - component: {fileID: 1538611307763303289}
+  - component: {fileID: 1538611307763303288}
   m_Layer: 5
   m_Name: Select method
   m_TagString: Untagged
@@ -76330,6 +76333,37 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &1538611307763303288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538611307763303287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00108821dfa2f44ca849c1217ce3f4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartDelay: 0
+  Direction: 0
+  Duration: 0.5
+  Ease: 6
+  Behaviour: 1
+  ResetOnDisable: 1
+  FadeOutValue: 0
+--- !u!225 &1538611307763303289
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538611307763303287}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1538611307766855971
 GameObject:
   m_ObjectHideFlags: 0
@@ -78383,7 +78417,7 @@ RectTransform:
   - {fileID: 1538611309145488982}
   - {fileID: 1538611307646459368}
   m_Father: {fileID: 1538611308032557336}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -78543,6 +78577,7 @@ MonoBehaviour:
   _sprHideSprite: {fileID: 21300000, guid: 3dac050dbe2362547b15ba3b50d13d08, type: 3}
   _sprActiveSprite: {fileID: 21300000, guid: 2baaaf331fdedaa4998cd29d209bfe88, type: 3}
   _toggleButton: {fileID: 1538611307646459369}
+  _text: {fileID: 1538611307916616105}
 --- !u!114 &1538611307989046880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78938,6 +78973,8 @@ GameObject:
   - component: {fileID: 1538611308032557336}
   - component: {fileID: 1538611308032557338}
   - component: {fileID: 1538611308032557337}
+  - component: {fileID: 1538611308032557340}
+  - component: {fileID: 1538611308032557339}
   m_Layer: 5
   m_Name: Create wallet
   m_TagString: Untagged
@@ -78959,7 +78996,6 @@ RectTransform:
   m_Children:
   - {fileID: 1538611308000230371}
   - {fileID: 1538611309324294342}
-  - {fileID: 1538611308104003323}
   - {fileID: 1538611307948215689}
   - {fileID: 1538611307327240215}
   - {fileID: 980021565}
@@ -79009,6 +79045,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1538611308032557319}
   m_CullTransparentMesh: 1
+--- !u!114 &1538611308032557339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538611308032557319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00108821dfa2f44ca849c1217ce3f4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartDelay: 0
+  Direction: 0
+  Duration: 0.5
+  Ease: 6
+  Behaviour: 1
+  ResetOnDisable: 1
+  FadeOutValue: 0
+--- !u!225 &1538611308032557340
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538611308032557319}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1538611308053085433
 GameObject:
   m_ObjectHideFlags: 0
@@ -79322,6 +79389,8 @@ GameObject:
   - component: {fileID: 1538611308094065766}
   - component: {fileID: 1538611308094065765}
   - component: {fileID: 1538611308094065767}
+  - component: {fileID: 1538611308094065769}
+  - component: {fileID: 1538611308094065768}
   m_Layer: 5
   m_Name: Import existing wallet
   m_TagString: Untagged
@@ -79417,6 +79486,37 @@ MonoBehaviour:
   - {fileID: 26591366}
   _createButton: {fileID: 1538611307919927308}
   Mnenonics: 
+--- !u!114 &1538611308094065768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538611308094065763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00108821dfa2f44ca849c1217ce3f4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartDelay: 0
+  Direction: 0
+  Duration: 0.5
+  Ease: 6
+  Behaviour: 1
+  ResetOnDisable: 1
+  FadeOutValue: 0
+--- !u!225 &1538611308094065769
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538611308094065763}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1538611308104003322
 GameObject:
   m_ObjectHideFlags: 0
@@ -79442,17 +79542,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1538611308104003322}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000022886354}
+  m_LocalScale: {x: 0.99992, y: 0.99992, z: 0.99992}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1538611308032557336}
-  m_RootOrder: 2
+  m_Father: {fileID: 1538611309324294342}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0000076293945, y: 146}
+  m_AnchoredPosition: {x: 0, y: -58.995285}
   m_SizeDelta: {x: 588.54, y: 71.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1538611308104003324
@@ -84469,6 +84569,8 @@ GameObject:
   - component: {fileID: 1538611308941822045}
   - component: {fileID: 1538611308941822047}
   - component: {fileID: 1538611308941822046}
+  - component: {fileID: 1538611308941822049}
+  - component: {fileID: 1538611308941822048}
   m_Layer: 5
   m_Name: Create wallet successfull
   m_TagString: Untagged
@@ -84539,6 +84641,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1538611308941822044}
   m_CullTransparentMesh: 1
+--- !u!114 &1538611308941822048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538611308941822044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00108821dfa2f44ca849c1217ce3f4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartDelay: 0
+  Direction: 0
+  Duration: 0.5
+  Ease: 6
+  Behaviour: 1
+  ResetOnDisable: 1
+  FadeOutValue: 0
+--- !u!225 &1538611308941822049
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538611308941822044}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1538611308971995157
 GameObject:
   m_ObjectHideFlags: 0
@@ -87063,7 +87196,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: -0.000022888184}
   m_LocalScale: {x: 1.00008, y: 1.00008, z: 1.00008}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1538611308104003323}
   m_Father: {fileID: 1538611308032557336}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

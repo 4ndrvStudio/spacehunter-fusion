@@ -16,6 +16,7 @@ namespace SH.UI
 
     public class UISuiWalletPanel : MonoBehaviour
     {
+        [SerializeField] private GameObject _slotCharacterPanel;
         [Header("Sui Method")]
         [SerializeField] private GameObject _selectMethodPanel;
         [SerializeField] private GameObject _createSuiWalletPanel;
@@ -86,6 +87,10 @@ namespace SH.UI
                      ProcessToNextStep(ESuiWalletState.Confirm);
             
             });
+
+            _confirmButton.onClick.AddListener(() => {
+                Continue();
+            });
         }
 
         private void ProcessToNextStep(ESuiWalletState suiWalletState)
@@ -137,6 +142,11 @@ namespace SH.UI
             Debug.Log(SuiWallet.GetActiveAddress());
 
 
+        }
+        private void Continue() {
+             this.gameObject.SetActive(false);
+            _slotCharacterPanel.SetActive(true);
+           
         }
 
 
