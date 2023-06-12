@@ -28,7 +28,13 @@ public class SuiWallet
 
     public static bool RestoreWalletFromMnemonics(string mnemo)
     {
-        if (!Mnemonics.ValidateMnemonic(mnemo)) return false;
+        if (!Mnemonics.ValidateMnemonic(mnemo)) {
+            Debug.LogError("your mneno not validate");
+            return false;
+        }  else {
+            Debug.Log("Complete to import!");
+
+        }
 
         PlayerPrefs.SetString(MnemonicsKey, mnemo);
         PlayerPrefs.Save();

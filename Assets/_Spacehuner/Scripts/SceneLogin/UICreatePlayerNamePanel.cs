@@ -20,7 +20,7 @@ namespace SH.Account
         {
             _inputName.text = null;
         }
-
+        
         public void OnCreateClick()
         {
             string displayName = _inputName.text;
