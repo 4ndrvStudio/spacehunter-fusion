@@ -17,7 +17,7 @@ namespace SH.Account
     {
         [SerializeField] private CanvasGroup _loginCanvas;
         [SerializeField] private GameObject _slotCharacterPanel = default;
-
+        [SerializeField] private GameObject _suiWalletPanel = default;
 
         [Header("Login")]
 
@@ -98,15 +98,14 @@ namespace SH.Account
                         UIManager.Instance.ShowPopup(PopupName.UpdateNotification);
                     }
 
-                    PlayFabManager.Instance.GetInventoryData(res =>
-                    {
-                        Debug.Log(res.Inventory.Count);
-
-                    },
-                    err =>
-                    {
-                        Debug.Log(err);
-                    });
+                    // PlayFabManager.Instance.GetInventoryData(res =>
+                    // {
+                    //     Debug.Log(res.Inventory.Count);
+                    // },
+                    // err =>
+                    // {
+                    //     Debug.Log(err);
+                    // });
 
 
                     PlayFabManager.Instance.CheckAccountInfo((result) =>
@@ -136,7 +135,8 @@ namespace SH.Account
                                         SHLocalData.Instance.Save();
                                     }
                                     gameObject.SetActive(false);
-                                    _slotCharacterPanel.SetActive(true);
+                                    _suiWalletPanel.SetActive(true);
+                                   //_slotCharacterPanel.SetActive(true);
                                 }
                                 else
                                 {
