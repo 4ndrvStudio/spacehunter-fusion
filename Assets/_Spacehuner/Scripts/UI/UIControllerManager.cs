@@ -76,9 +76,6 @@ namespace SH
         {
             _inventoryBtn.onClick.AddListener(() => OpenInventory());
             _gotoMiningBtn.onClick.AddListener(() => GotoMining());
-
-
-       
         }
 
         private void SetupSUI() {
@@ -127,6 +124,7 @@ namespace SH
             _movementJoy.gameObject.SetActive(true);
 
             _touchPanel.enabled = true;
+
             UIControllerEvent?.Invoke(true);
             IsActive = true;
             
@@ -134,7 +132,8 @@ namespace SH
             _uiSceneMining.gameObject.SetActive(true);
         }
 
-        private void ActiveCombatController() {
+        private void ActiveCombatController() 
+        {
 
             _combatGroup.SetActive(true);
 
@@ -142,15 +141,16 @@ namespace SH
 
         }
 
-        private void ActiveActionControlller() {
+        private void ActiveActionControlller() 
+        {
             _combatGroup.SetActive(false);
 
             _actionGroup.SetActive(true);
           
         }
 
-        public void HideAllController() {
-
+        public void HideAllController() 
+        {
             _combatGroup.SetActive(false);
 
             _actionGroup.SetActive(false);
