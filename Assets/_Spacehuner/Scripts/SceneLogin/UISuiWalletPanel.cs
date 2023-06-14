@@ -95,6 +95,7 @@ namespace SH.UI
 
         private void ProcessToNextStep(ESuiWalletState suiWalletState)
         {
+
             _selectMethodPanel.SetActive(false);
             _createSuiWalletPanel.SetActive(false);
             _importExistingWalletPanel.SetActive(false);
@@ -143,7 +144,8 @@ namespace SH.UI
 
 
         }
-        private void Continue() {
+        private async void Continue() {
+             await SuiWalletManager.EndFarmMint();
              this.gameObject.SetActive(false);
             _slotCharacterPanel.SetActive(true);
            
