@@ -15,6 +15,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Text;
 using SUI.BCS;
+using Chaos.NaCl;
 
 namespace SH
 {
@@ -127,7 +128,7 @@ namespace SH
             var expStream = new MemoryStream();
             formatter.Serialize(expStream, 1000);
             var amountStream = new MemoryStream();
-            formatter.Serialize(amountStream, new List<ulong> { 1 });
+            formatter.Serialize(amountStream, new List<ulong> { 1,1,0,0,0,0,0,0,0 });
             var symbolStream = new MemoryStream();
             formatter.Serialize(symbolStream, new List<string> { "red" });
 
@@ -143,21 +144,24 @@ namespace SH
             symbolStream.Position = 0;
             symbolStream.CopyTo(combinedStream);
 
-            BcsEncoder encoder = new BcsEncoder();
+            // BcsEncoder encoder = new BcsEncoder();
 
-            encoder.RegisterType<List<ulong>>("vector<u64>", (writer, data, options, parameters) =>
-            {
-                List<ulong> vector = (List<ulong>)data;
-                writer.WriteVec(vector, (w, item, index, count) =>
-                {
-                    w.WriteUInt64(item);
-                });
-                return null;
-            });
-            List<ulong> vector = new List<ulong> { 1 };
-            byte[] serializedData = encoder.Serialize("vector<u64>", vector);
-            Debug.Log("serizeLength" +serializedData.Length);
-      
+
+            // encoder.RegisterType<List<ulong>>("vector<u64>", (writer, data, options, parameters) =>
+            // {
+            //     List<ulong> vector = (List<ulong>)data;
+            //     writer.WriteVec(vector, (w, item, index, count) =>
+            //     {
+            //         w.WriteUInt64(item);
+            //     });
+            //     return null;
+            // });
+
+
+            // byte[] expe = encoder.Serialize("u64", 1000);
+
+            // List<ulong> vector = new List<ulong> { 1 };
+            // byte[] serializedData = encoder.Serialize("vector<u64>", vector);
 
 
 
@@ -172,7 +176,6 @@ namespace SH
             // ser.Serialize(new ulong[]{1});
 
             var signTest = SuiWallet.GetActiveKeyPair().Sign(combinedBytes);
-
             var args = new object[] {
                 "0xbc153d4e2397d2718e950db66e9c1786dae6b54862ab2d2a6b877e921ab957ea",
                 "0x85cd1d2e420b086c244f8ae7e88225e04126a0a7f81a29d1c49e26ca239f61e8",
@@ -181,14 +184,14 @@ namespace SH
                 signTest,
                 SuiWallet.GetActiveKeyPair().PublicKey,
                 amount,
-                serializedData,
-                new string[]{"test"}
+                amountStream.ToArray(),
+                new byte[] {1}
             };
             var gasBudget = BigInteger.Parse("1000000");
 
             var rpcResult = await SuiApi.Client.MoveCallAsync(signer, packageObjectId, module, function, typeArgs, args, gasBudget);
 
-            Debug.Log(rpcResult.RawRpcResponse);
+            Debug.Log(rpcResult.RawRpcRequest);
 
             if (rpcResult.IsSuccess)
             {
