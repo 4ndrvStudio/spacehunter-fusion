@@ -14,7 +14,7 @@ using Suinet.Wallet;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Text;
-using Aptos.BCS;
+using SUI.BCS;
 
 
 namespace SH
@@ -132,22 +132,29 @@ namespace SH
        
         // Combine the memory streams
         var combinedStream = new MemoryStream();
+        var amount_bytesTe = new MemoryStream();
+
         expStream.Position = 0;
         expStream.CopyTo(combinedStream);
         amountStream.Position = 0;
         amountStream.CopyTo(combinedStream);
+        amountStream.CopyTo(amount_bytesTe);
         symbolStream.Position = 0;
         symbolStream.CopyTo(combinedStream);
 
+        var test = new BcsEncoder();
+        
+        var tests = test.Serialize("vector<u64>",new ulong[1] {1});
+        Debug.Log(tests);
 
         // Convert the combined memory stream to a byte array
         byte[] combinedBytes = combinedStream.ToArray();
 
         ulong amount = 1000;
-        ulong[] amount_bytesTe = new ulong[1] {1};
-        string[] symbol_bytes = new string[1] {"red"};
+        // ulong[] amount_bytesTe = new ulong[1] {1};
+        // string[] symbol_bytes = new string[1] {"red"};
         
-        Serialization ser = new Serialization();
+     
         // ser.Serialize(new ulong[]{1});
 
         var signTest = SuiWallet.GetActiveKeyPair().Sign(combinedBytes);
@@ -160,7 +167,7 @@ namespace SH
                 signTest,
                 SuiWallet.GetActiveKeyPair().PublicKey,
                 amount,
-                new ulong[]{1},
+                amount_bytesTe.ToArray(),
                 new string[]{"test"}
             };
             var gasBudget = BigInteger.Parse("1000000");
