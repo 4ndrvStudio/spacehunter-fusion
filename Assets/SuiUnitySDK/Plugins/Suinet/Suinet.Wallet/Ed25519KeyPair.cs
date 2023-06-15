@@ -42,6 +42,7 @@ namespace Suinet.Wallet
             string hashString = BitConverter.ToString(result);
             hashString = hashString.Replace("-", "").ToLowerInvariant();
             return "0x" + hashString.Substring(0, 64);
+            
         }
 
         public string Sign(string base64message)

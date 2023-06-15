@@ -12,6 +12,13 @@ public class TimeManager : MonoBehaviour
         if (Instance == null)
             Instance = this;
     }
+    private void OnEnable() {
+
+    }
+
+    private void FixedUpdate() {
+        
+    }
 
     public long CurrentSeconds => DateTimeOffset.Now.ToUnixTimeSeconds();
 }

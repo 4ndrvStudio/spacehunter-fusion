@@ -37,7 +37,8 @@ namespace SH.UI
         [HideInInspector] public int ExpCollectedCount;
 
         void Awake()
-        {
+        {  
+            
 
             if (Instance == null)
                 Instance = this;

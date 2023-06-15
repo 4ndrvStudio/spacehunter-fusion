@@ -16,6 +16,11 @@ using System.IO;
 using System.Text;
 using SUI.BCS;
 using Chaos.NaCl;
+using System;
+
+using System.Numerics;
+
+
 
 namespace SH
 {
@@ -117,9 +122,9 @@ namespace SH
             var mintRpcResult = new RpcResult<TransactionBlockResponse>();
 
             var signer = SuiWallet.GetActiveAddress();
-            var packageObjectId = "0x1167a704479fd8df843bd189a37cb8d18dbb895620b35e0bb59b062a46c2cf85";
+            var packageObjectId = "0x429f802f33fbf910c07ef2eeca46e1c788af95e6b8f6eb82ec203170305fb4ff";
             var module = "farming";
-            var function = "end_farming";
+            var function = "test_u";
             var typeArgs = System.Array.Empty<string>();
 
             var formatter = new BinaryFormatter();
@@ -128,7 +133,7 @@ namespace SH
             var expStream = new MemoryStream();
             formatter.Serialize(expStream, 1000);
             var amountStream = new MemoryStream();
-            formatter.Serialize(amountStream, new List<ulong> { 1,1,0,0,0,0,0,0,0 });
+            formatter.Serialize(amountStream, new List<ulong> { 1 });
             var symbolStream = new MemoryStream();
             formatter.Serialize(symbolStream, new List<string> { "red" });
 
@@ -143,6 +148,7 @@ namespace SH
             amountStream.CopyTo(amount_bytesTe);
             symbolStream.Position = 0;
             symbolStream.CopyTo(combinedStream);
+
 
             // BcsEncoder encoder = new BcsEncoder();
 
@@ -172,20 +178,31 @@ namespace SH
             // ulong[] amount_bytesTe = new ulong[1] {1};
             // string[] symbol_bytes = new string[1] {"red"};
 
+            List<ulong> vector = new List<ulong>();
+            vector.Add(1);
 
-            // ser.Serialize(new ulong[]{1});
+
+            byte[] byteArray = new byte[vector.Count * sizeof(ulong)];
+            
+            Buffer.BlockCopy(vector.ToArray(), 0, byteArray, 0, byteArray.Length);
+
+            string base64String = Convert.ToBase64String(byteArray);
+            Console.WriteLine(base64String);
 
             var signTest = SuiWallet.GetActiveKeyPair().Sign(combinedBytes);
+            // var args = new object[] {
+            //     "0xbc153d4e2397d2718e950db66e9c1786dae6b54862ab2d2a6b877e921ab957ea",
+            //     "0x85cd1d2e420b086c244f8ae7e88225e04126a0a7f81a29d1c49e26ca239f61e8",
+            //     "0x86c94391fc4a946ad8b9d681c166d6aa6362a1e4fe6c76a9cb58374ba361e198",
+            //     "0x0000000000000000000000000000000000000000000000000000000000000006",
+            //     signTest,
+            //     SuiWallet.GetActiveKeyPair().PublicKey,
+            //     amount,
+            //     byteArray,
+            //      new List<string>{"red"}
+            // };
             var args = new object[] {
-                "0xbc153d4e2397d2718e950db66e9c1786dae6b54862ab2d2a6b877e921ab957ea",
-                "0x85cd1d2e420b086c244f8ae7e88225e04126a0a7f81a29d1c49e26ca239f61e8",
-                "0x86c94391fc4a946ad8b9d681c166d6aa6362a1e4fe6c76a9cb58374ba361e198",
-                "0x0000000000000000000000000000000000000000000000000000000000000006",
-                signTest,
-                SuiWallet.GetActiveKeyPair().PublicKey,
-                amount,
-                amountStream.ToArray(),
-                new byte[] {1}
+                new List<ulong>() {1}
             };
             var gasBudget = BigInteger.Parse("1000000");
 
@@ -215,7 +232,6 @@ namespace SH
 
         public static async Task<RpcResult<Page_for_SuiObjectResponse_and_ObjectID>> GetAllNFT()
         {
-
             ObjectDataOptions optionsReq = new ObjectDataOptions();
 
             optionsReq.ShowContent = true;
