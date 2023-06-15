@@ -144,10 +144,8 @@ namespace SH.UI
 
 
         }
-        private async void Continue() {
-            // await SuiWalletManager.EndFarmMint();
-             await SuiWalletManager.StartFarming();
-             await SuiWalletManager.EndFarming();
+        private  void Continue() {
+
              this.gameObject.SetActive(false);
             _slotCharacterPanel.SetActive(true);
            

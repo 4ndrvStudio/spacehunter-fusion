@@ -35,5 +35,6 @@ public enum PopupName
     Notification=3,
     UpdateNotification=4,
     Crafting=5,
+    SuiEstimatedGas = 998,
     SuiNotification=999
 }

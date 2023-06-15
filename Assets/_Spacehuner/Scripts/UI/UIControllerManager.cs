@@ -6,6 +6,9 @@ using SH.Define;
 using SH.Multiplayer;
 using TMPro;
 using UnityEngine.Events;
+using Suinet.Rpc;
+using Suinet.Rpc.Types;
+using Newtonsoft.Json.Linq;
 
 namespace SH
 {
@@ -59,10 +62,20 @@ namespace SH
 
         public static UnityAction<bool> UIControllerEvent;
         
-         [Header("Mining Property")]
-         [SerializeField] private GameObject _uiSceneMining;
-         [SerializeField] private TextMeshProUGUI _hpText;
+        [Header("Mining Property")]
+        [SerializeField] private GameObject _uiSceneMining;
+        [SerializeField] private TextMeshProUGUI _hpText;
 
+        //sui 
+        private RpcResult<TransactionBlockBytes> _currentTx;
+        public static UnityAction ConfirmGasFeesAction {get ; set;}
+        
+        private void OnEnable() {
+            ConfirmGasFeesAction += GotoMining;
+        }
+        private void OnDisble() {
+            ConfirmGasFeesAction -= GotoMining;
+        }
 
         void Awake()
         {
@@ -75,7 +88,7 @@ namespace SH
         void Start()
         {
             _inventoryBtn.onClick.AddListener(() => OpenInventory());
-            _gotoMiningBtn.onClick.AddListener(() => GotoMining());
+            _gotoMiningBtn.onClick.AddListener(() => PrepareToGotoMining());
         }
 
         private void SetupSUI() {
@@ -178,6 +191,32 @@ namespace SH
         public void ShowGotoMiningBtn(bool isActive) => _gotoMiningBtn.gameObject.SetActive(isActive);
 
         public UITouchField GetTouchField() => _touchfield;
+
+        private async void PrepareToGotoMining() {
+                //Mint Nft
+            UIManager.Instance.ShowWaiting();
+
+            var rpcResult = await SuiWalletManager.StartFarming();
+
+            _currentTx = rpcResult;
+
+            var getDry = await SuiApi.Client.DryRunTransactionBlockAsync(rpcResult.Result.TxBytes.ToString()); 
+            
+            JObject jsonObject = JObject.Parse(getDry.RawRpcResponse);
+
+            JArray balanceChangesArray = (JArray)jsonObject["result"]["balanceChanges"];
+
+            Debug.Log(balanceChangesArray[0]["amount"].ToString());
+       
+            SuiEstimatedGasFeesModel gasFeesModel = new SuiEstimatedGasFeesModel();
+            gasFeesModel.CanExcute = true;
+            if(balanceChangesArray[0]["amount"].ToString() != null)
+                gasFeesModel.EstimatedGasFees = balanceChangesArray[0]["amount"].ToString();
+            else 
+                gasFeesModel.EstimatedGasFees = "Can not estimated gas fees";
+            UIManager.Instance.HideWaiting();
+            UIManager.Instance.ShowPopupWithCallback(PopupName.SuiEstimatedGas,gasFeesModel, ConfirmGasFeesAction);
+        }
 
         public void GotoMining()
         {

@@ -167,9 +167,9 @@ namespace Suinet.Rpc
             throw new NotImplementedException();
         }
 
-        public Task<RpcResult<SuiDryRunTransactionBlockResponse>> DryRunTransactionBlockAsync(string txBytes)
+        public async Task<RpcResult<SuiDryRunTransactionBlockResponse>> DryRunTransactionBlockAsync(string txBytes)
         {
-            throw new NotImplementedException();
+             return await SendRpcRequestAsync<SuiDryRunTransactionBlockResponse>("sui_dryRunTransactionBlock", ArgumentBuilder.BuildArguments(txBytes));
         }
 
         public async Task<RpcResult<TransactionBlockResponse>> ExecuteTransactionBlockAsync(string txBytes, IEnumerable<string> serializedSignatures, TransactionBlockResponseOptions options, ExecuteTransactionRequestType requestType)

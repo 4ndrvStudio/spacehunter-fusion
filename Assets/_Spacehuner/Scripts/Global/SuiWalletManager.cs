@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 using System.Threading.Tasks;
 using Suinet.Rpc;
@@ -15,25 +16,25 @@ using SUI.BCS;
 using Chaos.NaCl;
 using System;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 using System.Numerics;
-
-
 
 namespace SH
 {
     public class SuiWalletManager : MonoBehaviour
     {
-        private static ParticleSystem _ser;
+       
 
         private static string _clockAddress = "0x0000000000000000000000000000000000000000000000000000000000000006";
 
         private static string _packageAddress = "0x7167be0deb466c9c0650e7fbad9b283ce1ac1b0f97a0122696b88bf6bb0a128b";
         private static string _farmerDataAddress = "0xabdb5b5d572e217841d2fe1bdcd1de70ec53ac2191cc40093e8eb64f7cae3425";
         private static string _minterDataAddress = "0x732f097b6791cc10d12fe4822372b203b952d9deb610ef10e93a9cf7aa37e194";
-
-        private static string _hunterAddress = "0x54efae60edaf625ea6303a7cfdf42633dc785eeb14867c3869fc513d59f6bd8c";
-
+        
+        private static string _hunterAddress {get; set;}
+        private static string _hunterSymbol = "dst";
 
         //character
         private static string _nftCharacterPackageId = "0x201e77838a6f75d1e6b6808052d0049bb38e880fba41fd7b6d2cde99150edd6a";
@@ -52,46 +53,69 @@ namespace SH
 
             float balance = ((float)balanceResult.Result.TotalBalance) / 1000000000;
 
-
             return balance.ToString("0.#########");
         }
 
-        public async static Task<RpcResult<TransactionBlockResponse>> StartFarming()
-        {
-            var mintRpcResult = new RpcResult<TransactionBlockResponse>();
 
+        public async static Task<RpcResult<TransactionBlockResponse>> Execute(RpcResult<TransactionBlockBytes> result)
+        {
+            var rpcResult = new RpcResult<TransactionBlockResponse>();
+
+            if (result.IsSuccess)
+            {
+                var keyPair = SuiWallet.GetActiveKeyPair();
+
+                var txBytes = result.Result.TxBytes;
+                var rawSigner = new RawSigner(keyPair);
+                
+                var signature = rawSigner.SignData(Intent.GetMessageWithIntent(txBytes));
+
+                rpcResult = await SuiApi.Client.ExecuteTransactionBlockAsync(txBytes, new[] { signature.Value }, TransactionBlockResponseOptions.ShowAll(), ExecuteTransactionRequestType.WaitForLocalExecution);
+            }
+            else
+            {
+                Debug.LogError("Something went wrong with the move call: " + rpcResult.ErrorMessage);
+            }
+            Debug.Log(rpcResult.RawRpcResponse);
+
+            return rpcResult;
+        }
+
+        public async static Task<RpcResult<TransactionBlockBytes>> MintHunter()
+        {
+
+            var signer = SuiWallet.GetActiveAddress();
+            var module = "mint";
+            var function = "mint_hunter";
+            var typeArgs = System.Array.Empty<string>();
+            var args = new object[] {
+                _minterDataAddress,
+                _hunterSymbol,
+            };
+            var gasBudget = BigInteger.Parse("10000000");
+
+            var rpcResult = await SuiApi.Client.MoveCallAsync(signer, _packageAddress, module, function, typeArgs, args, gasBudget);
+
+            return rpcResult;
+        }
+
+        public async static Task<RpcResult<TransactionBlockBytes>> StartFarming()
+        {
             var signer = SuiWallet.GetActiveAddress();
             var module = "farming";
             var function = "start_farming";
             var typeArgs = System.Array.Empty<string>();
             var args = new object[] {
                 _farmerDataAddress,
-                _hunterAddress,
+                InventoryManager.Instance.CurrentHunterAddressInUse,
                 _clockAddress
             };
             var gasBudget = BigInteger.Parse("10000000");
 
             var rpcResult = await SuiApi.Client.MoveCallAsync(signer, _packageAddress, module, function, typeArgs, args, gasBudget);
+            Debug.Log(rpcResult.RawRpcResponse);
 
-            if (rpcResult.IsSuccess)
-            {
-                var keyPair = SuiWallet.GetActiveKeyPair();
-
-                var txBytes = rpcResult.Result.TxBytes;
-                var rawSigner = new RawSigner(keyPair);
-                var signature = rawSigner.SignData(Intent.GetMessageWithIntent(txBytes));
-
-                mintRpcResult = await SuiApi.Client.ExecuteTransactionBlockAsync(txBytes, new[] { signature.Value }, TransactionBlockResponseOptions.ShowAll(), ExecuteTransactionRequestType.WaitForLocalExecution);
-            }
-            else
-            {
-                Debug.LogError("Something went wrong with the move call: " + rpcResult.ErrorMessage);
-            }
-
-            Debug.Log(mintRpcResult.RawRpcResponse);
-
-
-            return mintRpcResult;
+            return rpcResult;
         }
 
         public async static Task<RpcResult<TransactionBlockResponse>> EndFarming()
@@ -389,6 +413,7 @@ namespace SH
             Debug.Log(allObject.RawRpcResponse);
             return allObject;
         }
+
 
     }
 

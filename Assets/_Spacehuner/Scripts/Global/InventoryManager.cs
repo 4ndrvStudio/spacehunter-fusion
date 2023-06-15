@@ -11,8 +11,9 @@ using System.Linq;
 using SH.Multiplayer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SH.UI;
 
-namespace SH.UI
+namespace SH
 {
     public class InventoryManager : MonoBehaviour
     {
@@ -21,13 +22,15 @@ namespace SH.UI
 
         [SerializeField] private List<ItemInstance> _items = new List<ItemInstance>();
         [HideInInspector] public List<ItemInstance> Items => _items;
-
+    
         public List<Sprite> ItemFrame = new List<Sprite>();
 
         [HideInInspector]
         public List<ItemConfig> ItemConfigs = new List<ItemConfig>();
 
         public List<WeaponConfig> WeaponConfigs = new List<WeaponConfig>();
+
+        public string CurrentHunterAddressInUse = string.Empty;
 
         public static UnityAction OnInventoryDataChange;
 
@@ -68,9 +71,8 @@ namespace SH.UI
                     allNft.Result.Data.ForEach(nft => {
                       
                         string jsonNft = JsonConvert.SerializeObject(nft.Data.Content,Formatting.Indented);
-                       
                         JObject nftJsonObject = JObject.Parse(jsonNft);
-
+                        Debug.Log(jsonNft);
                         if(nftJsonObject.SelectToken("type").ToString().Contains("stone")) {
                             ItemInstance item= new ItemInstance();
                             item.ItemId = "mineral";
@@ -81,6 +83,10 @@ namespace SH.UI
                             };
                             item.CustomData = itemCustomData;
                             this._items.Add(item);
+                        } 
+
+                        if(nftJsonObject.SelectToken("type").ToString().Contains("hunter::Hunter")) {
+                            CurrentHunterAddressInUse  = nftJsonObject.SelectToken("fields.id.Id").ToString();
                         } 
                     });
 

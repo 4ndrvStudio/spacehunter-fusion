@@ -34,7 +34,7 @@ namespace SH
             base.ShowWithCallback(customProperties, callback);
 
             SuiNotificationModel suiNotificationModel = customProperties as SuiNotificationModel;
-            Debug.Log(suiNotificationModel.ErrorDescription);
+ 
            
             if (suiNotificationModel.IsSuccess == true)
             {
