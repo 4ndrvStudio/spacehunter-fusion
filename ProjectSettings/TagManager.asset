@@ -33,8 +33,8 @@ TagManager:
   - NotPullCamera
   - Wall
   - TranslucentUI
-  - 
-  - 
+  - UI Top
+  - UI Bot
   - 
   - 
   - 
@@ -57,4 +57,10 @@ TagManager:
     locked: 0
   - name: cube
     uniqueID: 4193562675
+    locked: 0
+  - name: UI Top
+    uniqueID: 80705365
+    locked: 0
+  - name: UI Bot
+    uniqueID: 4128667275
     locked: 0
