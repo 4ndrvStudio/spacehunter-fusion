@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text; 
+
 
 namespace SUI.BCS
 {
@@ -21,6 +23,13 @@ namespace SUI.BCS
             typeInterface.ValidateCallback = validateCallback ?? (obj => true);
             types[typeName] = typeInterface;
         }
+//         public void RegisterType<T>(string typeName, Func<BcsWriter, T, object, object[], object> encodeCallback, Func<object, bool> validateCallback = null)
+//         {
+//     TypeInterface typeInterface = new TypeInterface();
+//     typeInterface.EncodeCallback = (writer, data, options, parameters) => encodeCallback(writer, (T)data, options, parameters);
+//     typeInterface.ValidateCallback = validateCallback ?? (obj => true);
+//     types[typeName] = typeInterface;
+// }
 
         public byte[] Serialize(string typeName, object data, object options = null)
         {
@@ -161,6 +170,13 @@ namespace SUI.BCS
     {
         binaryWriter.Flush();
         return memoryStream.ToArray();
+    }
+
+    public void WriteString(string value)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(value);
+        WriteULEB((ulong)bytes.Length);
+        WriteBytes(bytes);
     }
 }
 

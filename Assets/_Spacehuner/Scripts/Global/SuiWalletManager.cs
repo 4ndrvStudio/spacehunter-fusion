@@ -1,14 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Suinet.NftProtocol;
-using Suinet.NftProtocol.Examples;
+
 using System.Threading.Tasks;
 using Suinet.Rpc;
 using Suinet.Rpc.Types;
-using Suinet.Faucet;
-using SH.Multiplayer;
-using Newtonsoft.Json;
+
 using BigInteger = System.Numerics.BigInteger;
 using Suinet.Wallet;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -17,6 +14,7 @@ using System.Text;
 using SUI.BCS;
 using Chaos.NaCl;
 using System;
+using System.Linq;
 
 using System.Numerics;
 
@@ -27,6 +25,16 @@ namespace SH
     public class SuiWalletManager : MonoBehaviour
     {
         private static ParticleSystem _ser;
+
+        private static string _clockAddress = "0x0000000000000000000000000000000000000000000000000000000000000006";
+
+        private static string _packageAddress = "0x7167be0deb466c9c0650e7fbad9b283ce1ac1b0f97a0122696b88bf6bb0a128b";
+        private static string _farmerDataAddress = "0xabdb5b5d572e217841d2fe1bdcd1de70ec53ac2191cc40093e8eb64f7cae3425";
+        private static string _minterDataAddress = "0x732f097b6791cc10d12fe4822372b203b952d9deb610ef10e93a9cf7aa37e194";
+
+        private static string _hunterAddress = "0x54efae60edaf625ea6303a7cfdf42633dc785eeb14867c3869fc513d59f6bd8c";
+
+
         //character
         private static string _nftCharacterPackageId = "0x201e77838a6f75d1e6b6808052d0049bb38e880fba41fd7b6d2cde99150edd6a";
         private static string _nftCharacterId = "0x05843aeab83f3f144d138d3294eec3037dad24e58e05342714bed90b4db59bed";
@@ -46,6 +54,142 @@ namespace SH
 
 
             return balance.ToString("0.#########");
+        }
+
+        public async static Task<RpcResult<TransactionBlockResponse>> StartFarming()
+        {
+            var mintRpcResult = new RpcResult<TransactionBlockResponse>();
+
+            var signer = SuiWallet.GetActiveAddress();
+            var module = "farming";
+            var function = "start_farming";
+            var typeArgs = System.Array.Empty<string>();
+            var args = new object[] {
+                _farmerDataAddress,
+                _hunterAddress,
+                _clockAddress
+            };
+            var gasBudget = BigInteger.Parse("10000000");
+
+            var rpcResult = await SuiApi.Client.MoveCallAsync(signer, _packageAddress, module, function, typeArgs, args, gasBudget);
+
+            if (rpcResult.IsSuccess)
+            {
+                var keyPair = SuiWallet.GetActiveKeyPair();
+
+                var txBytes = rpcResult.Result.TxBytes;
+                var rawSigner = new RawSigner(keyPair);
+                var signature = rawSigner.SignData(Intent.GetMessageWithIntent(txBytes));
+
+                mintRpcResult = await SuiApi.Client.ExecuteTransactionBlockAsync(txBytes, new[] { signature.Value }, TransactionBlockResponseOptions.ShowAll(), ExecuteTransactionRequestType.WaitForLocalExecution);
+            }
+            else
+            {
+                Debug.LogError("Something went wrong with the move call: " + rpcResult.ErrorMessage);
+            }
+
+            Debug.Log(mintRpcResult.RawRpcResponse);
+
+
+            return mintRpcResult;
+        }
+
+        public async static Task<RpcResult<TransactionBlockResponse>> EndFarming()
+        {
+            var mintRpcResult = new RpcResult<TransactionBlockResponse>();
+
+            var signer = SuiWallet.GetActiveAddress();
+            var module = "farming";
+            var function = "end_farming";
+            var typeArgs = System.Array.Empty<string>();
+
+            BcsEncoder encoder = new BcsEncoder();
+
+            // Register the u64 type
+            encoder.RegisterType<ulong>("u64",
+                (writer, data, options, parameters) =>
+                {
+                    writer.WriteUInt64((ulong)data);
+                    return null;
+                },
+                null
+            );
+
+            encoder.RegisterType<List<byte>>("vector<u8>",
+                 (writer, data, options, parameters) =>
+                    {
+                        List<byte> vector = (List<byte>)data;
+                        writer.WriteVec(vector, (w, item, index, count) =>
+                           {
+                               w.WriteByte(item);
+                           });
+                        return null; // Return null as the result
+                    },
+            null // No validation callback specified
+            );
+            
+            encoder.RegisterType<List<string>>("vector<string>", (writer, data, options, parameters) =>
+            {
+                List<string> vector = (List<string>)data;
+                writer.WriteULEB((ulong)vector.Count);
+                    foreach (string element in vector)
+                     {
+                        writer.WriteString(element);
+                     }
+                    return null;
+            });
+
+            ulong expDefine = 1000;
+
+            byte[] expByte = encoder.Serialize("u64", expDefine);
+
+            byte[] amountByte = encoder.Serialize("vector<u8>", new List<byte> { 1 });
+            
+            byte[] symbolByte = encoder.Serialize("vector<string>", new List<string> { "red" });
+
+          
+            byte[] combinedBytes = expByte.Concat(amountByte).Concat(symbolByte).ToArray();
+
+            var bcsSignature = new List<byte>(SuiWallet.GetActiveKeyPair().Sign(combinedBytes));
+           
+            ulong amount = 1000;
+
+            var exchanger = new List<byte>(SuiWallet.GetActiveKeyPair().PublicKey);
+
+            var args = new object[] {
+                _farmerDataAddress,
+                _minterDataAddress,
+                _hunterAddress,
+                _clockAddress,
+                bcsSignature,
+                exchanger,
+                amount,
+                new List<ulong>{1},
+                new List<string>{"red"}
+            };
+            var gasBudget = BigInteger.Parse("10000000");
+
+            var rpcResult = await SuiApi.Client.MoveCallAsync(signer, _packageAddress, module, function, typeArgs, args, gasBudget);
+
+            if (rpcResult.IsSuccess)
+            {
+                var keyPair = SuiWallet.GetActiveKeyPair();
+
+                var txBytes = rpcResult.Result.TxBytes;
+                var rawSigner = new RawSigner(keyPair);
+                var signature = rawSigner.SignData(Intent.GetMessageWithIntent(txBytes));
+
+                mintRpcResult = await SuiApi.Client.ExecuteTransactionBlockAsync(txBytes, new[] { signature.Value }, TransactionBlockResponseOptions.ShowAll(), ExecuteTransactionRequestType.WaitForLocalExecution);
+            }
+            else
+            {
+                Debug.LogError("Something went wrong with the move call: " + rpcResult.ErrorMessage);
+            }
+
+            Debug.Log(mintRpcResult.RawRpcResponse);
+
+
+            return mintRpcResult;
         }
 
         public static async Task<RpcResult<TransactionBlockResponse>> MintHunterNFT()
@@ -78,6 +222,8 @@ namespace SH
             {
                 Debug.LogError("Something went wrong with the move call: " + rpcResult.ErrorMessage);
             }
+
+
 
             return mintRpcResult;
         }
@@ -115,6 +261,9 @@ namespace SH
 
             return mintRpcResult;
         }
+
+
+
 
         public async static Task<RpcResult<TransactionBlockResponse>> EndFarmMint()
         {
@@ -183,7 +332,7 @@ namespace SH
 
 
             byte[] byteArray = new byte[vector.Count * sizeof(ulong)];
-            
+
             Buffer.BlockCopy(vector.ToArray(), 0, byteArray, 0, byteArray.Length);
 
             string base64String = Convert.ToBase64String(byteArray);
