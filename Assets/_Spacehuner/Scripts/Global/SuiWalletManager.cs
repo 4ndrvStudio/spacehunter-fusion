@@ -25,16 +25,16 @@ namespace SH
 {
     public class SuiWalletManager : MonoBehaviour
     {
-       
-
         private static string _clockAddress = "0x0000000000000000000000000000000000000000000000000000000000000006";
 
         private static string _packageAddress = "0x7167be0deb466c9c0650e7fbad9b283ce1ac1b0f97a0122696b88bf6bb0a128b";
         private static string _farmerDataAddress = "0xabdb5b5d572e217841d2fe1bdcd1de70ec53ac2191cc40093e8eb64f7cae3425";
         private static string _minterDataAddress = "0x732f097b6791cc10d12fe4822372b203b952d9deb610ef10e93a9cf7aa37e194";
-        
+        private static string _craftingDataAddress  = "0xc49b47fba60982103801714603816120c9417eeb5d745e70545104810b936eee";
+
         private static string _hunterAddress {get; set;}
         private static string _hunterSymbol = "dst";
+        private static string _swordSymbol = "dst";
 
         //character
         private static string _nftCharacterPackageId = "0x201e77838a6f75d1e6b6808052d0049bb38e880fba41fd7b6d2cde99150edd6a";
@@ -193,6 +193,24 @@ namespace SH
             var rpcResult = await SuiApi.Client.MoveCallAsync(signer, _packageAddress, module, function, typeArgs, args, gasBudget);
 
             Debug.Log(rpcResult.RawRpcRequest);
+
+            return rpcResult;
+        }
+
+        public static async Task<RpcResult<TransactionBlockBytes>> CraftSword(List<string> stoneList) {
+             var signer = SuiWallet.GetActiveAddress();
+            var module = "crafting";
+            var function = "crafting_sword";
+            var typeArgs = System.Array.Empty<string>();
+            var args = new object[] {
+                _craftingDataAddress,
+                _minterDataAddress,
+                stoneList,
+                _swordSymbol
+            };
+            var gasBudget = BigInteger.Parse("10000000");
+
+            var rpcResult = await SuiApi.Client.MoveCallAsync(signer, _packageAddress, module, function, typeArgs, args, gasBudget);
 
             return rpcResult;
         }

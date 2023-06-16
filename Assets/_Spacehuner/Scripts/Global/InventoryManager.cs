@@ -71,16 +71,18 @@ namespace SH
                     {
 
                         string jsonNft = JsonConvert.SerializeObject(nft.Data.Content, Formatting.Indented);
-                        JObject nftJsonObject = JObject.Parse(jsonNft);
                         Debug.Log(jsonNft);
-                        if (nftJsonObject.SelectToken("type").ToString().Contains("stone"))
+                        JObject nftJsonObject = JObject.Parse(jsonNft);
+                        
+                        if (nftJsonObject.SelectToken("type").ToString().Contains("0x606a69292db6b013ba57b9c05c05986b6bdbd5ce5d24c56cb987f8bca91e77ad::stone::Stone"))
                         {
                             ItemInstance item = new ItemInstance();
                             item.ItemId = "mineral";
                             item.ItemClass = "mineral";
                             item.DisplayName = nftJsonObject.SelectToken("fields.name").ToString();
                             Dictionary<string, string> itemCustomData = new Dictionary<string, string>() {
-                                {"Level", "3"}
+                                {"Level", "3"},
+                                {"Address", nftJsonObject.SelectToken("fields.id.Id").ToString()}
                             };
                             item.CustomData = itemCustomData;
                             this._items.Add(item);

@@ -25,7 +25,8 @@ namespace SH.UI
         [SerializeField] private Image _quantityFrameUI;
         [SerializeField] private TextMeshProUGUI _quantityTextUI;
         [SerializeField] private int _quantity = 1;
-
+        
+ 
         void Start()
         {
             _itemButton.onClick.AddListener(() =>
@@ -46,6 +47,7 @@ namespace SH.UI
             _quantity--;
             _quantityTextUI.text = _quantity.ToString();
         }
+
 
         public void Setup(int level, ItemConfig itemConfig , UICraftingPanel craftingPanel)
         {

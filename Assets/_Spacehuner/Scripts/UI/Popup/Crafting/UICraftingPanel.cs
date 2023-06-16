@@ -19,6 +19,8 @@ namespace SH.UI
         [SerializeField] private GameObject _loaderIcon;
         //Crafting Setup 
         [SerializeField] private List<UICraftingPiece> _craftingItemPieceList = new List<UICraftingPiece>();
+        [SerializeField] private List<string> _stoneAddress = new List<string>();
+        [SerializeField] private List<string> _stoneAddressToCraft = new List<string>(3);
         [SerializeField] private UICraftingButton _craftingButton;
         [SerializeField] private Image _processBarImage;
         [SerializeField] private bool _isCrafting;
@@ -65,11 +67,13 @@ namespace SH.UI
                 Destroy(item);
             }
             _craftingItemList.Clear();
+            _stoneAddress.Clear();
+            _stoneAddressToCraft.Clear();
         }
         public void UpdateView()
         {
             _loaderIcon.SetActive(true);
-
+           
             ClearUI();
 
             // Display items to UI
@@ -81,8 +85,13 @@ namespace SH.UI
 
             foreach (var item in itemList)
             {
+                string address = item.CustomData["Address"].ToString();
+                _stoneAddress.Add(address);
+
                 int level = int.Parse(item.CustomData["Level"]);
                 string itemKey = item.ItemId + level;
+                
+            
 
                 if (!itemDictionary.ContainsKey(itemKey))
                 {
@@ -116,6 +125,7 @@ namespace SH.UI
             if (indexToPlace == -1) return;
             _craftingItemPieceList[indexToPlace].Setup(craftItemSlot);
             craftItemSlot.GetItemToCraft();
+
             CheckCanCraft();
         }
         
@@ -130,23 +140,35 @@ namespace SH.UI
             return canCraft;
         }
 
-        public void CraftItem()
+        public async void CraftItem()
         {
+            if(_stoneAddress.Count < 3) return;
+            
             _isCrafting = true;
-            _craftingButton.ProcessState(ECraftingButtonState.Processing);
 
+            _craftingButton.ProcessState(ECraftingButtonState.Processing);
+            
+            List<string> itemToCraftList = _stoneAddress.GetRange(0,3); 
+            
+            var rpcResult = await SuiWalletManager.CraftSword(itemToCraftList);
+
+            Debug.Log(rpcResult.RawRpcResponse);
+            
             DOTween.To(() => _processBarImage.fillAmount, x => _processBarImage.fillAmount = x, 0.82f, 5f)
-                .OnComplete(() =>
+                .OnComplete(async () =>
                 {
+                    var rpcResult2 = await SuiWalletManager.Execute(rpcResult);
+
                     DOTween.To(() => _processBarImage.fillAmount, x => _processBarImage.fillAmount = x, 1f, 1.5f)
                         .OnComplete(() =>
                         {
-                            Debug.Log("Display Claim");
+                            Debug.Log(rpcResult2.RawRpcResponse);
                             ResetPanel();
                             _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.None);
 
                         });
-                });
+            });
+          
         }
 
     }

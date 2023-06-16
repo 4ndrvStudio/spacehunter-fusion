@@ -28,16 +28,14 @@ namespace SH.UI
              _callback = callback;
 
             List<ItemInstance> items = customProperties as List<ItemInstance>;
-           
+            
+            Dictionary<string, GameObject> itemDictionary = new Dictionary<string, GameObject>();
+
             foreach (var item in items)
             {
                 int level = int.Parse(item.CustomData["Level"]);
                 
                 string itemKey = item.ItemId + level;
-
-                Debug.Log("item key " + itemKey);
-
-                Dictionary<string, GameObject> itemDictionary = new Dictionary<string, GameObject>();
 
                 if (!itemDictionary.ContainsKey(itemKey))
                 {
