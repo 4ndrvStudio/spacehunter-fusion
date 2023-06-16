@@ -27,6 +27,7 @@ public class UINotificationPopup : UIPopup
 
         _okBtn.GetComponent<Button>().onClick.AddListener(() => Hide());
 
+
     }
 
     public override void Show(object customProperties = null)

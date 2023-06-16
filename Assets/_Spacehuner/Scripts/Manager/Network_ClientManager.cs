@@ -113,7 +113,8 @@ namespace SH.Multiplayer
             UIManager.Instance.ShowWaiting();
 
             var rpcResult = await SuiWalletManager.Execute(_currentTx);
-            
+            UIManager.Instance.HideWaiting();
+         
             if(rpcResult.IsSuccess) {
                 List<ItemInstance> rewardItem =  InventoryManager.Instance.GetFakeStoneItems(_currentStoneToClaim);
                 UIManager.Instance.ShowPopupWithCallback(PopupName.SuiMiningReward, rewardItem, ConfirmClaimAction);
@@ -148,7 +149,6 @@ namespace SH.Multiplayer
 
         static IEnumerator StartGameAsync(SceneDefs sceneDefs)
         {
-
             yield return new WaitUntil(() => _networkRunner.IsRunning == false);
 
             StartGame(sceneDefs);

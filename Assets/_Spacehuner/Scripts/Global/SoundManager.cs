@@ -10,6 +10,7 @@ namespace SH
         public static SoundManager Instance;
        
         [SerializeField] private AudioClip _uiClickAudio;
+        [SerializeField] private AudioSource _audioSource;
         // Start is called before the first frame update
         void Start()
         {
@@ -27,7 +28,8 @@ namespace SH
 
         public void PlayUIClick()
         {
-
+            _audioSource.clip = _uiClickAudio;
+            _audioSource.Play();
         }
     }
 

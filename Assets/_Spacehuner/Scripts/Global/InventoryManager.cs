@@ -107,7 +107,7 @@ namespace SH
         {
             List<ItemInstance> items = new List<ItemInstance>();
             
-            for (int i =0 ; i<= amount; i++) {
+            for (int i =0 ; i< amount; i++) {
                      items.Add(CreateItemToTest("mineral", "mineral", "Mineral","3"));
             }
 

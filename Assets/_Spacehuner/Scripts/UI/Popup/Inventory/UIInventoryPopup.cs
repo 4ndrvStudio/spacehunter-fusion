@@ -71,6 +71,8 @@ namespace SH.UI
 
         private void Start()
         {
+      
+
             _currentTab = UIInventoryTabName.Weapon;
             if (Instance == null)
                 Instance = this;

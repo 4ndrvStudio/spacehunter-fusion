@@ -21,7 +21,6 @@ namespace SH.UI
     
         private UnityAction _callback;
         private string _currentTx;
-        private bool IsMinted;
 
         public override void ShowWithCallback(object customProperties, UnityAction callback = null)
         {
@@ -33,14 +32,18 @@ namespace SH.UI
             foreach (var item in items)
             {
                 int level = int.Parse(item.CustomData["Level"]);
+                
                 string itemKey = item.ItemId + level;
+
+                Debug.Log("item key " + itemKey);
 
                 Dictionary<string, GameObject> itemDictionary = new Dictionary<string, GameObject>();
 
                 if (!itemDictionary.ContainsKey(itemKey))
                 {
                     GameObject inventoryItemEl = Instantiate(_itemSlotPrefab, _itemHolder.transform);
-                    UIItemSlot inventoryElScript = inventoryItemEl.GetComponent<UIItemSlot>();
+                    
+                    UIItemSlotReward inventoryElScript = inventoryItemEl.GetComponent<UIItemSlotReward>();
 
                     ItemConfig itemConfig = InventoryManager.Instance.ItemConfigs.Find(itemConfig => itemConfig.ItemId == item.ItemId);
                     if (item.ItemInstanceId != null)
@@ -56,7 +59,7 @@ namespace SH.UI
                 {
                     // Stack item
                     GameObject stackedItem = itemDictionary[itemKey];
-                    stackedItem.GetComponent<UIItemSlot>().StackItem();
+                    stackedItem.GetComponent<UIItemSlotReward>().StackItem();
                 }
             }
 
@@ -69,9 +72,13 @@ namespace SH.UI
         }
         void ConfirmClick()
         {
-      
+            _inventoryItemList.ForEach(item => {
+                Destroy(item);
+            });     
+            _inventoryItemList.Clear();
+
             if (_callback != null)
-                if (IsMinted) _callback?.Invoke();
+                 _callback?.Invoke();
 
             Hide();
         }
