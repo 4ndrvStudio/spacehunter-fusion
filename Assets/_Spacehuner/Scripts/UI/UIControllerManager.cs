@@ -193,7 +193,7 @@ namespace SH
         public UITouchField GetTouchField() => _touchfield;
 
         private async void PrepareToGotoMining() {
-                //Mint Nft
+             
             UIManager.Instance.ShowWaiting();
 
             var rpcResult = await SuiWalletManager.StartFarming();
@@ -205,8 +205,6 @@ namespace SH
             JObject jsonObject = JObject.Parse(getDry.RawRpcResponse);
 
             JArray balanceChangesArray = (JArray)jsonObject["result"]["balanceChanges"];
-
-            Debug.Log(balanceChangesArray[0]["amount"].ToString());
        
             SuiEstimatedGasFeesModel gasFeesModel = new SuiEstimatedGasFeesModel();
             gasFeesModel.CanExcute = true;
@@ -218,9 +216,19 @@ namespace SH
             UIManager.Instance.ShowPopupWithCallback(PopupName.SuiEstimatedGas,gasFeesModel, ConfirmGasFeesAction);
         }
 
-        public void GotoMining()
+        public async void GotoMining()
         {
-            Network_ClientManager.MoveToRoom(SceneDefs.scene_mining);
+            if(_currentTx == null) return;
+
+            UIManager.Instance.ShowWaiting();
+            var rpcResult = await SuiWalletManager.Execute(_currentTx);
+            UIManager.Instance.HideWaiting();
+            
+            if(rpcResult.IsSuccess == true) {
+                Network_ClientManager.MoveToRoom(SceneDefs.scene_mining);
+            } else {
+                UIManager.Instance.ShowAlert("Some thing wrong. Please recheck", AlertType.Warning);
+            }
         }
 
         public void AddInteractButton(int id, InteractButtonType type,Dictionary<string, object> customProperties)

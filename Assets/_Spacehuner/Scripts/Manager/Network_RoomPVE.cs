@@ -15,6 +15,7 @@ namespace SH.Multiplayer
         }
     public class Network_RoomPVE : NetworkBehaviour
     {
+        public static Network_RoomPVE Instance;
         
         [System.Serializable]
         public class EnemyData
@@ -36,6 +37,27 @@ namespace SH.Multiplayer
 
         public int ExpCollectedCount;
         
+        void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                Instance = this;
+            }
+        }
+
+        void OnDestroy()
+        {
+            if (Instance == this)
+            {
+                Instance = null;
+            }
+        }
+
+
         public override void Spawned()
         {
             if (Object.HasStateAuthority == false) return;

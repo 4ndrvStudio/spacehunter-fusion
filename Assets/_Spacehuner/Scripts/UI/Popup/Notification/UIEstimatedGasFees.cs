@@ -25,7 +25,8 @@ namespace SH
 
             if (suiEstimatedGasFeesModel.CanExcute == true)
             {
-                _gasText.text = suiEstimatedGasFeesModel.EstimatedGasFees;
+                 float gas = float.Parse(suiEstimatedGasFeesModel.EstimatedGasFees) / 1000000000;
+                _gasText.text = gas.ToString("0.#########");
                 _callback = callback;
                 _currentTx = suiEstimatedGasFeesModel.Tx;
                 IsMinted = suiEstimatedGasFeesModel.CanExcute;

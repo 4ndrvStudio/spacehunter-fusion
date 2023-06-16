@@ -9,6 +9,14 @@ using SH.PlayerData;
 using Fusion.Photon.Realtime;
 using Fusion.Sockets;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
+using Suinet.Rpc.Types;
+using Suinet.Rpc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using PlayFab;
+using PlayFab.ClientModels;
+
 
 namespace SH.Multiplayer
 {
@@ -23,6 +31,23 @@ namespace SH.Multiplayer
         [SerializeField] private static NetworkSceneManagerDefault _networkSceneManagerDefault;
 
         [SerializeField] private static SceneDefs _currentScene;
+        
+        //just for test
+        private static RpcResult<TransactionBlockBytes> _currentTx;
+        private static int _currentStoneToClaim;
+
+        public static UnityAction ConfirmGasFeesAction;
+        public static UnityAction ConfirmClaimAction;
+
+        void OnEnable() {
+            ConfirmGasFeesAction += ClaimRewardFromMining;
+            ConfirmClaimAction += ExecuteExitMining;
+        }
+
+        void OnDisable() {
+            ConfirmGasFeesAction -= ClaimRewardFromMining;
+            ConfirmClaimAction -= ExecuteExitMining;
+        }
 
         void Start()
         {
@@ -51,7 +76,56 @@ namespace SH.Multiplayer
             Debug.Log("Load game Status :  " + startGameResult.ErrorMessage);
 
             Application.targetFrameRate = 60;
+        }
 
+        public static async void ExitRoomMining(ulong exp, List<ulong> amountStone, List<string> symbolStone) {
+         
+            UIManager.Instance.ShowWaiting();
+
+
+            var rpcResult = await SuiWalletManager.EndFarming(exp,amountStone,symbolStone);
+
+            _currentTx = rpcResult;
+            _currentStoneToClaim = (int) amountStone[0];
+
+            var getDry = await SuiApi.Client.DryRunTransactionBlockAsync(rpcResult.Result.TxBytes.ToString()); 
+            
+            JObject jsonObject = JObject.Parse(getDry.RawRpcResponse);
+
+            JArray balanceChangesArray = (JArray)jsonObject["result"]["balanceChanges"];
+
+            Debug.Log(balanceChangesArray[0]["amount"].ToString());
+       
+            SuiEstimatedGasFeesModel gasFeesModel = new SuiEstimatedGasFeesModel();
+            gasFeesModel.CanExcute = true;
+            if(balanceChangesArray[0]["amount"].ToString() != null)
+                gasFeesModel.EstimatedGasFees = balanceChangesArray[0]["amount"].ToString();
+            else 
+                gasFeesModel.EstimatedGasFees = "Can not estimated gas fees";
+            UIManager.Instance.HideWaiting();
+
+            UIManager.Instance.ShowPopupWithCallback(PopupName.SuiEstimatedGas,gasFeesModel, ConfirmGasFeesAction);
+        }
+
+        public static async void ClaimRewardFromMining() {
+            if(_currentTx == null)  return;
+
+            UIManager.Instance.ShowWaiting();
+
+            var rpcResult = await SuiWalletManager.Execute(_currentTx);
+            
+            if(rpcResult.IsSuccess) {
+                List<ItemInstance> rewardItem =  InventoryManager.Instance.GetFakeStoneItems(_currentStoneToClaim);
+                UIManager.Instance.ShowPopupWithCallback(PopupName.SuiMiningReward, rewardItem, ConfirmClaimAction);
+            }
+            else {
+                UIManager.Instance.ShowAlert("Something errors!", AlertType.Warning);
+            }
+
+            Debug.Log(rpcResult.RawRpcResponse);
+        }
+        public static void ExecuteExitMining() {
+            MoveToRoom(SceneDefs.scene_station);
         }
 
         public static async void MoveToRoom(SceneDefs sceneDefs)

@@ -17,6 +17,8 @@ namespace SH.Multiplayer
 
     public class Network_RoomMining : NetworkBehaviour
     {
+        public static Network_RoomMining Instance;
+
         [System.Serializable]
         public class MineralData
         {
@@ -34,6 +36,27 @@ namespace SH.Multiplayer
         [Networked] private MiningGameState _gameState { get; set; }
 
         public int MineralCollectedCount = 0;
+
+         void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                Instance = this;
+            }
+        }
+
+        void OnDestroy()
+        {
+            if (Instance == this)
+            {
+                Instance = null;
+            }
+        }
+
 
         public override void Spawned()
         {

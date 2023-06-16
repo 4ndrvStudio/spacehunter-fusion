@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using UnityEngine.Events;
-
+using System;
 namespace SH.Multiplayer
 {
     public class Network_PlayerStats : NetworkBehaviour, IDespawned
@@ -29,10 +29,11 @@ namespace SH.Multiplayer
             PlayerDeath += OnClaimed;
         }
 
-        void IDespawned.Despawned(Fusion.NetworkRunner runner, bool hasState) {
-             PlayerDeath -= OnClaimed;
+        void IDespawned.Despawned(Fusion.NetworkRunner runner, bool hasState)
+        {
+            PlayerDeath -= OnClaimed;
         }
-        
+
 
         public override void Render()
         {
@@ -68,7 +69,7 @@ namespace SH.Multiplayer
             }
             UIControllerManager.Instance.SetHP(HP);
         }
-        
+
         public void Death()
         {
             _playerAnimation.PlayDeathAnimation();
@@ -77,13 +78,18 @@ namespace SH.Multiplayer
             _playerState.RPC_SetIsDeath(true);
 
             //Death in Mining Room
-            if((int)Runner.CurrentScene == 3) {
-                //UIManager.Instance.ShowPopupWithCallback()
+            if ((int)Runner.CurrentScene == 3)
+            {
+                ulong exp = Convert.ToUInt64(Network_RoomPVE.Instance.ExpCollectedCount);
+                List<ulong> amountStone = new List<ulong> { Convert.ToUInt64(Network_RoomMining.Instance.MineralCollectedCount)};
+                List<string> symbolStone = new List<string> { "red" };
+                Network_ClientManager.ExitRoomMining(exp, amountStone, symbolStone);
             }
 
         }
 
-        public void OnClaimed() {
+        public void OnClaimed()
+        {
 
         }
 

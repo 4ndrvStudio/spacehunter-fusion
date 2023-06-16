@@ -35,6 +35,7 @@ public enum PopupName
     Notification=3,
     UpdateNotification=4,
     Crafting=5,
+    SuiMiningReward = 997,
     SuiEstimatedGas = 998,
     SuiNotification=999
 }

@@ -5463,12 +5463,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 323559356}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e77e4a3ee3fb3894388b1a325f269c2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 323559359}
+  _buttonBack: {fileID: 346307520}
 --- !u!114 &323559362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6381,19 +6382,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 346307521}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 323559361}
-        m_TargetAssemblyTypeName: UISceneMining, Assembly-CSharp
-        m_MethodName: OnBackClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &346307521
 MonoBehaviour:
   m_ObjectHideFlags: 0

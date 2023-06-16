@@ -145,10 +145,9 @@ namespace SH.UI
 
         }
         private  void Continue() {
-
-             this.gameObject.SetActive(false);
+            this.gameObject.SetActive(false);
             _slotCharacterPanel.SetActive(true);
-           
+            InventoryManager.Instance.GetInventoryData();
         }
 
 

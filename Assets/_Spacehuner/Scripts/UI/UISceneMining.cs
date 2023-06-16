@@ -5,22 +5,31 @@ using UnityEngine;
 using TMPro;
 using SH.Define;
 using SH.Multiplayer;
+using UnityEngine.UI;
+using System;
 
 public class UISceneMining : MonoBehaviour
 {
     [SerializeField] private Canvas _canvas = null;
+    [SerializeField] private Button _buttonBack;
 
     private void Start()
     {
-        if (UIManager.Instance != null)
-        {
-           // _canvas.worldCamera = UIManager.Instance.UICamera;
-        }
+        _buttonBack.onClick.AddListener(() => OnBackClick());
     }
     public void OnBackClick()
     {
-        Network_ClientManager.MoveToRoom(SceneDefs.scene_station);
+
+        ulong exp = Convert.ToUInt64(Network_RoomPVE.Instance.ExpCollectedCount);
+        List<ulong> amountStone = new List<ulong> { Convert.ToUInt64(Network_RoomMining.Instance.MineralCollectedCount)};
+        List<string> symbolStone = new List<string> { "red" };
+
+        Debug.Log("Exiting Mining Room");
+        Network_ClientManager.ExitRoomMining(exp, amountStone, symbolStone);
         gameObject.SetActive(false);
+
+
+
     }
 
 }

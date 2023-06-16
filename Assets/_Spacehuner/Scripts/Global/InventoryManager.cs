@@ -22,7 +22,7 @@ namespace SH
 
         [SerializeField] private List<ItemInstance> _items = new List<ItemInstance>();
         [HideInInspector] public List<ItemInstance> Items => _items;
-    
+
         public List<Sprite> ItemFrame = new List<Sprite>();
 
         [HideInInspector]
@@ -40,8 +40,7 @@ namespace SH
         [HideInInspector] public int ExpCollectedCount;
 
         void Awake()
-        {  
-            
+        {
 
             if (Instance == null)
                 Instance = this;
@@ -62,19 +61,21 @@ namespace SH
                     this._items = res.Inventory;
 
                     _items.Add(CreateItemToTest("weapon_swordtest", "weapon", "Normal Sword"));
-                    _items.Add(CreateItemToTest("weapon_mineral_axe","weapon","Mineral Axe"));
+                    _items.Add(CreateItemToTest("weapon_mineral_axe", "weapon", "Mineral Axe"));
                     _items.Add(CreateItemToTest("spaceshiptest", "spaceship", "Spaceship E7x"));
-                    
+
                     //Get NFT
                     var allNft = await SuiWalletManager.GetAllNFT();
-                  
-                    allNft.Result.Data.ForEach(nft => {
-                      
-                        string jsonNft = JsonConvert.SerializeObject(nft.Data.Content,Formatting.Indented);
+
+                    allNft.Result.Data.ForEach(nft =>
+                    {
+
+                        string jsonNft = JsonConvert.SerializeObject(nft.Data.Content, Formatting.Indented);
                         JObject nftJsonObject = JObject.Parse(jsonNft);
                         Debug.Log(jsonNft);
-                        if(nftJsonObject.SelectToken("type").ToString().Contains("stone")) {
-                            ItemInstance item= new ItemInstance();
+                        if (nftJsonObject.SelectToken("type").ToString().Contains("stone"))
+                        {
+                            ItemInstance item = new ItemInstance();
                             item.ItemId = "mineral";
                             item.ItemClass = "mineral";
                             item.DisplayName = nftJsonObject.SelectToken("fields.name").ToString();
@@ -83,11 +84,12 @@ namespace SH
                             };
                             item.CustomData = itemCustomData;
                             this._items.Add(item);
-                        } 
+                        }
 
-                        if(nftJsonObject.SelectToken("type").ToString().Contains("hunter::Hunter")) {
-                            CurrentHunterAddressInUse  = nftJsonObject.SelectToken("fields.id.Id").ToString();
-                        } 
+                        if (nftJsonObject.SelectToken("type").ToString().Contains("hunter::Hunter"))
+                        {
+                            CurrentHunterAddressInUse = nftJsonObject.SelectToken("fields.id.Id").ToString();
+                        }
                     });
 
                     OnInventoryDataChange?.Invoke();
@@ -99,6 +101,17 @@ namespace SH
             );
 
 
+        }
+
+        public List<ItemInstance> GetFakeStoneItems(int amount)
+        {
+            List<ItemInstance> items = new List<ItemInstance>();
+            
+            for (int i =0 ; i<= amount; i++) {
+                     items.Add(CreateItemToTest("mineral", "mineral", "Mineral","3"));
+            }
+
+            return items;
         }
 
         public void ConsumeItem(string itemInstanceId, int count)
@@ -151,13 +164,13 @@ namespace SH
 
         }
 
-        private ItemInstance CreateItemToTest(string id, string itemClass, string name)
+        private ItemInstance CreateItemToTest(string id, string itemClass, string name, string level = "1")
         {
             ItemInstance item = new ItemInstance();
             item.ItemId = id;
             item.ItemClass = itemClass;
             item.CustomData = new Dictionary<string, string> {
-                        {"Level" , "1"}
+                        {"Level" , level}
                     };
             item.DisplayName = name;
             return item;
