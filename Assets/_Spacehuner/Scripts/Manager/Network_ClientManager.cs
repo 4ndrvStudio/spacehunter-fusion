@@ -84,7 +84,9 @@ namespace SH.Multiplayer
 
 
             var rpcResult = await SuiWalletManager.EndFarming(exp,amountStone,symbolStone);
-
+            
+            Debug.Log(rpcResult.RawRpcResponse);
+            
             _currentTx = rpcResult;
             _currentStoneToClaim = (int) amountStone[0];
 

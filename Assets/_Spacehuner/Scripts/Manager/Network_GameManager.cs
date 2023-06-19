@@ -128,16 +128,20 @@ namespace SH.Multiplayer
         public void OnSceneLoadDone(NetworkRunner runner)
         {
 
+         
+            UIManager.Instance.SetCamera(CameraManager.Instance.MainCamera);
+            
 
             if (Runner.IsServer)
             {
                 Debug.Log("Joined to " + SceneManager.GetActiveScene().name);
-                   StartCoroutine(HideWaiting());
+                StartCoroutine(HideWaiting());
             }
             else
             {
 
                 StartCoroutine(HideWaiting());
+
 
             }
 
@@ -158,7 +162,7 @@ namespace SH.Multiplayer
             }
             else
             {
-               // UIManager.Instance.ShowLoadScene(false);
+                // UIManager.Instance.ShowLoadScene(false);
             }
 
         }
@@ -172,7 +176,7 @@ namespace SH.Multiplayer
             if (Runner.IsClient == false) return;
             Debug.Log("is Shutdown");
 
-            
+
             if (Network_Player.Local != null)
             {
 
@@ -180,7 +184,7 @@ namespace SH.Multiplayer
 
             }
 
-            if(shutdownReason == ShutdownReason.PhotonCloudTimeout) GameManager.Instance.RequireReConnect = true;
+            if (shutdownReason == ShutdownReason.PhotonCloudTimeout) GameManager.Instance.RequireReConnect = true;
 
 
         }
@@ -192,8 +196,9 @@ namespace SH.Multiplayer
 
         public async Task LeaveRom()
         {
-            if(Runner.IsRunning) {
-                 await Runner.Shutdown(false, ShutdownReason.Ok, true);
+            if (Runner.IsRunning)
+            {
+                await Runner.Shutdown(false, ShutdownReason.Ok, true);
             }
 
         }

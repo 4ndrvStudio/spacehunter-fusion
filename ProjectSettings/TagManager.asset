@@ -15,6 +15,7 @@ TagManager:
   - FX
   - Cinemachine_Ground Ignore
   - WallCollider
+  - Additional_CAM
   layers:
   - Default
   - TransparentFX

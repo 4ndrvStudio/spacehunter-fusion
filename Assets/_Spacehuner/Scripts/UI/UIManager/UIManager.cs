@@ -7,11 +7,14 @@ using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
 using SH.Networking.Chat;
 using UnityEngine.Events;
+using UnityEngine.Rendering.Universal;
 
 public class UIManager : MonoBehaviour
 {
     private static UIManager _instance = null;
     public static UIManager Instance => _instance;
+
+    [SerializeField] private Canvas _canvas;
 
     [SerializeField] private Camera _uiCamera = null;
 
@@ -156,4 +159,10 @@ public class UIManager : MonoBehaviour
     #region Game Infomation
     public void SetPing(long ping) => _uiGameInfo.SetPing(ping);
     #endregion
+
+    public void SetCamera(Camera camera) {
+        
+        var cameraData = camera.GetUniversalAdditionalCameraData();
+        cameraData.cameraStack.Add(_uiCamera);
+    }
 }

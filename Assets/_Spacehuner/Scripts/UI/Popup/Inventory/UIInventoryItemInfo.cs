@@ -26,14 +26,14 @@ namespace SH.UI
             _displayImage.gameObject.SetActive(true);
             
             _useButton.interactable = uiInventoryItem.ItemConfig.CanUse;
-            _useButtonText.color = uiInventoryItem.ItemConfig.CanUse ? _useTextActiveColor : _useTextDeactiveColor;
+            // _useButtonText.color = uiInventoryItem.ItemConfig.CanUse ? _useTextActiveColor : _useTextDeactiveColor;
 
         }
         public void ClearDisplay() {
             _displayImage.sprite = null;
             _displayImage.gameObject.SetActive(false);
             _useButton.interactable = false;
-            _useButtonText.color = _useTextDeactiveColor;
+            // _useButtonText.color = _useTextDeactiveColor;
 
         }
     }

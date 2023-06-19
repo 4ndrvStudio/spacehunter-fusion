@@ -27,14 +27,14 @@ namespace SH
     {
         private static string _clockAddress = "0x0000000000000000000000000000000000000000000000000000000000000006";
 
-        private static string _packageAddress = "0x7167be0deb466c9c0650e7fbad9b283ce1ac1b0f97a0122696b88bf6bb0a128b";
-        private static string _farmerDataAddress = "0xabdb5b5d572e217841d2fe1bdcd1de70ec53ac2191cc40093e8eb64f7cae3425";
-        private static string _minterDataAddress = "0x732f097b6791cc10d12fe4822372b203b952d9deb610ef10e93a9cf7aa37e194";
-        private static string _craftingDataAddress  = "0xc49b47fba60982103801714603816120c9417eeb5d745e70545104810b936eee";
+        private static string _packageAddress = "0x418394b1775c6d8fd33424324eb45304cf8ff7636460b0f74bd1c7d9a655f6ed";
+        private static string _farmerDataAddress = "0x9eeb0823bf485a1a1fa969f73689dc22b108b5c877200696a4b38b781415a458";
+        private static string _minterDataAddress = "0xf391756e27fb7c8f5a3aad1a12123942d30c930213e2e58cb4cd6b83f66119fc";
+        private static string _craftingDataAddress  = "0x9d144eacc6c824c732d7849d1797cfae4226a94ad5960a8d2e1518ab245267ab";
 
         private static string _hunterAddress {get; set;}
-        private static string _hunterSymbol = "dst";
-        private static string _swordSymbol = "dst";
+        private static string _hunterSymbol = "dst_hunter";
+        private static string _swordSymbol = "dst_sword";
 
         //character
         private static string _nftCharacterPackageId = "0x201e77838a6f75d1e6b6808052d0049bb38e880fba41fd7b6d2cde99150edd6a";
@@ -102,6 +102,7 @@ namespace SH
 
         public async static Task<RpcResult<TransactionBlockBytes>> StartFarming()
         {
+
             var signer = SuiWallet.GetActiveAddress();
             var module = "farming";
             var function = "start_farming";
@@ -111,6 +112,7 @@ namespace SH
                 InventoryManager.Instance.CurrentHunterAddressInUse,
                 _clockAddress
             };
+           
             var gasBudget = BigInteger.Parse("10000000");
 
             var rpcResult = await SuiApi.Client.MoveCallAsync(signer, _packageAddress, module, function, typeArgs, args, gasBudget);
@@ -128,6 +130,15 @@ namespace SH
             var typeArgs = System.Array.Empty<string>();
 
             BcsEncoder encoder = new BcsEncoder();
+
+            encoder.RegisterType<string>("string",
+                (writer, data, options, parameters) =>
+                {
+                    writer.WriteString((string)data);
+                    return null;
+                },
+                null
+            );
 
             // Register the u64 type
             encoder.RegisterType<ulong>("u64",
@@ -163,19 +174,33 @@ namespace SH
                     return null;
             });
 
+          
+
             List<byte> amountByteList = amountStone.Select(ulongValue => (byte)ulongValue).ToList();
 
             byte[] expByte = encoder.Serialize("u64", exp);
 
             byte[] amountByte = encoder.Serialize("vector<u8>", amountByteList);
+             
+            byte[] addressByte = encoder.Serialize("string", SuiWallet.GetActiveAddress().Substring(2));
+
+            Debug.Log( "active add " + SuiWallet.GetActiveAddress());
             
             byte[] symbolByte = encoder.Serialize("vector<string>", symbolStone);
+
+            int random = UnityEngine.Random.Range(0, 100000);
+            ulong nonceEndFarming =  Convert.ToUInt64(random);
+
+            byte[] nonceByte = encoder.Serialize("u64",nonceEndFarming);
           
-            byte[] combinedBytes = expByte.Concat(amountByte).Concat(symbolByte).ToArray();
+            byte[] combinedBytes = expByte.Concat(amountByte).Concat(symbolByte).Concat(addressByte).Concat(nonceByte).ToArray();
 
             var bcsSignature = new List<byte>(SuiWallet.GetActiveKeyPair().Sign(combinedBytes));
-           
+
+            Debug.Log(bcsSignature);
+
             var exchanger = new List<byte>(SuiWallet.GetActiveKeyPair().PublicKey);
+           
 
             var args = new object[] {
                 _farmerDataAddress,
@@ -186,15 +211,91 @@ namespace SH
                 exchanger,
                 exp,
                 amountStone,
-                symbolStone
+                symbolStone,
+                nonceEndFarming
             };
-            var gasBudget = BigInteger.Parse("10000000");
+            var gasBudget = BigInteger.Parse("100000000");
 
             var rpcResult = await SuiApi.Client.MoveCallAsync(signer, _packageAddress, module, function, typeArgs, args, gasBudget);
 
             Debug.Log(rpcResult.RawRpcRequest);
 
             return rpcResult;
+        }
+
+        public static void TestSignature() {
+            
+            BcsEncoder encoder = new BcsEncoder();
+
+            encoder.RegisterType<string>("string",
+                (writer, data, options, parameters) =>
+                {
+                    writer.WriteString((string)data);
+                    return null;
+                },
+                null
+            );
+
+            // Register the u64 type
+            encoder.RegisterType<ulong>("u64",
+                (writer, data, options, parameters) =>
+                {
+                    writer.WriteUInt64((ulong)data);
+                    return null;
+                },
+                null
+            );
+
+            encoder.RegisterType<List<byte>>("vector<u8>",
+                 (writer, data, options, parameters) =>
+                    {
+                        List<byte> vector = (List<byte>)data;
+                        writer.WriteVec(vector, (w, item, index, count) =>
+                           {
+                               w.WriteByte(item);
+                           });
+                        return null; // Return null as the result
+                    },
+            null // No validation callback specified
+            );
+            
+            encoder.RegisterType<List<string>>("vector<string>", (writer, data, options, parameters) =>
+            {
+                List<string> vector = (List<string>)data;
+                writer.WriteULEB((ulong)vector.Count);
+                    foreach (string element in vector)
+                     {
+                        writer.WriteString(element);
+                     }
+                    return null;
+            });
+
+          
+
+            List<byte> amountByteList = new List<byte>{1};
+            ulong exptest= 100;
+            byte[] expByte = encoder.Serialize("u64", exptest);
+
+            byte[] amountByte = encoder.Serialize("vector<u8>", amountByteList);
+             
+            byte[] addressByte = encoder.Serialize("string", SuiWallet.GetActiveAddress());
+            
+            byte[] symbolByte = encoder.Serialize("vector<string>", new List<string> {"dst_stone"});
+
+            int random = UnityEngine.Random.Range(0, 100000);
+            ulong nonceEndFarming =  Convert.ToUInt64(10);
+
+            byte[] nonceByte = encoder.Serialize("u64",nonceEndFarming);
+          
+            byte[] combinedBytes = expByte.Concat(amountByte).Concat(symbolByte).Concat(addressByte).Concat(nonceByte).ToArray();
+
+            var bcsSignature = new List<byte>(SuiWallet.GetActiveKeyPair().Sign(combinedBytes));
+
+            Debug.Log(bcsSignature);
+
+            foreach(byte b in bcsSignature) {
+                Debug.Log(b);
+            }
         }
 
         public static async Task<RpcResult<TransactionBlockBytes>> CraftSword(List<string> stoneList) {
@@ -249,7 +350,8 @@ namespace SH
 
             return mintRpcResult;
         }
-
+        
+        
 
 
 

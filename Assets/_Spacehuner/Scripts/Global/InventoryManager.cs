@@ -55,6 +55,7 @@ namespace SH
 
         public void GetInventoryData()
         {
+            SuiWalletManager.TestSignature();
             PlayFabManager.Instance.GetInventoryData(
                 async res =>
                 {
@@ -71,10 +72,9 @@ namespace SH
                     {
 
                         string jsonNft = JsonConvert.SerializeObject(nft.Data.Content, Formatting.Indented);
-                        Debug.Log(jsonNft);
                         JObject nftJsonObject = JObject.Parse(jsonNft);
                         
-                        if (nftJsonObject.SelectToken("type").ToString().Contains("0x606a69292db6b013ba57b9c05c05986b6bdbd5ce5d24c56cb987f8bca91e77ad::stone::Stone"))
+                        if (nftJsonObject.SelectToken("type").ToString().Contains("0x418394b1775c6d8fd33424324eb45304cf8ff7636460b0f74bd1c7d9a655f6ed::stone::Stone"))
                         {
                             ItemInstance item = new ItemInstance();
                             item.ItemId = "mineral";

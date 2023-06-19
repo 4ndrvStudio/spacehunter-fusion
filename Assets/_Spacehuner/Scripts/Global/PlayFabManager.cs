@@ -73,7 +73,7 @@ namespace SH
         public void GetInventoryData(Action<GetUserInventoryResult> onSuccess, Action<PlayFabError> onError) => 
                 PlayFabClientAPI.GetUserInventory(new GetUserInventoryRequest(),onSuccess,onError);
         
-        
+
 
 
 
