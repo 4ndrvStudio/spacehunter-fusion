@@ -315,6 +315,80 @@ namespace SH
 
             return rpcResult;
         }
+        
+        public async static Task<RpcResult<Page_for_DynamicFieldInfo_and_ObjectID>> GetHunterWeaponEquipment()
+        {
+            string hunterAddress = InventoryManager.Instance.CurrentHunterAddressInUse;
+
+            var allEquipment = await SuiApi.Client.GetDynamicFieldsAsync(hunterAddress,null, null);
+
+            return allEquipment;
+        }
+
+        public async static Task<RpcResult<SuiObjectResponse>> GetWeaponInfo(string address)
+        {       
+            return await SuiApi.Client.GetObjectAsync(address,ObjectDataOptions.ShowAll());
+        }
+
+        public async static Task<RpcResult<SuiObjectResponse>> GetHunterInfo(string address)
+        {       
+            return await SuiApi.Client.GetObjectAsync(address,ObjectDataOptions.ShowAll());
+        }
+        
+
+
+
+
+    
+
+        public async static Task<RpcResult<TransactionBlockBytes>> EquipWeapon(string address) {
+           
+            var weaponObjectResult = await SuiApi.Client.GetObjectAsync(address,ObjectDataOptions.ShowAll());
+            
+            MoveObjectData weaponObjectData = weaponObjectResult.Result.Data.Content as MoveObjectData;
+
+            var signer = SuiWallet.GetActiveAddress();
+            var module = "crafting";
+            var function = "equip";
+            var typeArgs = new List<string>{weaponObjectData.Type};
+            var args = new object[] {
+                InventoryManager.Instance.CurrentHunterAddressInUse,
+                address,
+                "sword"
+            };
+           
+            var gasBudget = BigInteger.Parse("10000000");
+
+            var rpcResult = await SuiApi.Client.MoveCallAsync(signer, _packageAddress, module, function, typeArgs, args, gasBudget);
+            Debug.Log(rpcResult.RawRpcResponse);
+
+            return rpcResult;
+        }
+
+        public async static Task<RpcResult<TransactionBlockBytes>> UnEquipWeapon(string address) {
+           
+            var weaponObjectResult = await SuiApi.Client.GetObjectAsync(address,ObjectDataOptions.ShowAll());
+            Debug.Log(weaponObjectResult.RawRpcResponse);
+            MoveObjectData weaponObjectData = weaponObjectResult.Result.Data.Content as MoveObjectData;
+
+            var signer = SuiWallet.GetActiveAddress();
+            var module = "crafting";
+            var function = "cancel_equip";
+            var typeArgs = new List<string>{weaponObjectData.Type};
+            var args = new object[] {
+                InventoryManager.Instance.CurrentHunterAddressInUse,
+                "sword"
+            };
+           
+            var gasBudget = BigInteger.Parse("10000000");
+
+            var rpcResult = await SuiApi.Client.MoveCallAsync(signer, _packageAddress, module, function, typeArgs, args, gasBudget);
+            Debug.Log(rpcResult.RawRpcResponse);
+
+            return rpcResult;
+        }
+
+
 
         public static async Task<RpcResult<TransactionBlockResponse>> MintMineral()
         {
@@ -351,10 +425,6 @@ namespace SH
             return mintRpcResult;
         }
         
-        
-
-
-
   
         public static async Task<RpcResult<Page_for_SuiObjectResponse_and_ObjectID>> GetAllNFT()
         {

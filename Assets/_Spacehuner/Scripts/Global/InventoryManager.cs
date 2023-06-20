@@ -39,6 +39,8 @@ namespace SH
         [HideInInspector] public int MineralCollectedCount;
         [HideInInspector] public int ExpCollectedCount;
 
+        [SerializeField] private string SuiPackageId = "0x418394b1775c6d8fd33424324eb45304cf8ff7636460b0f74bd1c7d9a655f6ed";
+
         void Awake()
         {
 
@@ -74,7 +76,7 @@ namespace SH
                         string jsonNft = JsonConvert.SerializeObject(nft.Data.Content, Formatting.Indented);
                         JObject nftJsonObject = JObject.Parse(jsonNft);
                         
-                        if (nftJsonObject.SelectToken("type").ToString().Contains("0x418394b1775c6d8fd33424324eb45304cf8ff7636460b0f74bd1c7d9a655f6ed::stone::Stone"))
+                        if (nftJsonObject.SelectToken("type").ToString().Contains($"{SuiPackageId}::stone::Stone"))
                         {
                             ItemInstance item = new ItemInstance();
                             item.ItemId = "mineral";
@@ -87,6 +89,21 @@ namespace SH
                             item.CustomData = itemCustomData;
                             this._items.Add(item);
                         }
+                     
+                        if (nftJsonObject.SelectToken("type").ToString().Contains($"{SuiPackageId}::sword::Sword"))
+                        {
+                            ItemInstance item = new ItemInstance();
+                            item.ItemId = "sui_weapon";
+                            item.ItemClass = "sui_weapon";
+                            item.DisplayName = nftJsonObject.SelectToken("fields.name").ToString();
+                            Dictionary<string, string> itemCustomData = new Dictionary<string, string>() {
+                                {"Level", "1"},
+                                {"Address", nftJsonObject.SelectToken("fields.id.Id").ToString()}
+                            };
+                            item.CustomData = itemCustomData;
+                            this._items.Add(item);
+                        }
+
 
                         if (nftJsonObject.SelectToken("type").ToString().Contains("hunter::Hunter"))
                         {

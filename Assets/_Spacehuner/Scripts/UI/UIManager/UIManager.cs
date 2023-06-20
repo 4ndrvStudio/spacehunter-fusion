@@ -160,9 +160,8 @@ public class UIManager : MonoBehaviour
     public void SetPing(long ping) => _uiGameInfo.SetPing(ping);
     #endregion
 
-    public void SetCamera(Camera camera) {
-        
-        var cameraData = camera.GetUniversalAdditionalCameraData();
-        cameraData.cameraStack.Add(_uiCamera);
-    }
+    // public void SetCamera(Camera camera) {
+    //     var cameraData = camera.GetUniversalAdditionalCameraData();
+    //     cameraData.cameraStack.Add(_uiCamera);
+    // }
 }

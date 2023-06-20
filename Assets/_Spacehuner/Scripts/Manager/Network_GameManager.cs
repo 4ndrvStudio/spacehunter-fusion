@@ -127,9 +127,6 @@ namespace SH.Multiplayer
 
         public void OnSceneLoadDone(NetworkRunner runner)
         {
-
-         
-            UIManager.Instance.SetCamera(CameraManager.Instance.MainCamera);
             
 
             if (Runner.IsServer)
