@@ -12,6 +12,7 @@ namespace SH.UI
     public class UICharacterInfoPanel_Races : UICharacterInfoPanel
     {
         [SerializeField] private GameObject ContentOb;
+        [SerializeField] private UICharacterInfoPopup _uiCharacterPopup;
         [Header("Character Info")]
         [SerializeField] private TextMeshProUGUI _hunterNameText;
         [SerializeField] private TextMeshProUGUI _hunterIdText;
@@ -72,8 +73,11 @@ namespace SH.UI
                 _expText.text =  $"{currentExp}/1000";
                  _descriptionText.text = weaponResult.Result.Data.Display.Data["description"];
                 }
-                  _loaderIcon.SetActive(false);
-              
+                _loaderIcon.SetActive(false);
+
+                if(_uiCharacterPopup.CurrentTab != UICharacterTabName.Races)
+                    return;
+
                  ContentOb.SetActive(true);
         }
     }

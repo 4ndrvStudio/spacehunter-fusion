@@ -9,6 +9,7 @@ using SH.Multiplayer;
 using PlayFab;
 using Newtonsoft.Json;
 using Suinet.Rpc.Types;
+using TMPro;
 
 namespace SH.UI
 {
@@ -27,6 +28,10 @@ namespace SH.UI
         public static UIInventoryPopup Instance;
 
         private bool _init = false;
+
+        //header
+        [SerializeField] private Button _hunterPopupBtn;
+        [SerializeField] private TextMeshProUGUI _balanceText;
 
         //View
         [SerializeField] private Button _closeBtn;
@@ -78,6 +83,10 @@ namespace SH.UI
             Show();
 
             _closeBtn.onClick.AddListener(() => Hide());
+            _hunterPopupBtn.onClick.AddListener(() => {
+                Hide();
+                UIManager.Instance.ShowPopup(PopupName.CharacterInfo);
+            });
             //_useWeaponBtn.onClick.AddListener(() => Hide());
 
             _tabButtonList.ForEach(tabButton =>
@@ -94,7 +103,9 @@ namespace SH.UI
         public override void Show(object customProperties = null)
         {
             base.Show(customProperties);
+            GetSuiBalance();
             Setup();
+          
 
         }
 
@@ -112,6 +123,10 @@ namespace SH.UI
             {
                 _init = true;
             }
+        }
+
+        public async void GetSuiBalance() {
+            _balanceText.text = await SuiWalletManager.GetSuiWalletBalance();
         }
 
 

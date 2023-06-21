@@ -12,7 +12,6 @@ namespace SH.UI
         [SerializeField] private TextMeshProUGUI _itemNameText;
 
         [SerializeField] private Button _useButton;
-        [SerializeField] private TextMeshProUGUI _useButtonText;
 
         [SerializeField] private Color _useTextActiveColor;
         [SerializeField] private Color _useTextDeactiveColor;
