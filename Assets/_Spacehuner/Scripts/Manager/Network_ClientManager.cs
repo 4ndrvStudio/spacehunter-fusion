@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PlayFab;
 using PlayFab.ClientModels;
+using SH.UI;
 
 
 namespace SH.Multiplayer
@@ -119,7 +120,10 @@ namespace SH.Multiplayer
          
             if(rpcResult.IsSuccess) {
                 List<ItemInstance> rewardItem =  InventoryManager.Instance.GetFakeStoneItems(_currentStoneToClaim);
-                UIManager.Instance.ShowPopupWithCallback(PopupName.SuiMiningReward, rewardItem, ConfirmClaimAction);
+                SuiMiningRewardModel suiMiningRewardModel = new SuiMiningRewardModel();
+                suiMiningRewardModel.itemsInstances = rewardItem;
+                suiMiningRewardModel.Digest = rpcResult.Result.Digest;
+                UIManager.Instance.ShowPopupWithCallback(PopupName.SuiMiningReward, suiMiningRewardModel, ConfirmClaimAction);
             }
             else {
                 UIManager.Instance.ShowAlert("Something errors!", AlertType.Warning);

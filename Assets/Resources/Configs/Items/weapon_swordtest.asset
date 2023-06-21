@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUse: 1
   ItemId: weapon_swordtest
-  ItemIcon: {fileID: 21300000, guid: 399e3707aebece84886c3dce5a1215fd, type: 3}
+  ItemName: Normal Sword
+  ItemIcon: {fileID: 21300000, guid: 407271330cdb76d4e82b178f93289487, type: 3}
+  ItemInstanceId: 
   TypeTab: 1
   IconWithLevel: []

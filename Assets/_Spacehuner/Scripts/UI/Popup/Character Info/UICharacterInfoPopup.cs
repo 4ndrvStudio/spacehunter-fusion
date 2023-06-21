@@ -16,17 +16,27 @@ namespace SH.UI
     }
     public class UICharacterInfoPopup : UIPopup
     {
-         public UICharacterTabName CurrentTab;
+        public UICharacterTabName CurrentTab;
+
         [SerializeField] private List<UICharacterTabButton> _tabButtonList = new List<UICharacterTabButton>();
         [SerializeField] private List<UICharacterInfoPanel> _characteInfoPanelList = new List<UICharacterInfoPanel>();
         
         
         [SerializeField] private TextMeshProUGUI _suiBalanceText;
         [SerializeField] private Button _inventoryButton;
+        [SerializeField] private Button _backButton;
+
+        [SerializeField] private UICharacterRenderTexture _uiCharacterRenderTexture;
+
+        public bool HasWeapon;
 
         // Start is called before the first frame update
         void Start()
         {
+            _uiCharacterRenderTexture.SetHideWeapon();
+            
+            _backButton.onClick.AddListener(() => Hide());
+
             _tabButtonList.ForEach(tabButton =>
             {
                 tabButton.Button.onClick.AddListener(() =>

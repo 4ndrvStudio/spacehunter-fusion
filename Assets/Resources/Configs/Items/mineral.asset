@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e0e2db5d27cdb0409c192b30b11c391, type: 3}
   m_Name: mineral
   m_EditorClassIdentifier: 
+  CanUse: 0
   ItemId: mineral
+  ItemName: Stone
   ItemIcon: {fileID: 0}
+  ItemInstanceId: 
   TypeTab: 3
   IconWithLevel:
   - {fileID: 21300000, guid: b5deba5daad73bd48bf1fcc24f419674, type: 3}

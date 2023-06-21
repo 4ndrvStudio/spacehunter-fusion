@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanUse: 1
   ItemId: mineral_ticket
+  ItemName: Reward Box
   ItemIcon: {fileID: 0}
+  ItemInstanceId: 119CCE602C199164
   TypeTab: 4
   IconWithLevel:
   - {fileID: 21300000, guid: 03af821599f79e74ea0bd874695771f0, type: 3}

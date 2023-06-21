@@ -20,6 +20,8 @@ namespace SH.UI
     {
         [Header("Weapon Panel")]
         [SerializeField] private UICharacterInfoPopup _uiCharacterInfoPopup;
+        [SerializeField] private UICharacterRenderTexture _uiCharacterRenderTexture;
+
         [SerializeField] private GameObject _noneWeaponOb;
         [SerializeField] private GameObject _hasWeaponOb;
         [SerializeField] private GameObject _weaponEquipOb;
@@ -79,7 +81,6 @@ namespace SH.UI
 
         private void HideWeaponPanel()
         {
-            
             _noneWeaponOb.SetActive(false);
             _hasWeaponOb.SetActive(false);
             _weaponEquipOb.SetActive(false);
@@ -115,9 +116,18 @@ namespace SH.UI
             {
                 _currentWeaponEquipedAddress = listWeapon[0].ObjectId;
                 ShowWeaponEquipPanel();
+                _uiCharacterInfoPopup.HasWeapon = true;
             }
             else
             {
+                _uiCharacterInfoPopup.HasWeapon = false;
+
+                if(_uiCharacterInfoPopup.HasWeapon == true ) {
+                     _uiCharacterRenderTexture.SetToIdle(false);
+                } else {
+                    _uiCharacterRenderTexture.SetToIdle(true);
+                }
+
                 List<ItemInstance> itemList = new List<ItemInstance>();
 
                 itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemClass == "weapon");
@@ -140,6 +150,9 @@ namespace SH.UI
         }
         private void ShowHasWeaponPanel()
         {
+         
+           
+
             _hasWeaponOb.SetActive(true);
             GetWeapons();
 
@@ -148,6 +161,7 @@ namespace SH.UI
         private async void ShowWeaponEquipPanel()
         {
             _weaponEquipOb.SetActive(true);
+            _uiCharacterRenderTexture.SetToWeapon();
 
             if(_currentWeaponEquipedAddress != string.Empty) {
                 var weaponResult = await SuiWalletManager.GetWeaponInfo(_currentWeaponEquipedAddress);
@@ -260,10 +274,16 @@ namespace SH.UI
             if(rpcResult.IsSuccess == true) {
                 Debug.Log("Called Here");
                 ProcessState();
+                SuiTxSuccessModel txSuccessModel = new SuiTxSuccessModel();
+                txSuccessModel.Message = "Your hunter has been equipped with a weapon!";
+                txSuccessModel.ObjectID = rpcResult.Result.Digest;
+                UIManager.Instance.ShowPopup(PopupName.SuiTxSuccess, txSuccessModel);
+
             } else {
                 UIManager.Instance.ShowAlert("Some thing wrong. Please recheck", AlertType.Warning);
             }
             _uiCharacterInfoPopup.UpdateSuiBalance();
+
 
         }
 
@@ -299,6 +319,10 @@ namespace SH.UI
             
             if(rpcResult.IsSuccess == true) {
                 ProcessState();
+                SuiTxSuccessModel txSuccessModel = new SuiTxSuccessModel();
+                txSuccessModel.Message = "Your hunter has unequipped the weapon!";
+                txSuccessModel.ObjectID = rpcResult.Result.Digest;
+                UIManager.Instance.ShowPopup(PopupName.SuiTxSuccess, txSuccessModel);
             } else {
                 UIManager.Instance.ShowAlert("Some thing wrong. Please recheck", AlertType.Warning);
             }

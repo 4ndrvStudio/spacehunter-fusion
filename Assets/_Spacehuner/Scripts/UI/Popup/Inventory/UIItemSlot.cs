@@ -26,9 +26,12 @@ namespace SH.UI
 
         void Start() {
             _itemButton.onClick.AddListener(() => {
-                UIInventoryPopup.Instance.SetPreUseItem(this);
-                IsPreUse(true);
+                Select();
             });
+        }
+        public void Select() {
+            UIInventoryPopup.Instance.SetPreUseItem(this);
+            IsPreUse(true);
         }
 
         public void StackItem() {

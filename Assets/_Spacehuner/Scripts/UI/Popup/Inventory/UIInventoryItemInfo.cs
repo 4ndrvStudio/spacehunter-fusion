@@ -23,7 +23,7 @@ namespace SH.UI
             _displayImage.gameObject.SetActive(false);
             _displayImage.sprite = uiInventoryItem.ItemIcon;
             _displayImage.gameObject.SetActive(true);
-            
+            _itemNameText.text = uiInventoryItem.ItemConfig.ItemName;
             _useButton.interactable = uiInventoryItem.ItemConfig.CanUse;
             // _useButtonText.color = uiInventoryItem.ItemConfig.CanUse ? _useTextActiveColor : _useTextDeactiveColor;
 

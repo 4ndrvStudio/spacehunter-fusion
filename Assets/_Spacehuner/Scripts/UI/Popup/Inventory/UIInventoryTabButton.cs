@@ -1,13 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
+
 namespace SH.UI
 {
     public class UIInventoryTabButton : MonoBehaviour
     {
 
         public UIInventoryTabName TabName;
-        public GameObject BackgroundImage;
+        public Image Icon;
+        public GameObject ActiveBackground;
         public TextMeshProUGUI TabText;
 
         [HideInInspector] public Button Button;
@@ -17,11 +20,13 @@ namespace SH.UI
         }
 
         public void SetActive() {
-            BackgroundImage.SetActive(true);
+            Icon.color = Color.white;
+            ActiveBackground.SetActive(true);
             TabText.color = Color.white;
         }
         public void SetDeactive() {
-            BackgroundImage.SetActive(false);
+            Icon.color = Color.gray;
+            ActiveBackground.SetActive(false);
             TabText.color = Color.gray;
         }
         

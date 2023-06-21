@@ -7,6 +7,8 @@ namespace SH.UI
     public class UICharacterInfoPanel_Gear : UICharacterInfoPanel
     {
         [SerializeField] private GameObject ContentOb;
+        [SerializeField] private UICharacterRenderTexture _uiCharacterRenderTexture;
+
         
         // Start is called before the first frame update
         void Start()

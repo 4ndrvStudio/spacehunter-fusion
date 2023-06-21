@@ -7,7 +7,8 @@ namespace SH.UI
     public class UICharacterInfoPanel_Super : UICharacterInfoPanel
     {
         [SerializeField] private GameObject ContentOb;
-        
+        [SerializeField] private UICharacterRenderTexture _uiCharacterRenderTexture;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -22,6 +23,7 @@ namespace SH.UI
 
         public override void Display() {
             ContentOb.SetActive(true);
+            
         }
         public override void Hide() {
             ContentOb.SetActive(false);

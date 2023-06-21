@@ -67,6 +67,11 @@ namespace SH.Multiplayer
                 else 
                     UIControllerManager.Instance.HideAllController();
 
+                if((int)Runner.CurrentScene == 3 ) 
+                    UIControllerManager.Instance.DisplayMiningButton(true);
+                else 
+                    UIControllerManager.Instance.DisplayMiningButton(false);
+                    
                 //UIManager.Instance.ShowChat();
 
                 RPC_SetNickName(PlayerDataManager.DisplayName);

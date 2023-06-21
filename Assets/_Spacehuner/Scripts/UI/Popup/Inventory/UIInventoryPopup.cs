@@ -84,8 +84,8 @@ namespace SH.UI
 
             _closeBtn.onClick.AddListener(() => Hide());
             _hunterPopupBtn.onClick.AddListener(() => {
-                Hide();
                 UIManager.Instance.ShowPopup(PopupName.CharacterInfo);
+                Hide();
             });
             //_useWeaponBtn.onClick.AddListener(() => Hide());
 
@@ -245,6 +245,7 @@ namespace SH.UI
                     break;
             }
 
+            bool isSelected = false;
 
             foreach (var item in itemList)
             {
@@ -265,6 +266,11 @@ namespace SH.UI
 
                     _inventoryItemList.Add(inventoryItemEl);
                     itemDictionary.Add(itemKey, inventoryItemEl);
+                    
+                    if(isSelected == false) {
+                       inventoryElScript.Select();
+                       isSelected = true;
+                    }
                 }
                 else
                 {

@@ -8,6 +8,7 @@ namespace SH
 {
     public class UIEstimatedGasFees : UIPopup
     {
+        [SerializeField] private Button _rejectBtn;
         [SerializeField] private Button _confirmBtn;
 
         [SerializeField] private TextMeshProUGUI _gasText;
@@ -26,7 +27,9 @@ namespace SH
             if (suiEstimatedGasFeesModel.CanExcute == true)
             {
                  float gas = float.Parse(suiEstimatedGasFeesModel.EstimatedGasFees) / 1000000000;
-                _gasText.text = gas.ToString("0.#########");
+                string gasString =gas.ToString("0.#########");
+                _gasText.text = gasString.Contains("-") ? gasString : "-" + gasString;
+
                 _callback = callback;
                 _currentTx = suiEstimatedGasFeesModel.Tx;
                 IsMinted = suiEstimatedGasFeesModel.CanExcute;
@@ -43,6 +46,7 @@ namespace SH
         void Start()
         {
             _confirmBtn.onClick.AddListener(() => ConfirmClick());
+            _rejectBtn.onClick.AddListener(() => Hide());
         }
         void ConfirmClick()
         {

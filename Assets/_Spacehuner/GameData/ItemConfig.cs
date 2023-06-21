@@ -9,6 +9,7 @@ namespace SH.UI
     {
         public bool CanUse;
         public string ItemId;
+        public string ItemName;
         public Sprite ItemIcon;
         public string ItemInstanceId;
         //Check Later

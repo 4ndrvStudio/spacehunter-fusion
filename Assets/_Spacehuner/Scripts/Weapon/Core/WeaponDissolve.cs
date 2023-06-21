@@ -19,6 +19,7 @@ public class WeaponDissolve : MonoBehaviour
 
     private Material _material;
     [SerializeField] private bool _startDissovle;
+    [SerializeField] private bool _startUnDissovle;
     [SerializeField] private bool _resetHeight;
 
     private void Awake()
@@ -44,6 +45,19 @@ public class WeaponDissolve : MonoBehaviour
             }
         }
 
+        if (_startUnDissovle)
+        {
+            _height += Time.fixedDeltaTime * _dissolveSpeed;
+            SetHeight(_height);
+
+            if (_height > _objectHeight)
+            {
+                _startUnDissovle = false;
+                IsDissolved = true;
+                _height = _objectHeight;
+            }
+        }
+
         if (_resetHeight)
         {
             _startDissovle = false;
@@ -58,9 +72,18 @@ public class WeaponDissolve : MonoBehaviour
     public void DissolveWeapon() {
         _height = _objectHeight;
         _startDissovle = true;
-         
+         _startUnDissovle =false;
     }
+
+    public void UnDissolveWeapon() {
+        _height = _endHeight;
+        _startUnDissovle =true;
+        _startDissovle = false;
+    }
+
     public void ActiveWeapon() => _resetHeight = true;
+    public void HideWeapon() => SetHeight(_endHeight);
+
 
     private void SetHeight(float height)
     {

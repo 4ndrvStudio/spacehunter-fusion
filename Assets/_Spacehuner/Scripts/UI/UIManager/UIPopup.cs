@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+
 public class UIPopup : MonoBehaviour
 {
     [SerializeField] private PopupName _popupName = PopupName.None;
@@ -36,6 +37,8 @@ public enum PopupName
     UpdateNotification=4,
     Crafting=5,
     CharacterInfo = 6,
+    ExitMiningPopup = 7,
+    SuiTxSuccess = 996,
     SuiMiningReward = 997,
     SuiEstimatedGas = 998,
     SuiNotification=999

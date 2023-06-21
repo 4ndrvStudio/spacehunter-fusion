@@ -20,7 +20,6 @@ namespace SH
 
     public class UIControllerManager : MonoBehaviour
     {
-
         public static UIControllerManager Instance;
 
         [Header("Controller")]
@@ -59,16 +58,19 @@ namespace SH
         [SerializeField] private TextMeshProUGUI _suiBalanceText;
         [SerializeField] private Button _suiAddressCoppyButton;
         [SerializeField] private Button _suiBalanceRefreshButton;
+        
 
         public static UnityAction<bool> UIControllerEvent;
         
         [Header("Mining Property")]
+        [SerializeField] private Button _miningButtonBack;
         [SerializeField] private GameObject _uiSceneMining;
         [SerializeField] private TextMeshProUGUI _hpText;
 
         //sui 
         private RpcResult<TransactionBlockBytes> _currentTx;
         public static UnityAction ConfirmGasFeesAction {get ; set;}
+        public static UnityAction ExitMiningAction {get; set;}
         
         private void OnEnable() {
             ConfirmGasFeesAction += GotoMining;
@@ -83,12 +85,15 @@ namespace SH
             {
                 Instance = this;
             }
+
+
         }
 
         void Start()
         {
             _inventoryBtn.onClick.AddListener(() => OpenInventory());
             _gotoMiningBtn.onClick.AddListener(() => PrepareToGotoMining());
+            _miningButtonBack.onClick.AddListener(() => UIManager.Instance.ShowPopup(PopupName.ExitMiningPopup));
         }
 
         private void SetupSUI() {
@@ -147,7 +152,6 @@ namespace SH
 
         private void ActiveCombatController() 
         {
-
             _combatGroup.SetActive(true);
 
             _actionGroup.SetActive(false);
@@ -171,8 +175,6 @@ namespace SH
             _movementJoy.gameObject.SetActive(false);
 
             IsActive = false;
-     
-
         }
 
 
@@ -231,6 +233,7 @@ namespace SH
             }
         }
 
+
         public void AddInteractButton(int id, InteractButtonType type,Dictionary<string, object> customProperties)
         {
 
@@ -261,6 +264,10 @@ namespace SH
         //Mining;
         public void SetHP(int hp) {
             _hpText.text = $"HP : {hp}";
+        }
+
+        public void DisplayMiningButton(bool isActive) {
+            _miningButtonBack.gameObject.SetActive(isActive);
         }
 
 
