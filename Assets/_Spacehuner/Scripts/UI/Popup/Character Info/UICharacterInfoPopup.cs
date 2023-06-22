@@ -55,7 +55,7 @@ namespace SH.UI
         }
 
         public void OnEnable() {
-             ChangeTab(UICharacterTabName.Races);
+                ChangeTab(UICharacterTabName.Races);
               UpdateSuiBalance();
                _tabButtonList.ForEach(tab => {
                     tab.SetDeactive();
@@ -65,6 +65,19 @@ namespace SH.UI
                } );
               
               
+        }
+        public override void Show(object customProperties = null)
+        {
+            base.Show(customProperties);
+            UIControllerManager.Instance.HideAllController();
+
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+            UIControllerManager.Instance.DisplayController();
+
         }
 
         public async void UpdateSuiBalance() {

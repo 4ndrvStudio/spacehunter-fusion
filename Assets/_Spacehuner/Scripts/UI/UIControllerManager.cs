@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using Suinet.Rpc;
 using Suinet.Rpc.Types;
 using Newtonsoft.Json.Linq;
+using DG.Tweening;
 
 namespace SH
 {
@@ -41,8 +42,10 @@ namespace SH
         [SerializeField] private GameObject _actionGroup;
 
         [Header("UI")]
-        [SerializeField] private Button _inventoryBtn;
-        [SerializeField] private Button _gotoMiningBtn;
+        [SerializeField] private Button _inventoryButton;
+        [SerializeField] private Button _hunterButton;
+        [SerializeField] private Button _gotoMiningButton;
+        [SerializeField] private Button _menuButton;
 
         [Header("Interact")]
         [SerializeField] private GameObject _interactBtnPanel;
@@ -54,18 +57,20 @@ namespace SH
         public bool IsActive = false;
 
         [Header("SUI Properties")]
-        [SerializeField] private TextMeshProUGUI _suiAddressText;
         [SerializeField] private TextMeshProUGUI _suiBalanceText;
-        [SerializeField] private Button _suiAddressCoppyButton;
-        [SerializeField] private Button _suiBalanceRefreshButton;
         
 
         public static UnityAction<bool> UIControllerEvent;
         
         [Header("Mining Property")]
         [SerializeField] private Button _miningButtonBack;
-        [SerializeField] private GameObject _uiSceneMining;
+      
+
+        [Header("Player Stats")]
+        [SerializeField] private TextMeshProUGUI _playerNameText;
         [SerializeField] private TextMeshProUGUI _hpText;
+        [SerializeField] private Image _hpBar;
+
 
         //sui 
         private RpcResult<TransactionBlockBytes> _currentTx;
@@ -91,33 +96,20 @@ namespace SH
 
         void Start()
         {
-            _inventoryBtn.onClick.AddListener(() => OpenInventory());
-            _gotoMiningBtn.onClick.AddListener(() => PrepareToGotoMining());
+            _inventoryButton.onClick.AddListener(() => OpenInventory());
+            _hunterButton.onClick.AddListener(() => OpenHunterInfo());
+            _gotoMiningButton.onClick.AddListener(() => PrepareToGotoMining());
+            _menuButton.onClick.AddListener(() => UIManager.Instance.ShowPopup(PopupName.MenuGame));
             _miningButtonBack.onClick.AddListener(() => UIManager.Instance.ShowPopup(PopupName.ExitMiningPopup));
-        }
-
-        private void SetupSUI() {
             
-            SetupBalance();
-
-            string suiAddress = SuiWallet.GetActiveAddress();
-            Debug.Log(suiAddress);
-            _suiAddressText.text = suiAddress.Substring(0, 11) + "..." + suiAddress.Substring(suiAddress.Length - 5);
-
-            _suiAddressCoppyButton.onClick.AddListener(()=> {
-                UniClipboard.SetText(SuiWallet.GetActiveAddress());
-                UIManager.Instance.ShowAlert("Your address has been coppied!",AlertType.Normal);
-            });
-
-            _suiBalanceRefreshButton.onClick.AddListener(() => {
-                SetupBalance();
-            });
         }
+
+
         
-        private async void SetupBalance() {
+        public async void SetupBalance() {
             if(SuiWallet.GetActiveAddress() == null) return;
             string balance = await SuiWalletManager.GetSuiWalletBalance();
-            _suiBalanceText.text = $"{balance} SUI";
+            _suiBalanceText.text = balance;
         }
 
 
@@ -126,12 +118,17 @@ namespace SH
             HideAllController();
             UIManager.Instance.ShowPopup(PopupName.Inventory);
         }
+        public void OpenHunterInfo() {
+            UIControllerEvent?.Invoke(false);
+            HideAllController();
+            UIManager.Instance.ShowPopup(PopupName.CharacterInfo);
+        }
 
         public void DisplayController() {
             
             _playerState  = Network_Player.Local.PlayerState;
 
-            SetupSUI();
+            SetupBalance();
 
             if(_playerState.L_IsInsideBuilding) {
                 ActiveActionControlller();
@@ -146,8 +143,8 @@ namespace SH
             UIControllerEvent?.Invoke(true);
             IsActive = true;
             
-            //sceneMining Test
-            _uiSceneMining.gameObject.SetActive(true);
+            // //sceneMining Test
+            // _uiSceneMining.gameObject.SetActive(true);
         }
 
         private void ActiveCombatController() 
@@ -190,7 +187,7 @@ namespace SH
 
         public bool GetActiveTestModeBtn() => _activeTestModeBtn.GetComponent<UIButtonCustom>().IsPressed;
 
-        public void ShowGotoMiningBtn(bool isActive) => _gotoMiningBtn.gameObject.SetActive(isActive);
+        public void ShowGotoMiningBtn(bool isActive) => _gotoMiningButton.gameObject.SetActive(isActive);
 
         public UITouchField GetTouchField() => _touchfield;
 
@@ -263,7 +260,11 @@ namespace SH
 
         //Mining;
         public void SetHP(int hp) {
-            _hpText.text = $"HP : {hp}";
+            _playerNameText.text = PlayerData.PlayerDataManager.DisplayName;
+            _hpText.text = $"{hp}/100";
+            float targetFillAmount = (float)hp / 100f;
+            DOTween.To(() => _hpBar.fillAmount, x => _hpBar.fillAmount = x, targetFillAmount,1f);
+            
         }
 
         public void DisplayMiningButton(bool isActive) {

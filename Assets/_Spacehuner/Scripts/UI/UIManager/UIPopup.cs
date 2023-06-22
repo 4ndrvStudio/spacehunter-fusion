@@ -38,6 +38,7 @@ public enum PopupName
     Crafting=5,
     CharacterInfo = 6,
     ExitMiningPopup = 7,
+    MenuGame =8,
     SuiTxSuccess = 996,
     SuiMiningReward = 997,
     SuiEstimatedGas = 998,

@@ -14,16 +14,19 @@ namespace SH.Multiplayer
         [SerializeField] private Network_PlayerAnimation _playerAnimation;
         private int _lastVisibleGetHit;
 
-        public int HP = 20;
+        public int HP = 100;
         private bool WasSetup;
 
         public static UnityAction PlayerDeath;
 
         public override void Spawned()
         {
-            _lastVisibleGetHit = _playerDamageable.HitCount;
-            UIControllerManager.Instance.SetHP(HP);
-            WasSetup = true;
+            if(Object.HasInputAuthority) {
+                _lastVisibleGetHit = _playerDamageable.HitCount;
+                UIControllerManager.Instance.SetHP(HP);
+                 WasSetup = true;
+            }
+         
 
             //event
             PlayerDeath += OnClaimed;
@@ -62,7 +65,7 @@ namespace SH.Multiplayer
 
         public void GetDame()
         {
-            HP -= 1;
+            HP -= UnityEngine.Random.Range(5, 10);
             if (HP <= 0)
             {
                 Death();
