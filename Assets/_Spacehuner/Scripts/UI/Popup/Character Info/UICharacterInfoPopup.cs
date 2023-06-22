@@ -36,7 +36,7 @@ namespace SH.UI
             _uiCharacterRenderTexture.SetHideWeapon();
             
             _backButton.onClick.AddListener(() => Hide());
-
+            
             _tabButtonList.ForEach(tabButton =>
             {
                 tabButton.Button.onClick.AddListener(() =>
@@ -52,7 +52,19 @@ namespace SH.UI
                 Hide();
             });
 
-            UpdateSuiBalance();
+        }
+
+        public void OnEnable() {
+             ChangeTab(UICharacterTabName.Races);
+              UpdateSuiBalance();
+               _tabButtonList.ForEach(tab => {
+                    tab.SetDeactive();
+                    if(tab.TabName == UICharacterTabName.Races) {
+                        tab.SetActive();
+                    }
+               } );
+              
+              
         }
 
         public async void UpdateSuiBalance() {
