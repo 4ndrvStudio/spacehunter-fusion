@@ -60,6 +60,8 @@ namespace SH.UI
         {
             base.Show(customProperties);
 
+            UpdateSuiBalance();
+
             UIControllerManager.Instance.HideAllController();
 
         }

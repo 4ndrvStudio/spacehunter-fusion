@@ -130,7 +130,7 @@ namespace SH.UI
 
                 List<ItemInstance> itemList = new List<ItemInstance>();
 
-                itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemClass == "weapon");
+                itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "sui_weapon");
 
                 if (itemList.Count > 0)
                 {
@@ -179,7 +179,7 @@ namespace SH.UI
 
                  _weaponLevelText.text =  "Lv " + nftJsonObject.SelectToken("fields.level").ToString();
                  _attackText.text = nftJsonObject.SelectToken("fields.damage").ToString();
-                
+
                  _descriptionText.text = weaponResult.Result.Data.Display.Data["description"];
                 }
                

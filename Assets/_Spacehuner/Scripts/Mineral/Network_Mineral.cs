@@ -78,7 +78,6 @@ namespace SH.Multiplayer
         }
 
 
-
         public void HitMineral(PlayerRef player, int dame = 0)
         {
             if (Object == null) return;
@@ -103,7 +102,8 @@ namespace SH.Multiplayer
                 if (_hp <= 0)
                 {
                     MineralDestroy();
-                    RPC_MineralCollected(_lastHitPlayer, "ColledItem");
+                   
+                   // RPC_MineralCollected(_lastHitPlayer, "ColledItem");
                 }
             }
             if (Object.HasInputAuthority)

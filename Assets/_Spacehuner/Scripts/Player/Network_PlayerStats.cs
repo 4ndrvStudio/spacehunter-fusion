@@ -85,7 +85,7 @@ namespace SH.Multiplayer
             {
                 ulong exp = Convert.ToUInt64(Network_RoomPVE.Instance.ExpCollectedCount);
                 List<ulong> amountStone = new List<ulong> { Convert.ToUInt64(Network_RoomMining.Instance.MineralCollectedCount)};
-                List<string> symbolStone = new List<string> { "dst_stone" };
+                List<string> symbolStone = new List<string> { "ST1" };
                 Network_ClientManager.ExitRoomMining(exp, amountStone, symbolStone);
             }
         }

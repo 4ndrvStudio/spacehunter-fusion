@@ -27,14 +27,14 @@ namespace SH
     {
         private static string _clockAddress = "0x0000000000000000000000000000000000000000000000000000000000000006";
 
-        private static string _packageAddress = "0x418394b1775c6d8fd33424324eb45304cf8ff7636460b0f74bd1c7d9a655f6ed";
-        private static string _farmerDataAddress = "0x9eeb0823bf485a1a1fa969f73689dc22b108b5c877200696a4b38b781415a458";
-        private static string _minterDataAddress = "0xf391756e27fb7c8f5a3aad1a12123942d30c930213e2e58cb4cd6b83f66119fc";
-        private static string _craftingDataAddress  = "0x9d144eacc6c824c732d7849d1797cfae4226a94ad5960a8d2e1518ab245267ab";
+        private static string _packageAddress = "0x6c770a38a07c937998bb0249e70101e79eda3848aea907cb90e56fad6fe62d8a";
+        private static string _farmerDataAddress = "0x2c62f0910528e667e39271de742acdf2f0df8be2da03f3736f84b6bb822e3cf6";
+        private static string _minterDataAddress = "0x1a5fb6ddf4ef2b207876fa1d6a88bce0a9946592757d40ac70668dfc90453dfe";
+        private static string _craftingDataAddress  = "0xc95ea85cd1f8dc4b87c0dcb7bb2b7614e246f161acc760ffec1e923b357b66fa";
 
         private static string _hunterAddress {get; set;}
-        private static string _hunterSymbol = "dst_hunter";
-        private static string _swordSymbol = "dst_sword";
+        private static string _hunterSymbol = "HTR1";
+        private static string _swordSymbol = "SWD1";
 
         //character
         private static string _nftCharacterPackageId = "0x201e77838a6f75d1e6b6808052d0049bb38e880fba41fd7b6d2cde99150edd6a";

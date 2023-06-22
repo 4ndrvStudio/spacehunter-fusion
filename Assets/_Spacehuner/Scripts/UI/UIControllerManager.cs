@@ -94,6 +94,10 @@ namespace SH
 
         }
 
+        public void SetLevel() {
+            
+        }
+
         void Start()
         {
             _inventoryButton.onClick.AddListener(() => OpenInventory());
@@ -264,7 +268,6 @@ namespace SH
             _hpText.text = $"{hp}/100";
             float targetFillAmount = (float)hp / 100f;
             DOTween.To(() => _hpBar.fillAmount, x => _hpBar.fillAmount = x, targetFillAmount,1f);
-            
         }
 
         public void DisplayMiningButton(bool isActive) {

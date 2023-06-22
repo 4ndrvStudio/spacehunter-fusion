@@ -39,7 +39,7 @@ namespace SH
         [HideInInspector] public int MineralCollectedCount;
         [HideInInspector] public int ExpCollectedCount;
 
-        [SerializeField] private string SuiPackageId = "0x418394b1775c6d8fd33424324eb45304cf8ff7636460b0f74bd1c7d9a655f6ed";
+        [SerializeField] private string SuiPackageId = "0x6c770a38a07c937998bb0249e70101e79eda3848aea907cb90e56fad6fe62d8a";
 
         void Awake()
         {
@@ -63,7 +63,7 @@ namespace SH
                 {
                     this._items = res.Inventory;
 
-                    _items.Add(CreateItemToTest("weapon_swordtest", "weapon", "Normal Sword"));
+                    // _items.Add(CreateItemToTest("weapon_swordtest", "weapon", "Normal Sword"));
                     _items.Add(CreateItemToTest("weapon_mineral_axe", "weapon", "Mineral Axe"));
                     _items.Add(CreateItemToTest("spaceshiptest", "spaceship", "Spaceship E7x"));
 
@@ -105,7 +105,7 @@ namespace SH
                         }
 
 
-                        if (nftJsonObject.SelectToken("type").ToString().Contains("hunter::Hunter"))
+                        if (nftJsonObject.SelectToken("type").ToString().Contains($"{SuiPackageId}::hunter::Hunter"))
                         {
                             CurrentHunterAddressInUse = nftJsonObject.SelectToken("fields.id.Id").ToString();
                         }
