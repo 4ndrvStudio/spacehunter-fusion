@@ -39,7 +39,7 @@ namespace SH.Multiplayer
             if(Object.HasInputAuthority) {
                 //set default weapon
                 if(InventoryManager.Instance.CurrentWeaponInUse == null) {
-                    RPC_SetWeaponInUse("weapon_swordtest");
+                    RPC_SetWeaponInUse("weapon_mineral_axe");
                 } else {
                     RPC_SetWeaponInUse(InventoryManager.Instance.CurrentWeaponInUse.ItemId);
                 }

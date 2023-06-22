@@ -64,8 +64,8 @@ namespace SH
                     this._items = res.Inventory;
 
                     // _items.Add(CreateItemToTest("weapon_swordtest", "weapon", "Normal Sword"));
-                    _items.Add(CreateItemToTest("weapon_mineral_axe", "weapon", "Mineral Axe"));
-                    _items.Add(CreateItemToTest("spaceshiptest", "spaceship", "Spaceship E7x"));
+                    _items.Add(CreateItemToTest("weapon_mineral_axe", "sui_weapon", "Mineral Axe"));
+                    //_items.Add(CreateItemToTest("spaceshiptest", "spaceship", "Spaceship E7x"));
 
                     //Get NFT
                     var allNft = await SuiWalletManager.GetAllNFT();

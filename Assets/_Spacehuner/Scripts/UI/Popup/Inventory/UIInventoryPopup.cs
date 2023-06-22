@@ -61,7 +61,7 @@ namespace SH.UI
 
 
         private void OnEnable()
-        {   
+        {
             _loadingIcon.SetActive(true);
             InventoryManager.Instance.GetInventoryData();
 
@@ -83,7 +83,8 @@ namespace SH.UI
             Show();
 
             _closeBtn.onClick.AddListener(() => Hide());
-            _hunterPopupBtn.onClick.AddListener(() => {
+            _hunterPopupBtn.onClick.AddListener(() =>
+            {
                 UIManager.Instance.ShowPopup(PopupName.CharacterInfo);
                 Hide();
             });
@@ -105,7 +106,7 @@ namespace SH.UI
             base.Show(customProperties);
             GetSuiBalance();
             Setup();
-          
+
 
         }
 
@@ -114,7 +115,7 @@ namespace SH.UI
             base.Hide();
             ClearUI();
             UIControllerManager.Instance.DisplayController();
-      
+
         }
 
         private void Setup()
@@ -125,7 +126,8 @@ namespace SH.UI
             }
         }
 
-        public async void GetSuiBalance() {
+        public async void GetSuiBalance()
+        {
             _balanceText.text = await SuiWalletManager.GetSuiWalletBalance();
         }
 
@@ -163,7 +165,7 @@ namespace SH.UI
             UIManager.Instance.ShowWaiting();
             var mintResult = await SuiWalletManager.MintMineral();
             UIManager.Instance.HideWaiting();
-            
+
             SuiNotificationModel modelPopup = new SuiNotificationModel();
 
             if (mintResult.IsSuccess == false)
@@ -190,10 +192,10 @@ namespace SH.UI
 
                 UIManager.Instance.ShowPopupWithCallback(PopupName.SuiNotification, modelPopup);
 
-                InventoryManager.Instance.ConsumeItem(itemInstanceId,1);
-               
+                InventoryManager.Instance.ConsumeItem(itemInstanceId, 1);
+
             }
-             _uiInventoryItemInfo.ClearDisplay();
+            _uiInventoryItemInfo.ClearDisplay();
 
 
         }
@@ -208,8 +210,9 @@ namespace SH.UI
             UpdateView();
         }
 
-        private void ClearUI() {
-              // Clear UI
+        private void ClearUI()
+        {
+            // Clear UI
             foreach (var item in _inventoryItemList)
             {
                 Destroy(item);
@@ -218,7 +221,7 @@ namespace SH.UI
         }
         private void UpdateView()
         {
-             ClearUI();
+            ClearUI();
             _loadingIcon.SetActive(true);
 
             // Display items to UI
@@ -229,7 +232,7 @@ namespace SH.UI
             switch (_currentTab)
             {
                 case UIInventoryTabName.Weapon:
-                    itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemClass == "weapon");
+                    itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemClass == "sui_weapon");
                     break;
                 case UIInventoryTabName.Mineral:
                     itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemClass == "mineral");
@@ -239,6 +242,9 @@ namespace SH.UI
                     break;
                 case UIInventoryTabName.Reward:
                     itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemClass == "mineral_ticket");
+                    break;
+                case UIInventoryTabName.Gear:
+                    itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemClass == "gear");
                     break;
                 default:
                     itemList = InventoryManager.Instance.Items;
@@ -266,10 +272,11 @@ namespace SH.UI
 
                     _inventoryItemList.Add(inventoryItemEl);
                     itemDictionary.Add(itemKey, inventoryItemEl);
-                    
-                    if(isSelected == false) {
-                       inventoryElScript.Select();
-                       isSelected = true;
+
+                    if (isSelected == false)
+                    {
+                        inventoryElScript.Select();
+                        isSelected = true;
                     }
                 }
                 else
@@ -279,7 +286,7 @@ namespace SH.UI
                     stackedItem.GetComponent<UIItemSlot>().StackItem();
                 }
             }
-         _loadingIcon.SetActive(false);
+            _loadingIcon.SetActive(false);
         }
 
 

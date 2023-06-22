@@ -209,7 +209,7 @@ namespace SH.UI
 
             List<ItemInstance> itemList = new List<ItemInstance>();
 
-            itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemClass == "sui_weapon");
+            itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "sui_weapon");
             bool isSelected = false;
             foreach (var item in itemList)
             {
