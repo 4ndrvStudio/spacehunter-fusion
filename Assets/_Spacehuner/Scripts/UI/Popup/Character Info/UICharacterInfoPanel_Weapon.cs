@@ -45,12 +45,14 @@ namespace SH.UI
         [SerializeField] private TextMeshProUGUI _attackText;
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [SerializeField] private Button _unEquipButton;
-    
+
 
         private RpcResult<TransactionBlockBytes> _currentTx;
 
         public static UnityAction ConfirmGasFeesEquipAction;
         public static UnityAction ConfirmGasFeesUnEquipAction;
+
+        public string targetItemName = "sui_weapon";
 
 
 
@@ -104,6 +106,7 @@ namespace SH.UI
             HideWeaponPanel();
 
             var data = await SuiWalletManager.GetHunterWeaponEquipment();
+
             var listWeapon = data.Result.Data.ToList();
 
             if(_uiCharacterInfoPopup.CurrentTab != UICharacterTabName.Weapon) {
@@ -130,7 +133,7 @@ namespace SH.UI
 
                 List<ItemInstance> itemList = new List<ItemInstance>();
 
-                itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "sui_weapon");
+                itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == targetItemName);
 
                 if (itemList.Count > 0)
                 {
@@ -208,8 +211,9 @@ namespace SH.UI
             ClearUI();
 
             List<ItemInstance> itemList = new List<ItemInstance>();
-
+            InventoryManager.Instance.GetInventoryData();
             itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "sui_weapon");
+
             bool isSelected = false;
             foreach (var item in itemList)
             {

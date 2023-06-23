@@ -10,6 +10,7 @@ using Suinet.Rpc;
 using Suinet.Rpc.Types;
 using Newtonsoft.Json.Linq;
 using DG.Tweening;
+using Newtonsoft.Json;
 
 namespace SH
 {
@@ -70,6 +71,10 @@ namespace SH
         [SerializeField] private TextMeshProUGUI _playerNameText;
         [SerializeField] private TextMeshProUGUI _hpText;
         [SerializeField] private Image _hpBar;
+        [SerializeField] private TextMeshProUGUI _avatarLevelText;
+        [SerializeField] private TextMeshProUGUI _levelText;
+        [SerializeField] private TextMeshProUGUI _expText;
+        [SerializeField] private Image _expBar;
 
 
         //sui 
@@ -116,6 +121,24 @@ namespace SH
             _suiBalanceText.text = balance;
         }
 
+        public async void SetupHunterInfo() {
+            _playerNameText.text = PlayerData.PlayerDataManager.DisplayName;
+            var hunterResult = await SuiWalletManager.GetHunterInfo(InventoryManager.Instance.CurrentHunterAddressInUse);
+
+            if (hunterResult.IsSuccess == true)
+            {
+                string jsonNft = JsonConvert.SerializeObject(hunterResult.Result.Data.Content, Formatting.Indented);
+                JObject nftJsonObject = JObject.Parse(jsonNft);
+                string level = nftJsonObject.SelectToken("fields.level").ToString();
+                string exp = nftJsonObject.SelectToken("fields.exp").ToString();
+                _levelText.text = "Lv " + level;
+                _avatarLevelText.text = level;
+                float currentExp = float.Parse(exp) < 1000f ? float.Parse(exp) : (float.Parse(exp) - float.Parse(level) * 1000f);
+                _expBar.fillAmount = currentExp / 1000f;
+                _expText.text = $"{currentExp}/1000";
+            }
+        }  
+
 
         public void OpenInventory() {
             UIControllerEvent?.Invoke(false);
@@ -133,6 +156,8 @@ namespace SH
             _playerState  = Network_Player.Local.PlayerState;
 
             SetupBalance();
+            SetupHunterInfo();
+
 
             if(_playerState.L_IsInsideBuilding) {
                 ActiveActionControlller();
@@ -264,7 +289,7 @@ namespace SH
 
         //Mining;
         public void SetHP(int hp) {
-            _playerNameText.text = PlayerData.PlayerDataManager.DisplayName;
+         
             _hpText.text = $"{hp}/100";
             float targetFillAmount = (float)hp / 100f;
             DOTween.To(() => _hpBar.fillAmount, x => _hpBar.fillAmount = x, targetFillAmount,1f);

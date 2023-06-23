@@ -17,7 +17,8 @@ namespace SH.UI
     public enum ECraftingType {
         None,
         Weapon,
-        Spaceship
+        Spaceship,
+        Glass,
     }
 
 }

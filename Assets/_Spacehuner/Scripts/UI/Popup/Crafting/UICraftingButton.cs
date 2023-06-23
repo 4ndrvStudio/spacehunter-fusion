@@ -26,7 +26,7 @@ namespace SH.UI
         {
             _craftingButton.onClick.AddListener(() =>
             {
-                if (_canCraft) _craftingPanel.CraftItem();
+                if (_canCraft) _craftingPanel.Craft();
             });
         }
 

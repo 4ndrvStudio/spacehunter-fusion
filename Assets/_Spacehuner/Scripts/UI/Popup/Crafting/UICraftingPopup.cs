@@ -13,7 +13,7 @@ namespace SH.UI
     }
     public class UICraftingPopup : UIPopup
     {
-        [SerializeField] private ECraftingType _currentCraftType;
+        public ECraftingType _currentCraftType;
         [SerializeField] private GameObject _craftingChooseCraftPanel;
         [SerializeField] private GameObject _craftingPanel;
         [SerializeField] private GameObject _craftingSuccessPanel;

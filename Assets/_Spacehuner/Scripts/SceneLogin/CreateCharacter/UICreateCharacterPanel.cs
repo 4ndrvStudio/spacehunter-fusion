@@ -66,8 +66,8 @@ namespace SH.Account
         [SerializeField] private Button _refreshButton;
 
         public UnityAction MintNFTComplete { get; set; }
-        public UnityAction ConfirmGasFeesAction {get; set;}
-        
+        public UnityAction ConfirmGasFeesAction { get; set; }
+
         private RpcResult<TransactionBlockBytes> _currentTx;
 
         private void Start()
@@ -81,19 +81,22 @@ namespace SH.Account
             string suiAddress = SuiWallet.GetActiveAddress();
             _suiAddressText.text = suiAddress.Substring(0, 11) + "..." + suiAddress.Substring(suiAddress.Length - 5);
 
-            _suiAddressCoppyButton.onClick.AddListener(()=> {
+            _suiAddressCoppyButton.onClick.AddListener(() =>
+            {
                 UniClipboard.SetText(SuiWallet.GetActiveAddress());
-                UIManager.Instance.ShowAlert("Your address has been coppied!",AlertType.Normal);
+                UIManager.Instance.ShowAlert("Your address has been coppied!", AlertType.Normal);
             });
 
-            _refreshButton.onClick.AddListener(() => {
+            _refreshButton.onClick.AddListener(() =>
+            {
                 SetupBalance();
             });
-         
+
         }
 
-        private async void SetupBalance() {
-             string balance = await SuiWalletManager.GetSuiWalletBalance();
+        private async void SetupBalance()
+        {
+            string balance = await SuiWalletManager.GetSuiWalletBalance();
             _suiBalanceText.text = $"{balance} SUI";
         }
 
@@ -149,34 +152,50 @@ namespace SH.Account
         {
             if (_characterSelected == null)
                 return;
-            
+
             //Mint Nft
             UIManager.Instance.ShowWaiting();
 
             var mintRpcResult = await SuiWalletManager.MintHunter();
 
-            _currentTx = mintRpcResult;
+            if (mintRpcResult.IsSuccess == true)
+            {
+                _currentTx = mintRpcResult;
 
-            var getDry = await SuiApi.Client.DryRunTransactionBlockAsync(mintRpcResult.Result.TxBytes.ToString()); 
-            
-            JObject jsonObject = JObject.Parse(getDry.RawRpcResponse);
+                var getDry = await SuiApi.Client.DryRunTransactionBlockAsync(mintRpcResult.Result.TxBytes.ToString());
 
-            JArray balanceChangesArray = (JArray)jsonObject["result"]["balanceChanges"];
 
-            Debug.Log(balanceChangesArray[0]["amount"].ToString());
-       
-            SuiEstimatedGasFeesModel gasFeesModel = new SuiEstimatedGasFeesModel();
-            gasFeesModel.CanExcute = true;
-            if(balanceChangesArray[0]["amount"].ToString() != null)
-                gasFeesModel.EstimatedGasFees = balanceChangesArray[0]["amount"].ToString();
-            else 
-                gasFeesModel.EstimatedGasFees = "Can not estimated gas fees";
-            UIManager.Instance.HideWaiting();
-            UIManager.Instance.ShowPopupWithCallback(PopupName.SuiEstimatedGas,gasFeesModel, ConfirmGasFeesAction);
+
+                JObject jsonObject = JObject.Parse(getDry.RawRpcResponse);
+
+                JArray balanceChangesArray = (JArray)jsonObject["result"]["balanceChanges"];
+
+                Debug.Log(balanceChangesArray[0]["amount"].ToString());
+
+                SuiEstimatedGasFeesModel gasFeesModel = new SuiEstimatedGasFeesModel();
+                gasFeesModel.CanExcute = true;
+                if (balanceChangesArray[0]["amount"].ToString() != null)
+                    gasFeesModel.EstimatedGasFees = balanceChangesArray[0]["amount"].ToString();
+                else
+                    gasFeesModel.EstimatedGasFees = "Can not estimated gas fees";
+                UIManager.Instance.HideWaiting();
+                UIManager.Instance.ShowPopupWithCallback(PopupName.SuiEstimatedGas, gasFeesModel, ConfirmGasFeesAction);
+            }
+            else
+            {
+                SuiNotificationModel modelPopup = new SuiNotificationModel();
+                modelPopup.IsSuccess = false;
+                modelPopup.ErrorDescription = mintRpcResult.ErrorMessage;
+                UIManager.Instance.HideWaiting();
+                UIManager.Instance.ShowPopupWithCallback(PopupName.SuiNotification, modelPopup);
+            }
+
+
 
         }
-        public async void OnConfirmMintHunter() {
-            if(_currentTx == null)  return;
+        public async void OnConfirmMintHunter()
+        {
+            if (_currentTx == null) return;
             UIManager.Instance.ShowWaiting();
 
             var rpcResult = await SuiWalletManager.Execute(_currentTx);
@@ -194,9 +213,9 @@ namespace SH.Account
             else
             {
                 var nftObject = await SuiApi.Client.GetObjectAsync(rpcResult.Result.Effects.SharedObjects[0].ObjectId, ObjectDataOptions.ShowAll());
-              
+
                 Debug.Log(rpcResult.Result.Effects.Created[0].Reference.ObjectId);
-            
+
                 //serialize object
                 string nFTModel = JsonConvert.SerializeObject(nftObject.Result.Data.Content, Formatting.Indented);
 
@@ -210,7 +229,7 @@ namespace SH.Account
 
                 UIManager.Instance.HideWaiting();
                 UIManager.Instance.ShowPopupWithCallback(PopupName.SuiNotification, modelPopup, MintNFTComplete);
-            
+
             }
 
 

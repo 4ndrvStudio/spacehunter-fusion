@@ -33,9 +33,12 @@ namespace SH.Multiplayer
 
         [SerializeField] private static SceneDefs _currentScene;
 
+        public static SceneDefs CurrentScene => _currentScene;
+
         //just for test
         private static RpcResult<TransactionBlockBytes> _currentTx;
         private static int _currentStoneToClaim;
+
 
         public static UnityAction ConfirmGasFeesAction;
         public static UnityAction ConfirmClaimAction;
@@ -67,11 +70,12 @@ namespace SH.Multiplayer
             _networkRunner.ProvideInput = true;
 
             UIManager.Instance.ShowLoadScene(false);
+            _currentScene = sceneDefs;
 
             StartGameResult startGameResult = await _networkRunner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.Host,
-                SessionName = sceneDefs.ToString() + "suidemo",
+                SessionName = sceneDefs.ToString() + Random.Range(0,1000000).ToString(),
                 Scene = (int)sceneDefs,
                 SceneManager = _networkSceneManagerDefault,
             });

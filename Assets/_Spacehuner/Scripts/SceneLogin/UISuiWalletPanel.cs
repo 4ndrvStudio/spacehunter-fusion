@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SH.UI
 {
@@ -82,13 +84,15 @@ namespace SH.UI
             });
 
             _importButton.onClick.AddListener(() => ImportWallet());
-            _createButton.onClick.AddListener(() => {
-                  if(_checkbox.IsActive == true) 
-                     ProcessToNextStep(ESuiWalletState.Confirm);
-            
+            _createButton.onClick.AddListener(() =>
+            {
+                if (_checkbox.IsActive == true)
+                    ProcessToNextStep(ESuiWalletState.Confirm);
+
             });
 
-            _confirmButton.onClick.AddListener(() => {
+            _confirmButton.onClick.AddListener(() =>
+            {
                 Continue();
             });
         }
@@ -122,7 +126,7 @@ namespace SH.UI
         private void CreateWallet()
         {
             string mnemo = SuiWallet.CreateNewWallet();
-          
+
             _mnenoInput.text = mnemo;
 
         }
@@ -144,7 +148,31 @@ namespace SH.UI
 
 
         }
-        private  void Continue() {
+        private async void Continue()
+        {
+            UIManager.Instance.ShowWaiting();
+            bool hasHunter = false;
+
+            var allNft = await SuiWalletManager.GetAllNFT();
+            
+            UIManager.Instance.HideWaiting();
+
+            allNft.Result.Data.ForEach(nft =>
+            {
+                string jsonNft = JsonConvert.SerializeObject(nft.Data.Content, Formatting.Indented);
+                JObject nftJsonObject = JObject.Parse(jsonNft);
+
+                if (nftJsonObject.SelectToken("type").ToString().Contains($"{InventoryManager.Instance.SuiPackageId}::hunter::Hunter"))
+                {
+                    hasHunter = true;
+                }
+
+            });
+            
+            if(hasHunter == false) {
+                PlayerData.PlayerDataManager.Character.Data.Characters[0].CharacterType = 0;
+            }
+
             this.gameObject.SetActive(false);
             _slotCharacterPanel.SetActive(true);
             InventoryManager.Instance.GetInventoryData();

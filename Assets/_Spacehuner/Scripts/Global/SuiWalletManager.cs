@@ -6,6 +6,12 @@ using UnityEngine.Events;
 using System.Threading.Tasks;
 using Suinet.Rpc;
 using Suinet.Rpc.Types;
+using Suinet.NftProtocol;
+using Suinet.Rpc;
+using Suinet.Rpc.Client;
+using Suinet.Rpc.Signer;
+using Suinet.Rpc.Types;
+using Suinet.Wallet;
 
 using BigInteger = System.Numerics.BigInteger;
 using Suinet.Wallet;
@@ -100,10 +106,54 @@ namespace SH
             return rpcResult;
         }
 
+        public async static Task<RpcResult<TransactionBlockResponse>> Add_Exchanger() {
+            
+            IKeyPair adminKey = Mnemonics.GetKeypairFromMnemonic("powder flock dog shrimp wage ordinary bless minimum calm raise visit rude");
+            string adminAddress = "0xba83c830d684df6eaaa8f143b1e853ea1e2b67522154780f9378d30b7f9d9d59";
+            var rpcClient = new UnityWebRequestRpcClient(SuiConstants.TESTNET_FULLNODE);
+            IJsonRpcApiClient Client = new SuiJsonRpcApiClient(rpcClient);
+            ISigner signerE = new Signer(Client, adminKey);
+
+           INftProtocolClient NftProtocolClient = new NftProtocolClient(Client, SuiWallet.GetActiveKeyPair());
+            
+            
+            var moduleAd = "farming";
+            var functionAd = "add_exchanger";
+            var typeArgsAd = System.Array.Empty<string>();
+            var exchanger = new List<byte>(SuiWallet.GetActiveKeyPair().PublicKey);
+
+            var argsAd = new object[] {
+                _farmerDataAddress,
+                exchanger,
+            };
+
+            var gasBudgetD = BigInteger.Parse("10000000");
+           
+            var rpcResultD = await SuiApi.Client.MoveCallAsync(adminAddress, _packageAddress, moduleAd, functionAd, typeArgsAd, argsAd, gasBudgetD);
+             
+              var keyPair = adminKey;
+
+                var txBytes = rpcResultD.Result.TxBytes;
+                var rawSigner = new RawSigner(keyPair);
+                
+                var signature = rawSigner.SignData(Intent.GetMessageWithIntent(txBytes));
+            
+               var rpcResult2 = await Client.ExecuteTransactionBlockAsync(txBytes, new[] { signature.Value }, TransactionBlockResponseOptions.ShowAll(), ExecuteTransactionRequestType.WaitForLocalExecution);
+
+ 
+            Debug.Log("Exchanger: " + rpcResult2.RawRpcResponse);
+
+            return rpcResult2;
+
+        }
+
         public async static Task<RpcResult<TransactionBlockBytes>> StartFarming()
         {
+           
+            var exchangerTest = await Add_Exchanger();
 
             var signer = SuiWallet.GetActiveAddress();
+
             var module = "farming";
             var function = "start_farming";
             var typeArgs = System.Array.Empty<string>();
@@ -197,7 +247,6 @@ namespace SH
 
             var bcsSignature = new List<byte>(SuiWallet.GetActiveKeyPair().Sign(combinedBytes));
 
-            Debug.Log(bcsSignature);
 
             var exchanger = new List<byte>(SuiWallet.GetActiveKeyPair().PublicKey);
            
@@ -291,11 +340,6 @@ namespace SH
 
             var bcsSignature = new List<byte>(SuiWallet.GetActiveKeyPair().Sign(combinedBytes));
 
-            Debug.Log(bcsSignature);
-
-            foreach(byte b in bcsSignature) {
-                Debug.Log(b);
-            }
         }
 
         public static async Task<RpcResult<TransactionBlockBytes>> CraftSword(List<string> stoneList) {
@@ -315,6 +359,8 @@ namespace SH
 
             return rpcResult;
         }
+      
+
         
         public async static Task<RpcResult<Page_for_DynamicFieldInfo_and_ObjectID>> GetHunterWeaponEquipment()
         {

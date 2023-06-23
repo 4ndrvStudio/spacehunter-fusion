@@ -12,6 +12,7 @@ using SH.Multiplayer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SH.UI;
+using UnityEngine.SceneManagement;
 
 namespace SH
 {
@@ -39,7 +40,7 @@ namespace SH
         [HideInInspector] public int MineralCollectedCount;
         [HideInInspector] public int ExpCollectedCount;
 
-        [SerializeField] private string SuiPackageId = "0x6c770a38a07c937998bb0249e70101e79eda3848aea907cb90e56fad6fe62d8a";
+        public string SuiPackageId = "0x6c770a38a07c937998bb0249e70101e79eda3848aea907cb90e56fad6fe62d8a";
 
         void Awake()
         {
@@ -63,8 +64,11 @@ namespace SH
                 {
                     this._items = res.Inventory;
 
+                    Debug.Log( "current scene " + (int) Network_ClientManager.CurrentScene);
                     // _items.Add(CreateItemToTest("weapon_swordtest", "weapon", "Normal Sword"));
-                    _items.Add(CreateItemToTest("weapon_mineral_axe", "sui_weapon", "Mineral Axe"));
+                    if((int)Network_ClientManager.CurrentScene == 3) {
+                          _items.Add(CreateItemToTest("weapon_mineral_axe", "sui_weapon", "Mineral Axe"));
+                    }
                     //_items.Add(CreateItemToTest("spaceshiptest", "spaceship", "Spaceship E7x"));
 
                     //Get NFT

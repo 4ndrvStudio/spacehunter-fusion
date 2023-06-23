@@ -66,8 +66,14 @@ namespace SH.Multiplayer
         }
         private void OnWeaponInUseIdChanged()
         {
+            
             L_WeaponInUseId = N_WeaponInUseId.ToString();
             
+            // if(string.IsNullOrEmpty(L_WeaponInUseId)) {
+
+            //     return;
+            // }
+              
 
             _weaponConfig = _weaponConfigList.Find(config => config.ItemId == L_WeaponInUseId);
             

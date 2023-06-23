@@ -140,8 +140,19 @@ namespace SH.UI
             return canCraft;
         }
 
-        public async void CraftItem()
+        public void Craft()
         {
+           switch(_craftingPopup._currentCraftType) {
+                case ECraftingType.Weapon : CraftSword();
+                    break;
+                case ECraftingType.Glass : CraftGlass();
+                    break;
+           }
+          
+        }
+
+        public async void CraftSword() {
+            
             if(_stoneAddress.Count < 3) return;
             
             _isCrafting = true;
@@ -168,8 +179,38 @@ namespace SH.UI
 
                         });
             });
-          
         }
+         public async void CraftGlass() {
+            
+            if(_stoneAddress.Count < 3) return;
+            
+            _isCrafting = true;
+
+            _craftingButton.ProcessState(ECraftingButtonState.Processing);
+            
+            List<string> itemToCraftList = _stoneAddress.GetRange(0,3); 
+            
+            var rpcResult = await SuiWalletManager.CraftSword(itemToCraftList);
+
+            Debug.Log(rpcResult.RawRpcResponse);
+            
+            DOTween.To(() => _processBarImage.fillAmount, x => _processBarImage.fillAmount = x, 0.82f, 5f)
+                .OnComplete(async () =>
+                {
+                    var rpcResult2 = await SuiWalletManager.Execute(rpcResult);
+
+                    DOTween.To(() => _processBarImage.fillAmount, x => _processBarImage.fillAmount = x, 1f, 1.5f)
+                        .OnComplete(() =>
+                        {
+                            Debug.Log(rpcResult2.RawRpcResponse);
+                            ResetPanel();
+                            _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.None);
+
+                        });
+            });
+        }
+
+
 
     }
 
