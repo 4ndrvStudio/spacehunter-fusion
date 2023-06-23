@@ -10,10 +10,12 @@ namespace SH.Multiplayer
     {
         
         public bool IsPressed = default;
+        public bool Interactable = true;
 
         [SerializeField] private float _startTimeDelay = default;
         [SerializeField] private float _timeDelay = default;
         [SerializeField] private bool _canPress = true;
+
 
         public void Awake() {
             _canPress = true;
@@ -34,6 +36,9 @@ namespace SH.Multiplayer
 
         public void OnPointerDown(PointerEventData eventData)
         {
+            if(Interactable == false) 
+                return;
+                
             if(_canPress) {
                 IsPressed = true;
                 _canPress = false;

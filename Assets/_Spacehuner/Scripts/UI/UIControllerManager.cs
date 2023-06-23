@@ -14,7 +14,8 @@ using Newtonsoft.Json;
 
 namespace SH
 {
-    public enum ControllerType {
+    public enum ControllerType
+    {
         Hide,
         Combat,
         Action
@@ -35,7 +36,7 @@ namespace SH
         [SerializeField] private UIButtonCustom _dashAttackBtn;
         [SerializeField] private UIButtonCustom _activeTestModeBtn;
 
-        
+
         //dance
         [SerializeField] private UIButtonCustom _danceBtn;
 
@@ -54,18 +55,18 @@ namespace SH
 
         [SerializeField] private ControllerType _currentController;
         [SerializeField] private Network_PlayerState _playerState;
-        
+
         public bool IsActive = false;
 
         [Header("SUI Properties")]
         [SerializeField] private TextMeshProUGUI _suiBalanceText;
-        
+
 
         public static UnityAction<bool> UIControllerEvent;
-        
+
         [Header("Mining Property")]
         [SerializeField] private Button _miningButtonBack;
-      
+
 
         [Header("Player Stats")]
         [SerializeField] private TextMeshProUGUI _playerNameText;
@@ -79,13 +80,15 @@ namespace SH
 
         //sui 
         private RpcResult<TransactionBlockBytes> _currentTx;
-        public static UnityAction ConfirmGasFeesAction {get ; set;}
-        public static UnityAction ExitMiningAction {get; set;}
-        
-        private void OnEnable() {
+        public static UnityAction ConfirmGasFeesAction { get; set; }
+        public static UnityAction ExitMiningAction { get; set; }
+
+        private void OnEnable()
+        {
             ConfirmGasFeesAction += GotoMining;
         }
-        private void OnDisble() {
+        private void OnDisble()
+        {
             ConfirmGasFeesAction -= GotoMining;
         }
 
@@ -99,8 +102,9 @@ namespace SH
 
         }
 
-        public void SetLevel() {
-            
+        public void SetLevel()
+        {
+
         }
 
         void Start()
@@ -110,18 +114,30 @@ namespace SH
             _gotoMiningButton.onClick.AddListener(() => PrepareToGotoMining());
             _menuButton.onClick.AddListener(() => UIManager.Instance.ShowPopup(PopupName.MenuGame));
             _miningButtonBack.onClick.AddListener(() => UIManager.Instance.ShowPopup(PopupName.ExitMiningPopup));
-            
+
+        }
+
+        public void ToggleAttackButton(bool isActive)
+        {
+
+            _attackBtn.Interactable = isActive;
+            _attackBtn.GetComponent<Button>().interactable = isActive;
+
+            _attackBtn.GetComponent<CanvasGroup>().alpha = isActive ? 1 : 0.5f;
+
         }
 
 
-        
-        public async void SetupBalance() {
-            if(SuiWallet.GetActiveAddress() == null) return;
+
+        public async void SetupBalance()
+        {
+            if (SuiWallet.GetActiveAddress() == null) return;
             string balance = await SuiWalletManager.GetSuiWalletBalance();
             _suiBalanceText.text = balance;
         }
 
-        public async void SetupHunterInfo() {
+        public async void SetupHunterInfo()
+        {
             _playerNameText.text = PlayerData.PlayerDataManager.DisplayName;
             var hunterResult = await SuiWalletManager.GetHunterInfo(InventoryManager.Instance.CurrentHunterAddressInUse);
 
@@ -137,31 +153,37 @@ namespace SH
                 _expBar.fillAmount = currentExp / 1000f;
                 _expText.text = $"{currentExp}/1000";
             }
-        }  
+        }
 
 
-        public void OpenInventory() {
+        public void OpenInventory()
+        {
             UIControllerEvent?.Invoke(false);
             HideAllController();
             UIManager.Instance.ShowPopup(PopupName.Inventory);
         }
-        public void OpenHunterInfo() {
+        public void OpenHunterInfo()
+        {
             UIControllerEvent?.Invoke(false);
             HideAllController();
             UIManager.Instance.ShowPopup(PopupName.CharacterInfo);
         }
 
-        public void DisplayController() {
-            
-            _playerState  = Network_Player.Local.PlayerState;
+        public void DisplayController()
+        {
+
+            _playerState = Network_Player.Local.PlayerState;
 
             SetupBalance();
             SetupHunterInfo();
 
 
-            if(_playerState.L_IsInsideBuilding) {
+            if (_playerState.L_IsInsideBuilding)
+            {
                 ActiveActionControlller();
-            }  else { 
+            }
+            else
+            {
                 ActiveCombatController();
             }
 
@@ -171,12 +193,12 @@ namespace SH
 
             UIControllerEvent?.Invoke(true);
             IsActive = true;
-            
+
             // //sceneMining Test
             // _uiSceneMining.gameObject.SetActive(true);
         }
 
-        private void ActiveCombatController() 
+        private void ActiveCombatController()
         {
             _combatGroup.SetActive(true);
 
@@ -184,15 +206,15 @@ namespace SH
 
         }
 
-        private void ActiveActionControlller() 
+        private void ActiveActionControlller()
         {
             _combatGroup.SetActive(false);
 
             _actionGroup.SetActive(true);
-          
+
         }
 
-        public void HideAllController() 
+        public void HideAllController()
         {
             _combatGroup.SetActive(false);
 
@@ -220,57 +242,70 @@ namespace SH
 
         public UITouchField GetTouchField() => _touchfield;
 
-        private async void PrepareToGotoMining() {
-             
+        private async void PrepareToGotoMining()
+        {
+
             UIManager.Instance.ShowWaiting();
 
             var rpcResult = await SuiWalletManager.StartFarming();
 
-            _currentTx = rpcResult;
+            if (rpcResult.IsSuccess)
+            {
+                _currentTx = rpcResult;
 
-            var getDry = await SuiApi.Client.DryRunTransactionBlockAsync(rpcResult.Result.TxBytes.ToString()); 
-            
-            JObject jsonObject = JObject.Parse(getDry.RawRpcResponse);
+                var getDry = await SuiApi.Client.DryRunTransactionBlockAsync(rpcResult.Result.TxBytes.ToString());
 
-            JArray balanceChangesArray = (JArray)jsonObject["result"]["balanceChanges"];
-       
-            SuiEstimatedGasFeesModel gasFeesModel = new SuiEstimatedGasFeesModel();
-            gasFeesModel.CanExcute = true;
-            if(balanceChangesArray[0]["amount"].ToString() != null)
-                gasFeesModel.EstimatedGasFees = balanceChangesArray[0]["amount"].ToString();
-            else 
-                gasFeesModel.EstimatedGasFees = "Can not estimated gas fees";
-            UIManager.Instance.HideWaiting();
-            UIManager.Instance.ShowPopupWithCallback(PopupName.SuiEstimatedGas,gasFeesModel, ConfirmGasFeesAction);
+                JObject jsonObject = JObject.Parse(getDry.RawRpcResponse);
+
+                JArray balanceChangesArray = (JArray)jsonObject["result"]["balanceChanges"];
+
+                SuiEstimatedGasFeesModel gasFeesModel = new SuiEstimatedGasFeesModel();
+                gasFeesModel.CanExcute = true;
+                if (balanceChangesArray[0]["amount"].ToString() != null)
+                    gasFeesModel.EstimatedGasFees = balanceChangesArray[0]["amount"].ToString();
+                else
+                    gasFeesModel.EstimatedGasFees = "Can not estimated gas fees";
+                UIManager.Instance.HideWaiting();
+                UIManager.Instance.ShowPopupWithCallback(PopupName.SuiEstimatedGas, gasFeesModel, ConfirmGasFeesAction);
+            }
+            else
+            {
+                UIManager.Instance.ShowAlert(rpcResult.ErrorMessage, AlertType.Error);
+                UIManager.Instance.HideWaiting();
+            }
+
         }
 
         public async void GotoMining()
         {
-            if(_currentTx == null) return;
+            if (_currentTx == null) return;
 
             UIManager.Instance.ShowWaiting();
             var rpcResult = await SuiWalletManager.Execute(_currentTx);
             UIManager.Instance.HideWaiting();
-            
-            if(rpcResult.IsSuccess == true) {
+
+            if (rpcResult.IsSuccess == true)
+            {
                 Network_ClientManager.MoveToRoom(SceneDefs.scene_mining);
-            } else {
+            }
+            else
+            {
                 UIManager.Instance.ShowAlert("Some thing wrong. Please recheck", AlertType.Warning);
             }
         }
 
 
-        public void AddInteractButton(int id, InteractButtonType type,Dictionary<string, object> customProperties)
+        public void AddInteractButton(int id, InteractButtonType type, Dictionary<string, object> customProperties)
         {
 
             int hasIndex = _interactBtnList.FindIndex(interactBtn => interactBtn.Id == id);
-            
-            if(hasIndex != -1) return;
+
+            if (hasIndex != -1) return;
 
             int indexToInstance = _interactBtnList.FindIndex(interactBtn => interactBtn.IsSet == false);
 
-            if(indexToInstance == -1) return;
-            
+            if (indexToInstance == -1) return;
+
             _interactBtnList[indexToInstance].SetContentOfButton(type, customProperties);
 
             _interactBtnList[indexToInstance].Id = id;
@@ -281,21 +316,23 @@ namespace SH
         {
             int index = _interactBtnList.FindIndex(interactBtn => interactBtn.Id == id);
 
-            if(index == -1) return;
+            if (index == -1) return;
 
             _interactBtnList[index].DisableBtn();
 
         }
 
         //Mining;
-        public void SetHP(int hp) {
-         
+        public void SetHP(int hp)
+        {
+
             _hpText.text = $"{hp}/100";
             float targetFillAmount = (float)hp / 100f;
-            DOTween.To(() => _hpBar.fillAmount, x => _hpBar.fillAmount = x, targetFillAmount,1f);
+            DOTween.To(() => _hpBar.fillAmount, x => _hpBar.fillAmount = x, targetFillAmount, 1f);
         }
 
-        public void DisplayMiningButton(bool isActive) {
+        public void DisplayMiningButton(bool isActive)
+        {
             _miningButtonBack.gameObject.SetActive(isActive);
         }
 

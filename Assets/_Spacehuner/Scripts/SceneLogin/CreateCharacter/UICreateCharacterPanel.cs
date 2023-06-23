@@ -34,7 +34,14 @@ namespace SH.Account
         public string ImageURL;
         [JsonProperty("collection_description")]
         public string Description;
+        public CharacterNFTFieldsModel Fields;
         // public string Project_url;
+    }
+    public class CharacterNFTFieldsModel {
+        [JsonProperty("image_url")]
+        public string ImageURL;
+        [JsonProperty("name")]
+        public string Name;
     }
     public class FieldId
     {
@@ -164,8 +171,6 @@ namespace SH.Account
 
                 var getDry = await SuiApi.Client.DryRunTransactionBlockAsync(mintRpcResult.Result.TxBytes.ToString());
 
-
-
                 JObject jsonObject = JObject.Parse(getDry.RawRpcResponse);
 
                 JArray balanceChangesArray = (JArray)jsonObject["result"]["balanceChanges"];
@@ -214,19 +219,21 @@ namespace SH.Account
             {
                 var nftObject = await SuiApi.Client.GetObjectAsync(rpcResult.Result.Effects.SharedObjects[0].ObjectId, ObjectDataOptions.ShowAll());
 
-                Debug.Log(rpcResult.Result.Effects.Created[0].Reference.ObjectId);
+                Debug.Log(nftObject.RawRpcResponse);
+                //Debug.Log(rpcResult.Result.Effects.Created[0].Reference.ObjectId);
 
                 //serialize object
                 string nFTModel = JsonConvert.SerializeObject(nftObject.Result.Data.Content, Formatting.Indented);
+                
+                JObject nftJsonObject = JObject.Parse(nFTModel);
 
                 //Cast to model
-                CharacterNFTModel model = JsonConvert.DeserializeObject<CharacterNFTModel>(nFTModel);
                 modelPopup.IsSuccess = true;
-                modelPopup.Name = model.Fields.Name;
-                modelPopup.Description = model.Fields.Description;
-                modelPopup.ImageURL = model.Fields.ImageURL;
-                modelPopup.ObjectId = rpcResult.Result.Effects.SharedObjects[0].ObjectId;
-
+                modelPopup.Name = nftJsonObject.SelectToken("fields.hunter_datas.fields.contents[0].fields.value.fields.name").ToString();
+                modelPopup.Description = "";
+                modelPopup.ImageURL = nftJsonObject.SelectToken("fields.hunter_datas.fields.contents[0].fields.value.fields.image_url").ToString();;
+                modelPopup.ObjectId = rpcResult.Result.Effects.Created[0].Reference.ObjectId;
+                InventoryManager.Instance.CurrentHunterAddressInUse  = rpcResult.Result.Effects.Created[0].Reference.ObjectId;
                 UIManager.Instance.HideWaiting();
                 UIManager.Instance.ShowPopupWithCallback(PopupName.SuiNotification, modelPopup, MintNFTComplete);
 
@@ -278,7 +285,7 @@ namespace SH.Account
         {
             _lstCharacterType.ForEach(item => item.gameObject.SetActive(true));
             _lstBtnRace.ForEach(item => item.color = Color.white);
-            _lstCharacterType[0].OnItemClick();
+            _lstCharacterType[2].OnItemClick();
         }
 
         public void OnVasinClick()

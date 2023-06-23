@@ -38,12 +38,26 @@ namespace SH.Multiplayer
 
             if(Object.HasInputAuthority) {
                 //set default weapon
+                // if(InventoryManager.Instance.CurrentWeaponInUse == null) {
+                //     RPC_SetWeaponInUse("");
+                //     UIControllerManager.Instance.ToggleAttackButton(false);
+                // } else {
+                //     RPC_SetWeaponInUse(InventoryManager.Instance.CurrentWeaponInUse.ItemId);
+                //     UIControllerManager.Instance.ToggleAttackButton(true);
+                // }
                 if(InventoryManager.Instance.CurrentWeaponInUse == null) {
-                    RPC_SetWeaponInUse("weapon_mineral_axe");
+                    RPC_SetWeaponInUse("");
+                    UIControllerManager.Instance.ToggleAttackButton(false);
+                } else {
+                    if((int)Network_ClientManager.CurrentScene == 2) {
+                    RPC_SetWeaponInUse("");
+                    UIControllerManager.Instance.ToggleAttackButton(false);
                 } else {
                     RPC_SetWeaponInUse(InventoryManager.Instance.CurrentWeaponInUse.ItemId);
+                    UIControllerManager.Instance.ToggleAttackButton(true);
                 }
-                
+                }
+              
                 
             }
            
@@ -68,13 +82,15 @@ namespace SH.Multiplayer
         {
             
             L_WeaponInUseId = N_WeaponInUseId.ToString();
+
+            UIControllerManager.Instance.ToggleAttackButton(true);
+
+            if(string.IsNullOrEmpty(L_WeaponInUseId)) {
+    
+                UIControllerManager.Instance.ToggleAttackButton(false);
+                return;
+            }
             
-            // if(string.IsNullOrEmpty(L_WeaponInUseId)) {
-
-            //     return;
-            // }
-              
-
             _weaponConfig = _weaponConfigList.Find(config => config.ItemId == L_WeaponInUseId);
             
 
@@ -113,6 +129,7 @@ namespace SH.Multiplayer
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_SetWeaponInUse(string weaponInUseID, RpcInfo info = default)
         {
+            
             this.N_WeaponInUseId = weaponInUseID;
         }
 

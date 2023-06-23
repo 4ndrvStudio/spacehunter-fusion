@@ -38,7 +38,7 @@ namespace SH.Multiplayer
         //just for test
         private static RpcResult<TransactionBlockBytes> _currentTx;
         private static int _currentStoneToClaim;
-
+        private static bool _isMiningExit;
 
         public static UnityAction ConfirmGasFeesAction;
         public static UnityAction ConfirmClaimAction;
@@ -87,6 +87,9 @@ namespace SH.Multiplayer
 
         public static async void ExitRoomMining(ulong exp, List<ulong> amountStone, List<string> symbolStone)
         {
+            if(_isMiningExit == true) {
+                return;
+            }
 
             UIManager.Instance.ShowWaiting();
 
@@ -119,7 +122,7 @@ namespace SH.Multiplayer
                 UIManager.Instance.HideWaiting();
                 UIManager.Instance.ShowAlert(rpcResult.ErrorMessage, AlertType.Warning);
             }
-
+            _isMiningExit = false;
 
 
 

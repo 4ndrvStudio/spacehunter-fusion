@@ -78,6 +78,7 @@ namespace SH
 
         private async Task LoadNFTImage(string url)
         {
+            Debug.Log("img url: " + url); 
             using var req = new UnityWebRequest(url, "GET");
 
             req.downloadHandler = new DownloadHandlerBuffer();

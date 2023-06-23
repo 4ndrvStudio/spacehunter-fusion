@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using SH.Multiplayer;
 namespace SH.UI
 {
     public class UIInventoryItemInfo : MonoBehaviour
@@ -26,6 +26,10 @@ namespace SH.UI
             _itemNameText.text = uiInventoryItem.ItemConfig.ItemName;
             _useButton.interactable = uiInventoryItem.ItemConfig.CanUse;
             // _useButtonText.color = uiInventoryItem.ItemConfig.CanUse ? _useTextActiveColor : _useTextDeactiveColor;
+            if((int)Network_ClientManager.CurrentScene == 2) {
+                _useButton.interactable = false;
+            }
+
 
         }
         public void ClearDisplay() {

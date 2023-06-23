@@ -14,8 +14,7 @@ namespace SH.Account
         [SerializeField] private UICreateCharacterPanel _controller = default;
 
         [SerializeField] private UICharacter _uiCharacter = default;
-
-
+        
         public CharacterType CharacterType => _characterType;
 
         public void OnItemClick()
