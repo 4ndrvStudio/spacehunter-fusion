@@ -119,8 +119,10 @@ namespace SH.Multiplayer
                 UIManager.Instance.ShowPopupWithCallback(PopupName.SuiEstimatedGas, gasFeesModel, ConfirmGasFeesAction);
             } 
             else {
+                
                 UIManager.Instance.HideWaiting();
                 UIManager.Instance.ShowAlert(rpcResult.ErrorMessage, AlertType.Warning);
+            
             }
             _isMiningExit = false;
 

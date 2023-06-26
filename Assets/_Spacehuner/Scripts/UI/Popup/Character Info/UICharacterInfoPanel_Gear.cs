@@ -7,6 +7,9 @@ using UnityEngine.Events;
 using Suinet.Rpc;
 using Suinet.Rpc.Types;
 using System.Linq;
+using PlayFab.ClientModels;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SH.UI
 {
@@ -36,8 +39,6 @@ namespace SH.UI
         [SerializeField] private string _currentWeaponEquipedAddress;
         [SerializeField] private TextMeshProUGUI _weaponNameText;
         [SerializeField] private TextMeshProUGUI _weaponIdText;
-        [SerializeField] private TextMeshProUGUI _weaponLevelText;
-        [SerializeField] private TextMeshProUGUI _attackText;
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [SerializeField] private Button _unEquipButton;
 
@@ -47,33 +48,31 @@ namespace SH.UI
         public static UnityAction ConfirmGasFeesEquipAction;
         public static UnityAction ConfirmGasFeesUnEquipAction;
         
-        
 
-        // void OnEnable() {
-        //     ConfirmGasFeesEquipAction += WeaponUsedStep;
-        //     ConfirmGasFeesUnEquipAction += UnWeaponUsedStep;
+        void OnEnable() {
+            ConfirmGasFeesEquipAction += WeaponUsedStep;
+            ConfirmGasFeesUnEquipAction += UnWeaponUsedStep;
             
-        // }
-        // void OnDisable() {
-        //     ConfirmGasFeesEquipAction -= WeaponUsedStep;
-        //     ConfirmGasFeesUnEquipAction -= UnWeaponUsedStep;
+        }
+        void OnDisable() {
+            ConfirmGasFeesEquipAction -= WeaponUsedStep;
+            ConfirmGasFeesUnEquipAction -= UnWeaponUsedStep;
 
-        // }
+        }
 
-        // void Start() {
-        //     _btnUseGear.onClick.AddListener(() => UseWeaponClick());
-        //     _unEquipButton.onClick.AddListener(() => UnEquipWeaponClick());
-        // }
+        void Start() {
+            _btnUseGear.onClick.AddListener(() => UseWeaponClick());
+            _unEquipButton.onClick.AddListener(() => UnEquipWeaponClick());
+        }
 
         public override void Display()
         {
-           // ProcessState();
-           _gearEquipOb.SetActive(true);
+           ProcessState();
+            _uiCharacterRenderTexture.SetToIdle(true);
         }
         public override void Hide()
         {
-           // HideWeaponPanel();
-           _gearEquipOb.SetActive(false);
+           HideWeaponPanel();
         }
 
         private void HideWeaponPanel()
@@ -85,47 +84,46 @@ namespace SH.UI
 
         public void SelectWeapon(string address) {
             _gearItemList.ForEach(weaponItem => {
-                weaponItem.GetComponent<UICharacterWeaponSlot>().DeSelect();
+                weaponItem.GetComponent<UICharacterGearSlot>().DeSelect();
             });
             _selectedGearAddress = address;
         }
 
-/*
+
         private async void ProcessState()
         {
             _currentTx = null;
             _selectedGearAddress = null;
             _loaderIcon.gameObject.SetActive(true);
             HideWeaponPanel();
+           
 
             var data = await SuiWalletManager.GetHunterWeaponEquipment();
-            var listWeapon = data.Result.Data.ToList();
-
-            if(_uiCharacterInfoPopup.CurrentTab != UICharacterTabName.Weapon) {
+            
+            var listItem = data.Result.Data.ToList().FindAll(data => data.ObjectType.Type.Contains("item::Item"));
+            await InventoryManager.Instance.GetInventoryData();
+           
+           
+            if(_uiCharacterInfoPopup.CurrentTab != UICharacterTabName.Gear) {
                   _loaderIcon.gameObject.SetActive(false);
                   return;
-            }   
+            }       
 
+           
 
-            if (listWeapon.Count > 0)
+            if (listItem.Count > 0)
             {
-                _currentWeaponEquipedAddress = listWeapon[0].ObjectId;
+                _currentWeaponEquipedAddress = listItem[0].ObjectId;
                 ShowWeaponEquipPanel();
-                _uiCharacterInfoPopup.HasWeapon = true;
+               _uiCharacterRenderTexture.EquipGear(true);
             }
             else
             {
-                _uiCharacterInfoPopup.HasWeapon = false;
-
-                if(_uiCharacterInfoPopup.HasWeapon == true ) {
-                     _uiCharacterRenderTexture.SetToIdle(false);
-                } else {
-                    _uiCharacterRenderTexture.SetToIdle(true);
-                }
+                _uiCharacterRenderTexture.EquipGear(false);
 
                 List<ItemInstance> itemList = new List<ItemInstance>();
 
-                itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "sui_weapon");
+                itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "glasses");
 
                 if (itemList.Count > 0)
                 {
@@ -141,22 +139,20 @@ namespace SH.UI
         }
         private void ShowNoneWeaponPanel()
         {
-            _noneWeaponOb.SetActive(true);
+            _noneGearOb.SetActive(true);
         }
         private void ShowHasWeaponPanel()
         {
          
-           
-
-            _hasWeaponOb.SetActive(true);
+            _hasGearOb.SetActive(true);
             GetWeapons();
 
         }
 
         private async void ShowWeaponEquipPanel()
         {
-            _weaponEquipOb.SetActive(true);
-            _uiCharacterRenderTexture.SetToWeapon();
+            _gearEquipOb.SetActive(true);
+           // _uiCharacterRenderTexture.SetToWeapon();
 
             if(_currentWeaponEquipedAddress != string.Empty) {
                 var weaponResult = await SuiWalletManager.GetWeaponInfo(_currentWeaponEquipedAddress);
@@ -171,10 +167,6 @@ namespace SH.UI
                 
                 string jsonNft = JsonConvert.SerializeObject(weaponResult.Result.Data.Content, Formatting.Indented);
                 JObject nftJsonObject = JObject.Parse(jsonNft);
-
-                 _weaponLevelText.text =  "Lv " + nftJsonObject.SelectToken("fields.level").ToString();
-                 _attackText.text = nftJsonObject.SelectToken("fields.damage").ToString();
-
                  _descriptionText.text = weaponResult.Result.Data.Display.Data["description"];
                 }
                
@@ -188,23 +180,23 @@ namespace SH.UI
         private void ClearUI()
         {
             // Clear UI
-            foreach (var item in _weaponItemList)
+            foreach (var item in _gearItemList)
             {
                 Destroy(item);
             }
-            _weaponItemList.Clear();
+            _gearItemList.Clear();
         }
 
         private void GetWeapons()
         {
 
-            _weaponHolderLoaderIcon.SetActive(true);
+            _gearHolderLoaderIcon.SetActive(true);
 
             ClearUI();
 
             List<ItemInstance> itemList = new List<ItemInstance>();
 
-            itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "sui_weapon");
+            itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "glasses");
             bool isSelected = false;
             foreach (var item in itemList)
             {
@@ -213,8 +205,8 @@ namespace SH.UI
 
                 int level = int.Parse(item.CustomData["Level"]);
 
-                GameObject inventoryItemEl = Instantiate(_weaponSlotOb, _weaponContentHolder.transform);
-                UICharacterWeaponSlot inventoryElScript = inventoryItemEl.GetComponent<UICharacterWeaponSlot>();
+                GameObject inventoryItemEl = Instantiate(_gearSlotOb, _gearContentHolder.transform);
+                UICharacterGearSlot inventoryElScript = inventoryItemEl.GetComponent<UICharacterGearSlot>();
 
                 ItemConfig itemConfig = InventoryManager.Instance.ItemConfigs.Find(itemConfig => itemConfig.ItemId == item.ItemId);
                
@@ -222,9 +214,9 @@ namespace SH.UI
                 {
                     itemConfig.ItemInstanceId = item.ItemInstanceId;
                 }
-                inventoryElScript.Setup(level, itemConfig, address, this);
+               inventoryElScript.Setup(level, itemConfig, address, this);
                
-                _weaponItemList.Add(inventoryItemEl);
+                _gearItemList.Add(inventoryItemEl);
 
                 if(isSelected == false) {
                     inventoryElScript.Select();
@@ -233,14 +225,14 @@ namespace SH.UI
 
             }
 
-            _weaponHolderLoaderIcon.SetActive(false);
+            _gearHolderLoaderIcon.SetActive(false);
         }
 
         private async void UseWeaponClick() {
 
             UIManager.Instance.ShowWaiting();
 
-            var rpcResult =  await SuiWalletManager.EquipWeapon(_selectedWeaponAddress);
+            var rpcResult =  await SuiWalletManager.EquipWeapon(_selectedGearAddress,"item");
             _currentTx = rpcResult;
 
             var getDry = await SuiApi.Client.DryRunTransactionBlockAsync(rpcResult.Result.TxBytes.ToString()); 
@@ -264,6 +256,7 @@ namespace SH.UI
             
             UIManager.Instance.ShowWaiting();
             var rpcResult = await SuiWalletManager.Execute(_currentTx);
+            _uiCharacterInfoPopup.GetEquipedItem();
             UIManager.Instance.HideWaiting();
             
             if(rpcResult.IsSuccess == true) {
@@ -278,6 +271,7 @@ namespace SH.UI
                 UIManager.Instance.ShowAlert("Some thing wrong. Please recheck", AlertType.Warning);
             }
             _uiCharacterInfoPopup.UpdateSuiBalance();
+         
 
 
         }
@@ -303,6 +297,8 @@ namespace SH.UI
                 gasFeesModel.EstimatedGasFees = "Can not estimated gas fees";
             UIManager.Instance.HideWaiting();
             UIManager.Instance.ShowPopupWithCallback(PopupName.SuiEstimatedGas, gasFeesModel, ConfirmGasFeesUnEquipAction);
+            
+        
         }
 
         private async void UnWeaponUsedStep() {
@@ -310,6 +306,7 @@ namespace SH.UI
             
             UIManager.Instance.ShowWaiting();
             var rpcResult = await SuiWalletManager.Execute(_currentTx);
+             _uiCharacterInfoPopup.GetEquipedItem();
             UIManager.Instance.HideWaiting();
             
             if(rpcResult.IsSuccess == true) {
@@ -321,11 +318,11 @@ namespace SH.UI
             } else {
                 UIManager.Instance.ShowAlert("Some thing wrong. Please recheck", AlertType.Warning);
             }
-
             _uiCharacterInfoPopup.UpdateSuiBalance();
+           
         }
 
-        */
+        
     }
 
 }

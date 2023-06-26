@@ -83,7 +83,7 @@ namespace SH.Multiplayer
 
             var networkMineral = _lagCompensatedHits[0].GameObject.GetComponentInParent<Network_Mineral>();
            
-            int targetDame = _weaponConfig.WeaponType == WeaponType.Sword ? 5: 3;
+            int targetDame = _weaponConfig.WeaponType == WeaponType.Sword ? 1: 1;
 
             networkMineral.HitMineral(Object.InputAuthority, targetDame);
 
@@ -106,7 +106,7 @@ namespace SH.Multiplayer
             if (count <= 0) return false;
 
             var networkEnemyDamageable = _lagCompensatedHits[0].GameObject.GetComponentInParent<Network_EnemyDamageable>();
-            int targetDame = _weaponConfig.WeaponType == WeaponType.Sword ? 7: 5;
+            int targetDame = _weaponConfig.WeaponType == WeaponType.Sword ? 1: 1;
             networkEnemyDamageable.HitEnemy(Object.InputAuthority, Object.transform,targetDame);
 
             return true;

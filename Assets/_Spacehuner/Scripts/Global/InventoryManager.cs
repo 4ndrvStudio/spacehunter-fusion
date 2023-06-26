@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SH.UI;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 namespace SH
 {
@@ -40,7 +41,7 @@ namespace SH
         [HideInInspector] public int MineralCollectedCount;
         [HideInInspector] public int ExpCollectedCount;
 
-        public string SuiPackageId = "0x6c770a38a07c937998bb0249e70101e79eda3848aea907cb90e56fad6fe62d8a";
+        public string SuiPackageId = "0xea3599a55633bef0ea926c3e5e9732239711d83a64518f560a6a0e15b389a299";
 
         void Awake()
         {
@@ -56,18 +57,20 @@ namespace SH
 
         }
 
-        public void GetInventoryData()
+        public async Task GetInventoryData()
         {
-            SuiWalletManager.TestSignature();
+            TaskCompletionSource<bool> taskCompletionSource = new TaskCompletionSource<bool>();
+
             PlayFabManager.Instance.GetInventoryData(
                 async res =>
                 {
                     this._items = res.Inventory;
 
-                    Debug.Log( "current scene " + (int) Network_ClientManager.CurrentScene);
+                    Debug.Log("current scene " + (int)Network_ClientManager.CurrentScene);
                     // _items.Add(CreateItemToTest("weapon_swordtest", "weapon", "Normal Sword"));
-                    if((int)Network_ClientManager.CurrentScene == 3) {
-                          _items.Add(CreateItemToTest("weapon_mineral_axe", "sui_weapon", "Mineral Axe"));
+                    if ((int)Network_ClientManager.CurrentScene == 3)
+                    {
+                        _items.Add(CreateItemToTest("weapon_mineral_axe", "sui_weapon", "Mineral Axe"));
                     }
                     //_items.Add(CreateItemToTest("spaceshiptest", "spaceship", "Spaceship E7x"));
 
@@ -79,7 +82,7 @@ namespace SH
 
                         string jsonNft = JsonConvert.SerializeObject(nft.Data.Content, Formatting.Indented);
                         JObject nftJsonObject = JObject.Parse(jsonNft);
-                        
+
                         if (nftJsonObject.SelectToken("type").ToString().Contains($"{SuiPackageId}::stone::Stone"))
                         {
                             ItemInstance item = new ItemInstance();
@@ -93,7 +96,21 @@ namespace SH
                             item.CustomData = itemCustomData;
                             this._items.Add(item);
                         }
-                     
+
+                        if (nftJsonObject.SelectToken("type").ToString().Contains($"{SuiPackageId}::item::Item"))
+                        {
+                            ItemInstance item = new ItemInstance();
+                            item.ItemId = "glasses";
+                            item.ItemClass = "gear";
+                            item.DisplayName = nftJsonObject.SelectToken("fields.name").ToString();
+                            Dictionary<string, string> itemCustomData = new Dictionary<string, string>() {
+                                {"Level", "1"},
+                                {"Address", nftJsonObject.SelectToken("fields.id.Id").ToString()}
+                            };
+                            item.CustomData = itemCustomData;
+                            this._items.Add(item);
+                        }
+
                         if (nftJsonObject.SelectToken("type").ToString().Contains($"{SuiPackageId}::sword::Sword"))
                         {
                             ItemInstance item = new ItemInstance();
@@ -113,9 +130,39 @@ namespace SH
                         {
                             CurrentHunterAddressInUse = nftJsonObject.SelectToken("fields.id.Id").ToString();
                         }
+
+
                     });
+                    var equipNFT = await SuiWalletManager.GetHunterWeaponEquipment();
+                    if (equipNFT.IsSuccess)
+                    {
+                        if (equipNFT.Result.Data.ToList().Count > 0)
+                        {
+                            equipNFT.Result.Data.ToList().ForEach(data =>
+                            {
+                                if (data.ObjectType.Type.Contains("sword::Sword"))
+                                {
+                                    ItemInstance item = new ItemInstance();
+                                    item.ItemId = "sui_weapon";
+                                    item.ItemClass = "sui_weapon";
+                                    Dictionary<string, string> itemCustomData = new Dictionary<string, string>() {
+                                {"Level", "1"},
+                                {"Address", data.ObjectId}
+                            };
+                                    item.CustomData = itemCustomData;
+                                    this._items.Add(item);
+                                }
+                            });
+                        }
+                    }
+
+
+
+                    taskCompletionSource.SetResult(true);
 
                     OnInventoryDataChange?.Invoke();
+
+
                 },
                 err =>
                 {
@@ -123,15 +170,17 @@ namespace SH
                 }
             );
 
-
+            await taskCompletionSource.Task;
+            Debug.Log("complete Task");
         }
 
         public List<ItemInstance> GetFakeStoneItems(int amount)
         {
             List<ItemInstance> items = new List<ItemInstance>();
-            
-            for (int i =0 ; i< amount; i++) {
-                     items.Add(CreateItemToTest("mineral", "mineral", "Mineral","3"));
+
+            for (int i = 0; i < amount; i++)
+            {
+                items.Add(CreateItemToTest("mineral", "mineral", "Mineral", "3"));
             }
 
             return items;

@@ -47,7 +47,7 @@ namespace SH.Multiplayer
         [Networked] private NetworkBool _wasHit { get; set; }
 
         [Networked(OnChanged = nameof(OnHpChanged))]
-        [SerializeField] private byte _hp { get; set; }
+        [SerializeField] private int _hp { get; set; }
         [SerializeField] private bool _wasSetupHp;
 
         //local
@@ -59,7 +59,7 @@ namespace SH.Multiplayer
         private PlayerRef _lastHitPlayer;
         private int _currentDame=0;
 
-      
+        private bool isClaimed;
 
 
 
@@ -85,10 +85,10 @@ namespace SH.Multiplayer
             if (_wasHit) return;
             _lastHitPlayer = player;
             _currentDame = dame;
-            if (Runner.TryGetPlayerObject(player, out var playerNetworkObject))
-            {
-                playerNetworkObject.GetComponentInChildren<Network_WeaponCollider>().ToggleActiveCollider(CanHitName.Mineral, false);
-            }
+            // if (Runner.TryGetPlayerObject(player, out var playerNetworkObject))
+            // {
+            //     playerNetworkObject.GetComponentInChildren<Network_WeaponCollider>().ToggleActiveCollider(CanHitName.Mineral, false);
+            // }
             _wasHit = true;
         }
         public override void FixedUpdateNetwork()
@@ -97,11 +97,13 @@ namespace SH.Multiplayer
             if (Object.HasStateAuthority && _wasHit)
             {
                 _wasHit = false;
-                _hp-= (byte)_currentDame;
+                _hp-= _currentDame;
 
-                if (_hp <= 0)
+                if (_hp <= 0 && isClaimed == false)
                 {
+                    
                     MineralDestroy();
+                     isClaimed = true;
                    
                    // RPC_MineralCollected(_lastHitPlayer, "ColledItem");
                 }
@@ -111,6 +113,7 @@ namespace SH.Multiplayer
                 if (_hp <= 0)
                 {
                     SpawnAward();
+                   
                 }
             }
 
@@ -134,7 +137,8 @@ namespace SH.Multiplayer
             changed.Behaviour.OnHpChanged();
         }
         private void OnHpChanged()
-        {
+        { 
+
             if (_hp <= 0)
             {
                 _healthBar.gameObject.SetActive(false);

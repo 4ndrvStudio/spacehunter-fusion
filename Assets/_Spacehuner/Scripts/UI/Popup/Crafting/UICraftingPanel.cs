@@ -13,6 +13,9 @@ namespace SH.UI
         [SerializeField] private Button _closeBtn;
         [SerializeField] private UICraftingPopup _craftingPopup;
         //item
+        [SerializeField] private Image _targetCraftingIcon;
+        [SerializeField] private Sprite _swordSprite;
+        [SerializeField] private Sprite _glassSprite;
         [SerializeField] private GameObject _itemPrefab;
         [SerializeField] private GameObject _inventoryContentHolder;
         [SerializeField] private List<GameObject> _craftingItemList = new List<GameObject>();
@@ -35,6 +38,14 @@ namespace SH.UI
             });
         }
 
+        public void SetupPanel (ECraftingType craftingType) {
+            switch(craftingType) {
+                case ECraftingType.Weapon : _targetCraftingIcon.sprite = _swordSprite;
+                    break;
+                case ECraftingType.Glass : _targetCraftingIcon.sprite = _glassSprite;
+                    break;
+            }
+        }
 
         private void OnEnable()
         {
@@ -175,7 +186,7 @@ namespace SH.UI
                         {
                             Debug.Log(rpcResult2.RawRpcResponse);
                             ResetPanel();
-                            _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.None);
+                            _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.Weapon);
 
                         });
             });
@@ -190,7 +201,7 @@ namespace SH.UI
             
             List<string> itemToCraftList = _stoneAddress.GetRange(0,3); 
             
-            var rpcResult = await SuiWalletManager.CraftSword(itemToCraftList);
+            var rpcResult = await SuiWalletManager.CraftGlass(itemToCraftList);
 
             Debug.Log(rpcResult.RawRpcResponse);
             
@@ -204,7 +215,7 @@ namespace SH.UI
                         {
                             Debug.Log(rpcResult2.RawRpcResponse);
                             ResetPanel();
-                            _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.None);
+                            _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.Glass);
 
                         });
             });

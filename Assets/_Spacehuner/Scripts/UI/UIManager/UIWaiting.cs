@@ -28,7 +28,7 @@ public class UIWaiting : MonoBehaviour
         {
             IsShowed = true;
             _objContent.SetActive(true);
-            _iconWaiting.DORotate(new Vector3(0, 0, -360), 0.7f, RotateMode.FastBeyond360).SetLoops(-1).SetEase(Ease.Linear);
+           // _iconWaiting.DORotate(new Vector3(0, 0, -360), 0.7f, RotateMode.FastBeyond360).SetLoops(-1).SetEase(Ease.Linear);
         }
     }
 

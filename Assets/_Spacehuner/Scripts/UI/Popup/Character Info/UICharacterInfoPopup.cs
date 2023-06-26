@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Linq;
 
 namespace SH.UI
 {
@@ -29,6 +30,11 @@ namespace SH.UI
         [SerializeField] private UICharacterRenderTexture _uiCharacterRenderTexture;
 
         public bool HasWeapon;
+        public bool HasGear;
+
+        public string CurrentWeaponEquipedAddress;
+        public string CurrentGearEquipedAddress;
+
 
         // Start is called before the first frame update
         void Start()
@@ -55,7 +61,7 @@ namespace SH.UI
         }
 
         public void OnEnable() {
-                ChangeTab(UICharacterTabName.Races);
+            ChangeTab(UICharacterTabName.Races);
               UpdateSuiBalance();
                _tabButtonList.ForEach(tab => {
                     tab.SetDeactive();
@@ -93,6 +99,30 @@ namespace SH.UI
                 if(infoPanel.TabName == tab)
                     infoPanel.Display();
             });
+        }
+
+        public async void GetEquipedItem() {
+            
+            var data = await SuiWalletManager.GetHunterWeaponEquipment();
+            var listItem = data.Result.Data.ToList().FindAll(data => data.ObjectType.Type.Contains("item::Item"));
+            var listWeapon = data.Result.Data.ToList().FindAll(data => data.ObjectType.Type.Contains("sword::Sword"));
+         
+            HasWeapon = listWeapon.Count > 0 ? true: false;
+           
+            if(listItem.Count >0 ) {
+                HasGear = true;
+                CurrentGearEquipedAddress = listItem[0].ObjectId;
+                _uiCharacterRenderTexture.EquipGear(true);
+            } else {
+                HasGear = false;
+                 _uiCharacterRenderTexture.EquipGear(false);
+            }
+             if(listWeapon.Count >0 ) {
+                HasWeapon = true;
+                CurrentWeaponEquipedAddress = listWeapon[0].ObjectId;
+            } else {
+                HasWeapon = false;
+            }
         }
 
     }

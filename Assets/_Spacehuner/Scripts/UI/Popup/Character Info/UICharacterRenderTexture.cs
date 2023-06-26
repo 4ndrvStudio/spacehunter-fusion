@@ -10,6 +10,7 @@ namespace SH.UI
         [SerializeField] private Animator _anim;
         [SerializeField] private Camera _cam;
         [SerializeField] private WeaponDissolve _weaponDissovle;
+        [SerializeField] private GameObject _gearEquip;
         
 
         public void SetHideWeapon() {
@@ -18,7 +19,7 @@ namespace SH.UI
 
         public void SetToWeapon() {
             _anim.SetBool("isWeaponEquipped", true);
-            DOTween.To(() =>_cam.orthographicSize , x => _cam.orthographicSize = x, 1f,0.8f)
+            DOTween.To(() =>_cam.orthographicSize , x => _cam.orthographicSize = x, 0.8f,0.8f)
                 .OnComplete(()=> {
                     _weaponDissovle.UnDissolveWeapon();
                 });
@@ -31,9 +32,11 @@ namespace SH.UI
             }
 
             _anim.SetBool("isWeaponEquipped", false);
-            DOTween.To(() =>_cam.orthographicSize , x => _cam.orthographicSize = x, 1.2f,0.8f);
+            DOTween.To(() =>_cam.orthographicSize , x => _cam.orthographicSize = x, 1f,0.8f);
         }
-        
+        public void EquipGear(bool isActive) {
+            _gearEquip.gameObject.SetActive(isActive);
+        }
       
     }
 

@@ -167,6 +167,8 @@ namespace SH.UI
                     hasHunter = true;
                 }
 
+                PlayerData.PlayerDataManager.Character.Data.Characters[0].CharacterType = Define.CharacterType.MutasFemale;
+
             });
             
             if(hasHunter == false) {

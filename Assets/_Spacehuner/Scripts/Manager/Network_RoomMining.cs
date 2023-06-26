@@ -157,7 +157,7 @@ namespace SH.Multiplayer
 
             mineralData.MineralSpawned = null;
             mineralData.WasSpawn = false;
-
+            Debug.Log("DespawnMinera;");
             Runner.Despawn(mineral);
 
             MineralCollectedCount++;

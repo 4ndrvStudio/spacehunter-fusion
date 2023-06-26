@@ -48,10 +48,10 @@ namespace SH.Multiplayer
 
             N_HitFromPosition = hisFromPos.position;
 
-            if (Runner.TryGetPlayerObject(player, out var playerNetworkObject))
-            {
-                playerNetworkObject.GetComponentInChildren<Network_WeaponCollider>().ToggleActiveCollider(CanHitName.Mineral, false);
-            }
+            // if (Runner.TryGetPlayerObject(player, out var playerNetworkObject))
+            // {
+            //     playerNetworkObject.GetComponentInChildren<Network_WeaponCollider>().ToggleActiveCollider(CanHitName.Mineral, false);
+            // }
 
             _wasHit = true;
         }

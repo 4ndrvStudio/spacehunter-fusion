@@ -106,9 +106,10 @@ namespace SH.UI
             HideWeaponPanel();
 
             var data = await SuiWalletManager.GetHunterWeaponEquipment();
+            await InventoryManager.Instance.GetInventoryData();
 
-            var listWeapon = data.Result.Data.ToList();
-
+            var listWeapon = data.Result.Data.ToList().FindAll(data => data.ObjectType.Type.Contains("sword::Sword"));
+             
             if(_uiCharacterInfoPopup.CurrentTab != UICharacterTabName.Weapon) {
                   _loaderIcon.gameObject.SetActive(false);
                   return;
@@ -211,7 +212,6 @@ namespace SH.UI
             ClearUI();
 
             List<ItemInstance> itemList = new List<ItemInstance>();
-            InventoryManager.Instance.GetInventoryData();
             itemList = InventoryManager.Instance.Items.FindAll(item => item.ItemId == "sui_weapon");
 
             bool isSelected = false;
@@ -246,10 +246,10 @@ namespace SH.UI
         }
 
         private async void UseWeaponClick() {
-
+            Debug.Log("Clieckedd");
             UIManager.Instance.ShowWaiting();
 
-            var rpcResult =  await SuiWalletManager.EquipWeapon(_selectedWeaponAddress);
+            var rpcResult =  await SuiWalletManager.EquipWeapon(_selectedWeaponAddress,"sword");
             _currentTx = rpcResult;
 
             var getDry = await SuiApi.Client.DryRunTransactionBlockAsync(rpcResult.Result.TxBytes.ToString()); 

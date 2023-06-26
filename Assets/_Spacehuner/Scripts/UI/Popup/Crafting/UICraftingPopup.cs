@@ -41,9 +41,11 @@ namespace SH.UI
                     break;
                 case ECraftingState.Crafting:
                     _craftingPanel.SetActive(true);
+                    _craftingPanel.GetComponent<UICraftingPanel>().SetupPanel(craftingType);
                     break;
                 case ECraftingState.Complete:
                     _craftingSuccessPanel.SetActive(true);
+                    _craftingSuccessPanel.GetComponent<UICraftingPanel>().SetupPanel(craftingType);
                     break;
 
             }

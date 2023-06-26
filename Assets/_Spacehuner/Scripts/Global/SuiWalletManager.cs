@@ -33,14 +33,15 @@ namespace SH
     {
         private static string _clockAddress = "0x0000000000000000000000000000000000000000000000000000000000000006";
 
-        private static string _packageAddress = "0x6c770a38a07c937998bb0249e70101e79eda3848aea907cb90e56fad6fe62d8a";
-        private static string _farmerDataAddress = "0x2c62f0910528e667e39271de742acdf2f0df8be2da03f3736f84b6bb822e3cf6";
-        private static string _minterDataAddress = "0x1a5fb6ddf4ef2b207876fa1d6a88bce0a9946592757d40ac70668dfc90453dfe";
-        private static string _craftingDataAddress  = "0xc95ea85cd1f8dc4b87c0dcb7bb2b7614e246f161acc760ffec1e923b357b66fa";
+        private static string _packageAddress = "0xea3599a55633bef0ea926c3e5e9732239711d83a64518f560a6a0e15b389a299";
+        private static string _farmerDataAddress = "0x4dffac315551b077e02642a8b7e505aaf4b11b72585a07f261b8c12dea83dbc8";
+        private static string _minterDataAddress = "0x1010c3a183e92538bcbdbcdb9c9714d96b48ae32b4a8151402adbf4748ce7349";
+        private static string _craftingDataAddress  = "0x42f912b50b07d6766c52b9c461bded5587f6a9902cf6ba9c97832d8fc0a11964";
 
         private static string _hunterAddress {get; set;}
         private static string _hunterSymbol = "HTR1";
         private static string _swordSymbol = "SWD1";
+        private static string _glassSymbol = "GL1";
 
         //character
         private static string _nftCharacterPackageId = "0x201e77838a6f75d1e6b6808052d0049bb38e880fba41fd7b6d2cde99150edd6a";
@@ -110,7 +111,7 @@ namespace SH
             
             IKeyPair adminKey = Mnemonics.GetKeypairFromMnemonic("powder flock dog shrimp wage ordinary bless minimum calm raise visit rude");
             string adminAddress = "0xba83c830d684df6eaaa8f143b1e853ea1e2b67522154780f9378d30b7f9d9d59";
-            var rpcClient = new UnityWebRequestRpcClient(SuiConstants.TESTNET_FULLNODE);
+            var rpcClient = new UnityWebRequestRpcClient(SuiConstants.DEVNET_FULLNODE);
             IJsonRpcApiClient Client = new SuiJsonRpcApiClient(rpcClient);
             ISigner signerE = new Signer(Client, adminKey);
 
@@ -319,8 +320,6 @@ namespace SH
                     return null;
             });
 
-          
-
             List<byte> amountByteList = new List<byte>{1};
             ulong exptest= 100;
             byte[] expByte = encoder.Serialize("u64", exptest);
@@ -359,6 +358,26 @@ namespace SH
 
             return rpcResult;
         }
+
+        public static async Task<RpcResult<TransactionBlockBytes>> CraftGlass(List<string> stoneList) {
+             var signer = SuiWallet.GetActiveAddress();
+            var module = "crafting";
+            var function = "crafting_item";
+            var typeArgs = System.Array.Empty<string>();
+            var args = new object[] {
+                _craftingDataAddress,
+                _minterDataAddress,
+                stoneList,
+                _glassSymbol
+            };
+            var gasBudget = BigInteger.Parse("10000000");
+
+            var rpcResult = await SuiApi.Client.MoveCallAsync(signer, _packageAddress, module, function, typeArgs, args, gasBudget);
+
+            return rpcResult;
+        }
+
+
       
 
         
@@ -367,7 +386,7 @@ namespace SH
             string hunterAddress = InventoryManager.Instance.CurrentHunterAddressInUse;
 
             var allEquipment = await SuiApi.Client.GetDynamicFieldsAsync(hunterAddress,null, null);
-
+            
             return allEquipment;
         }
 
@@ -387,7 +406,7 @@ namespace SH
 
     
 
-        public async static Task<RpcResult<TransactionBlockBytes>> EquipWeapon(string address) {
+        public async static Task<RpcResult<TransactionBlockBytes>> EquipWeapon(string address, string type) {
            
             var weaponObjectResult = await SuiApi.Client.GetObjectAsync(address,ObjectDataOptions.ShowAll());
             
@@ -400,7 +419,7 @@ namespace SH
             var args = new object[] {
                 InventoryManager.Instance.CurrentHunterAddressInUse,
                 address,
-                "sword"
+                type
             };
            
             var gasBudget = BigInteger.Parse("10000000");
@@ -410,6 +429,7 @@ namespace SH
 
             return rpcResult;
         }
+
 
         public async static Task<RpcResult<TransactionBlockBytes>> UnEquipWeapon(string address) {
            

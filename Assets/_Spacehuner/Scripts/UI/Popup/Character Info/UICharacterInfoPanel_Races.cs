@@ -42,6 +42,7 @@ namespace SH.UI
         {
             GetHunterData();
 
+
         }
         public override void Hide()
         {
@@ -53,6 +54,7 @@ namespace SH.UI
         {
 
             _loaderIcon.SetActive(true);
+            _uiCharacterInfoPopup.GetEquipedItem();
             var weaponResult = await SuiWalletManager.GetHunterInfo(InventoryManager.Instance.CurrentHunterAddressInUse);
 
             if (weaponResult.IsSuccess == true)
@@ -85,6 +87,7 @@ namespace SH.UI
                 return;
 
             ContentOb.SetActive(true);
+
             if (_uiCharacterInfoPopup.HasWeapon == true)
             {
                 _uiCharacterRenderTexture.SetToIdle(false);
