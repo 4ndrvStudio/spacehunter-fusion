@@ -45,7 +45,7 @@ namespace SH.UI
                     break;
                 case ECraftingState.Complete:
                     _craftingSuccessPanel.SetActive(true);
-                    _craftingSuccessPanel.GetComponent<UICraftingPanel>().SetupPanel(craftingType);
+                    _craftingSuccessPanel.GetComponent<UICraftingSuccess>().SetupNotify(craftingType);
                     break;
 
             }

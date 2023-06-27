@@ -187,7 +187,6 @@ namespace SH.UI
                             Debug.Log(rpcResult2.RawRpcResponse);
                             ResetPanel();
                             _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.Weapon);
-
                         });
             });
         }
@@ -202,8 +201,6 @@ namespace SH.UI
             List<string> itemToCraftList = _stoneAddress.GetRange(0,3); 
             
             var rpcResult = await SuiWalletManager.CraftGlass(itemToCraftList);
-
-            Debug.Log(rpcResult.RawRpcResponse);
             
             DOTween.To(() => _processBarImage.fillAmount, x => _processBarImage.fillAmount = x, 0.82f, 5f)
                 .OnComplete(async () =>

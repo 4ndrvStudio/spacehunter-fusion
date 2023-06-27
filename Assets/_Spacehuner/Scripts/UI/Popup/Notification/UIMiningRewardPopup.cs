@@ -65,7 +65,7 @@ namespace SH.UI
                 string level = nftJsonObject.SelectToken("fields.level").ToString();
                 string exp = nftJsonObject.SelectToken("fields.exp").ToString();
                 _levelText.text = "Lv " + level;
-                float currentExp = (float.Parse(exp) - float.Parse(level) * 1000f);
+                float currentExp = float.Parse(exp) > 1000f ? (float.Parse(exp) - float.Parse(level) * 1000f) : float.Parse(exp);
                 _expBar.fillAmount = currentExp / 1000f;
                 _expAmount.text = $"{currentExp}/1000";
             }

@@ -24468,7 +24468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   Network_RoomMining: {fileID: 0}
-  __hp: 15
+  __hp: 5
   _wasSetupHp: 0
   _healthBar: {fileID: 9185772165435558541}
   _body: {fileID: 8512008002792989096}
