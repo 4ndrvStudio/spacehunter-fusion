@@ -12,6 +12,7 @@ namespace SH.UI
         public string ItemName;
         public Sprite ItemIcon;
         public string ItemInstanceId;
+        public string Description;
         //Check Later
         public UIInventoryTabName TypeTab;
         // custom icon with level

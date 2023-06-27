@@ -33,10 +33,10 @@ namespace SH
     {
         private static string _clockAddress = "0x0000000000000000000000000000000000000000000000000000000000000006";
 
-        private static string _packageAddress = "0xea3599a55633bef0ea926c3e5e9732239711d83a64518f560a6a0e15b389a299";
-        private static string _farmerDataAddress = "0x4dffac315551b077e02642a8b7e505aaf4b11b72585a07f261b8c12dea83dbc8";
-        private static string _minterDataAddress = "0x1010c3a183e92538bcbdbcdb9c9714d96b48ae32b4a8151402adbf4748ce7349";
-        private static string _craftingDataAddress  = "0x42f912b50b07d6766c52b9c461bded5587f6a9902cf6ba9c97832d8fc0a11964";
+        private static string _packageAddress = "0xb1eedbc4b571ce2e472cd910ee560f4f6c1d8eb9a3756225874f4f577e8d814c";
+        private static string _farmerDataAddress = "0xb2b02c51794af3250094b527047b86d8ad0df9b889cff4af8e336d0941dea148";
+        private static string _minterDataAddress = "0x17e3a806d528b26a9aced0089ff152cf5039bac2d6a398428c7f336bf4914cb2";
+        private static string _craftingDataAddress  = "0x236f927b0361f6b9fa46624fb203072872ba5963f01df69d02a324242043bcd4";
 
         private static string _hunterAddress {get; set;}
         private static string _hunterSymbol = "HTR1";
@@ -111,7 +111,7 @@ namespace SH
             
             IKeyPair adminKey = Mnemonics.GetKeypairFromMnemonic("powder flock dog shrimp wage ordinary bless minimum calm raise visit rude");
             string adminAddress = "0xba83c830d684df6eaaa8f143b1e853ea1e2b67522154780f9378d30b7f9d9d59";
-            var rpcClient = new UnityWebRequestRpcClient(SuiConstants.DEVNET_FULLNODE);
+            var rpcClient = new UnityWebRequestRpcClient(SuiConstants.TESTNET_FULLNODE);
             IJsonRpcApiClient Client = new SuiJsonRpcApiClient(rpcClient);
             ISigner signerE = new Signer(Client, adminKey);
 
@@ -431,7 +431,7 @@ namespace SH
         }
 
 
-        public async static Task<RpcResult<TransactionBlockBytes>> UnEquipWeapon(string address) {
+        public async static Task<RpcResult<TransactionBlockBytes>> UnEquipWeapon(string address,string type) {
            
             var weaponObjectResult = await SuiApi.Client.GetObjectAsync(address,ObjectDataOptions.ShowAll());
             Debug.Log(weaponObjectResult.RawRpcResponse);
@@ -443,7 +443,7 @@ namespace SH
             var typeArgs = new List<string>{weaponObjectData.Type};
             var args = new object[] {
                 InventoryManager.Instance.CurrentHunterAddressInUse,
-                "sword"
+                type
             };
            
             var gasBudget = BigInteger.Parse("10000000");

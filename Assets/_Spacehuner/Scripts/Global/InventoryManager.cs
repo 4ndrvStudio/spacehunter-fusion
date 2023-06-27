@@ -41,7 +41,7 @@ namespace SH
         [HideInInspector] public int MineralCollectedCount;
         [HideInInspector] public int ExpCollectedCount;
 
-        public string SuiPackageId = "0xea3599a55633bef0ea926c3e5e9732239711d83a64518f560a6a0e15b389a299";
+        public string SuiPackageId = "0xb1eedbc4b571ce2e472cd910ee560f4f6c1d8eb9a3756225874f4f577e8d814c";
 
         void Awake()
         {
@@ -140,7 +140,7 @@ namespace SH
                         {
                             equipNFT.Result.Data.ToList().ForEach(data =>
                             {
-                                if (data.ObjectType.Type.Contains("sword::Sword"))
+                                if (data.ObjectType.Type.Contains($"{SuiPackageId}::sword::Sword"))
                                 {
                                     ItemInstance item = new ItemInstance();
                                     item.ItemId = "sui_weapon";
@@ -148,7 +148,20 @@ namespace SH
                                     Dictionary<string, string> itemCustomData = new Dictionary<string, string>() {
                                 {"Level", "1"},
                                 {"Address", data.ObjectId}
-                            };
+                                     };
+                                    item.CustomData = itemCustomData;
+                                    this._items.Add(item);
+                                }
+
+                                if (data.ObjectType.Type.Contains($"{SuiPackageId}::item::Item"))
+                                {
+                                    ItemInstance item = new ItemInstance();
+                                    item.ItemId = "glasses";
+                                    item.ItemClass = "gear";
+                                    Dictionary<string, string> itemCustomData = new Dictionary<string, string>() {
+                                {"Level", "1"},
+                                {"Address", data.ObjectId}
+                                     };
                                     item.CustomData = itemCustomData;
                                     this._items.Add(item);
                                 }

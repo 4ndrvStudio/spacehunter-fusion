@@ -295,7 +295,7 @@ namespace SH.UI
 
             UIManager.Instance.ShowWaiting();
 
-            var rpcResult =  await SuiWalletManager.UnEquipWeapon(_currentWeaponEquipedAddress);
+            var rpcResult =  await SuiWalletManager.UnEquipWeapon(_currentWeaponEquipedAddress, "sword");
             _currentTx = rpcResult;
 
             var getDry = await SuiApi.Client.DryRunTransactionBlockAsync(rpcResult.Result.TxBytes.ToString()); 

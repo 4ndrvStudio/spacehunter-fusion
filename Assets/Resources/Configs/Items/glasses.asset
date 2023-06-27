@@ -17,6 +17,11 @@ MonoBehaviour:
   ItemName: Glass
   ItemIcon: {fileID: 21300000, guid: af5c9071d7bee3643b6cc646b1f6ee3b, type: 3}
   ItemInstanceId: 
+  Description: 'NFTs in SpaceHunter introduce a new level of interactivity among
+    players, enabling them to own rare and collectible items within the game. This
+    also opens opportunities for players to create a virtual economy within the game,
+    creating their own unique gaming experience. With NFTs, SpaceHunter takes gaming
+    to the next level of engagement, creativity and ownership '
   TypeTab: 5
   IconWithLevel:
   - {fileID: 21300000, guid: af5c9071d7bee3643b6cc646b1f6ee3b, type: 3}

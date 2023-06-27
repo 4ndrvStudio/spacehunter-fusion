@@ -10,6 +10,7 @@ namespace SH.UI
     {
         [SerializeField] private Image _displayImage;
         [SerializeField] private TextMeshProUGUI _itemNameText;
+        [SerializeField] private TextMeshProUGUI _descriptionText;
 
         [SerializeField] private Button _useButton;
 
@@ -26,6 +27,8 @@ namespace SH.UI
             _itemNameText.text = uiInventoryItem.ItemConfig.ItemName;
             _useButton.interactable = uiInventoryItem.ItemConfig.CanUse;
             // _useButtonText.color = uiInventoryItem.ItemConfig.CanUse ? _useTextActiveColor : _useTextDeactiveColor;
+            _descriptionText.text = uiInventoryItem.ItemConfig.Description;
+           
             if((int)Network_ClientManager.CurrentScene == 2) {
                 _useButton.interactable = false;
             }
