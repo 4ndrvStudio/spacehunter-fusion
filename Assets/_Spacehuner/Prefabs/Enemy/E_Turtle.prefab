@@ -358,7 +358,6 @@ MonoBehaviour:
   _E_COMBAT_STATE: 0
   Attack_List:
   - Attack1
-  - Attack2
   _shoot_List: []
   _shootBullet: {fileID: 0}
   _shootPosition: {fileID: 0}
@@ -526,6 +525,7 @@ MonoBehaviour:
   _objectHeight: 0
   _dissolveSpeed: 0
   _startDissovle: 0
+  _startUnDissovle: 0
   _resetHeight: 0
 --- !u!1 &7492166003215330489
 GameObject:
