@@ -77,6 +77,7 @@ namespace SH
         [SerializeField] private TextMeshProUGUI _expText;
         [SerializeField] private Image _expBar;
 
+        private bool IsExecutingGoToMining;
 
         //sui 
         private RpcResult<TransactionBlockBytes> _currentTx;
@@ -177,7 +178,6 @@ namespace SH
             SetupBalance();
             SetupHunterInfo();
 
-
             if (_playerState.L_IsInsideBuilding)
             {
                 ActiveActionControlller();
@@ -221,6 +221,7 @@ namespace SH
             _actionGroup.SetActive(false);
 
             _movementJoy.gameObject.SetActive(false);
+              _touchPanel.enabled = false;
 
             IsActive = false;
         }
@@ -244,6 +245,10 @@ namespace SH
 
         private async void PrepareToGotoMining()
         {
+            if(IsExecutingGoToMining == true) 
+                return;
+            
+            IsExecutingGoToMining = true;
 
             UIManager.Instance.ShowWaiting();
 
@@ -272,6 +277,8 @@ namespace SH
             {
                 UIManager.Instance.ShowAlert(rpcResult.ErrorMessage, AlertType.Error);
                 UIManager.Instance.HideWaiting();
+                IsExecutingGoToMining = false;
+ 
             }
 
         }
@@ -292,6 +299,8 @@ namespace SH
             {
                 UIManager.Instance.ShowAlert("Some thing wrong. Please recheck", AlertType.Warning);
             }
+
+            IsExecutingGoToMining = false;
         }
 
 

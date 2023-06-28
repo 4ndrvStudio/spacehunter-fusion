@@ -95,6 +95,12 @@ namespace SH.UI
             {
                 Continue();
             });
+
+            var currentKeyPair =  SuiWallet.GetActiveKeyPair();
+
+            if(currentKeyPair != null) {
+                Continue();
+            }
         }
 
         private void ProcessToNextStep(ESuiWalletState suiWalletState)
@@ -144,7 +150,7 @@ namespace SH.UI
             //countinue
             ProcessToNextStep(ESuiWalletState.Confirm);
 
-            Debug.Log(SuiWallet.GetActiveAddress());
+            
 
 
         }

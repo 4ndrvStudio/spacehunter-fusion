@@ -5,6 +5,12 @@ using UnityEngine.UI;
 using PlayFab.ClientModels;
 using SH.Multiplayer;
 using DG.Tweening;
+using Suinet.Rpc;
+using Suinet.Rpc.Types;
+using UnityEngine.Events;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SH.UI
 {
@@ -28,6 +34,14 @@ namespace SH.UI
         [SerializeField] private Image _processBarImage;
         [SerializeField] private bool _isCrafting;
 
+        private RpcResult<TransactionBlockBytes> _currentTx;
+
+        public static UnityAction ConfirmSwordGasFeesAction;
+        public static UnityAction ConfirmGlassGasFeesAction;
+
+        private bool IsExecutingCrafting;
+
+
         private void Start()
         {
             _closeBtn.onClick.AddListener(() =>
@@ -47,15 +61,19 @@ namespace SH.UI
             }
         }
 
-        private void OnEnable()
+        private async void OnEnable()
         {
             _loaderIcon.SetActive(true);
-            InventoryManager.Instance.GetInventoryData();
+            await InventoryManager.Instance.GetInventoryData();
             InventoryManager.OnInventoryDataChange += UpdateView;
+            ConfirmSwordGasFeesAction +=  OnConfirmCraftSword;
+            ConfirmGlassGasFeesAction += OnConfirmCraftGlass;
         }
         private void OnDisable()
         {
             InventoryManager.OnInventoryDataChange += UpdateView;
+             ConfirmSwordGasFeesAction -=  OnConfirmCraftSword;
+            ConfirmGlassGasFeesAction -= OnConfirmCraftGlass;
         }
 
         private void ResetPanel()
@@ -164,6 +182,10 @@ namespace SH.UI
 
         public async void CraftSword() {
             
+            if(IsExecutingCrafting == true) 
+                return;
+            IsExecutingCrafting = true;
+
             if(_stoneAddress.Count < 3) return;
             
             _isCrafting = true;
@@ -174,22 +196,59 @@ namespace SH.UI
             
             var rpcResult = await SuiWalletManager.CraftSword(itemToCraftList);
 
-            Debug.Log(rpcResult.RawRpcResponse);
+            if(rpcResult.IsSuccess) {
+                
+                _currentTx = rpcResult;
+                
+                var getDry = await SuiApi.Client.DryRunTransactionBlockAsync(rpcResult.Result.TxBytes.ToString());
+                JObject jsonObject = JObject.Parse(getDry.RawRpcResponse);
+                JArray balanceChangesArray =(JArray) jsonObject["result"]["balanceChanges"];
+
+                SuiEstimatedGasFeesModel gasFeesModel = new SuiEstimatedGasFeesModel();
+
+                gasFeesModel.CanExcute = true;
+                if (balanceChangesArray[0]["amount"].ToString() != null)
+                    gasFeesModel.EstimatedGasFees = balanceChangesArray[0]["amount"].ToString();
+                else
+                    gasFeesModel.EstimatedGasFees = "Can not estimated gas fees";
+                UIManager.Instance.HideWaiting();
+                UIManager.Instance.ShowPopupWithCallback(PopupName.SuiEstimatedGas, gasFeesModel, ConfirmSwordGasFeesAction);
+            }
+            else {
+                UIManager.Instance.ShowAlert(rpcResult.ErrorMessage, AlertType.Error);
+                UIManager.Instance.HideWaiting();
+                IsExecutingCrafting = false;
+            }
             
+            
+        }
+
+        public void OnConfirmCraftSword() {
             DOTween.To(() => _processBarImage.fillAmount, x => _processBarImage.fillAmount = x, 0.82f, 5f)
                 .OnComplete(async () =>
                 {
-                    var rpcResult2 = await SuiWalletManager.Execute(rpcResult);
+                    var rpcResult2 = await SuiWalletManager.Execute(_currentTx);
 
                     DOTween.To(() => _processBarImage.fillAmount, x => _processBarImage.fillAmount = x, 1f, 1.5f)
                         .OnComplete(() =>
                         {
-                            Debug.Log(rpcResult2.RawRpcResponse);
-                            ResetPanel();
-                            _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.Weapon);
+                            if(rpcResult2.IsSuccess == true) {
+                                Debug.Log(rpcResult2.RawRpcResponse);
+                                ResetPanel();
+                                _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.Weapon);
+                            } else {
+                                UIManager.Instance.ShowAlert(rpcResult2.ErrorMessage, AlertType.Error);
+                                ResetPanel();
+                            }
+                            IsExecutingCrafting = false;
+                              _currentTx = null;
                         });
+                       
             });
+           
         }
+
+        
          public async void CraftGlass() {
             
             if(_stoneAddress.Count < 3) return;
@@ -201,22 +260,57 @@ namespace SH.UI
             List<string> itemToCraftList = _stoneAddress.GetRange(0,3); 
             
             var rpcResult = await SuiWalletManager.CraftGlass(itemToCraftList);
+
+                if(rpcResult.IsSuccess) {
+                _currentTx = rpcResult;
+                
+                var getDry = await SuiApi.Client.DryRunTransactionBlockAsync(rpcResult.Result.TxBytes.ToString());
+                JObject jsonObject = JObject.Parse(getDry.RawRpcResponse);
+                JArray balanceChangesArray =(JArray) jsonObject["result"]["balanceChanges"];
+
+                SuiEstimatedGasFeesModel gasFeesModel = new SuiEstimatedGasFeesModel();
+
+                gasFeesModel.CanExcute = true;
+                if (balanceChangesArray[0]["amount"].ToString() != null)
+                    gasFeesModel.EstimatedGasFees = balanceChangesArray[0]["amount"].ToString();
+                else
+                    gasFeesModel.EstimatedGasFees = "Can not estimated gas fees";
+                UIManager.Instance.HideWaiting();
+                UIManager.Instance.ShowPopupWithCallback(PopupName.SuiEstimatedGas, gasFeesModel, ConfirmGlassGasFeesAction);
+            }
+            else {
+                UIManager.Instance.ShowAlert(rpcResult.ErrorMessage, AlertType.Error);
+                UIManager.Instance.HideWaiting();
+                IsExecutingCrafting = false;
+            }
             
-            DOTween.To(() => _processBarImage.fillAmount, x => _processBarImage.fillAmount = x, 0.82f, 5f)
+         
+        }
+
+        public void OnConfirmCraftGlass() {
+               
+               DOTween.To(() => _processBarImage.fillAmount, x => _processBarImage.fillAmount = x, 0.82f, 5f)
                 .OnComplete(async () =>
                 {
-                    var rpcResult2 = await SuiWalletManager.Execute(rpcResult);
+                    var rpcResult2 = await SuiWalletManager.Execute(_currentTx);
 
                     DOTween.To(() => _processBarImage.fillAmount, x => _processBarImage.fillAmount = x, 1f, 1.5f)
                         .OnComplete(() =>
                         {
-                            Debug.Log(rpcResult2.RawRpcResponse);
-                            ResetPanel();
-                            _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.Glass);
-
+                            if(rpcResult2.IsSuccess == true) {
+                                Debug.Log(rpcResult2.RawRpcResponse);
+                                ResetPanel();
+                                _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.Glass);
+                            } else {
+                                UIManager.Instance.ShowAlert(rpcResult2.ErrorMessage, AlertType.Error);
+                                ResetPanel();
+                            }
+                            IsExecutingCrafting = false;
+                                  _currentTx = null;
                         });
             });
-        }
+      
+        }   
 
 
 

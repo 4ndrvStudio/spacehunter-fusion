@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using SH.PlayerData;
+using SH.Multiplayer;
+using UnityEngine.SceneManagement;
 namespace SH.UI
 {
     public enum UIMenuTabName
@@ -22,6 +24,11 @@ namespace SH.UI
         [SerializeField] private TextMeshProUGUI _playerNameText;
         [SerializeField] private TextMeshProUGUI _suiBalanceText;
 
+        [SerializeField] private GameObject _exitGamePanel;
+        [SerializeField] private Button _confirmExit;
+        [SerializeField] private Button _cancelExit;
+
+        private bool IsLogout;
 
         private void Start()
         {
@@ -37,7 +44,10 @@ namespace SH.UI
                 });
             });
 
-            _logoutButton.onClick.AddListener(() => Debug.Log("Logout"));
+            _logoutButton.onClick.AddListener(() => _exitGamePanel.gameObject.SetActive(true));
+            _cancelExit.onClick.AddListener(() => _exitGamePanel.gameObject.SetActive(false));
+            _confirmExit.onClick.AddListener(() => Logout());
+        
 
         }
 
@@ -56,12 +66,26 @@ namespace SH.UI
             });
         }
 
+        public async void Logout() {
+            IsLogout = true; 
+            UIManager.Instance.ShowWaiting();
+            _exitGamePanel.gameObject.SetActive(false);
+            SuiWallet.Logout();
+            await Network_ClientManager._networkGameManager.LeaveRom();
+            UIManager.Instance.HideWaiting();
+            Hide();
+            SceneManager.LoadScene("scene_login");
+       
+        } 
+
+
+
         public override void Show(object customProperties = null)
         {
             base.Show(customProperties);
 
             UpdateSuiBalance();
-
+            IsLogout = false;
             UIControllerManager.Instance.HideAllController();
 
         }
@@ -69,7 +93,9 @@ namespace SH.UI
         public override void Hide()
         {
             base.Hide();
-            
+
+            if(IsLogout == true) return;
+
             UIControllerManager.Instance.DisplayController();
         }
 

@@ -28,7 +28,7 @@ namespace SH.Multiplayer
         public static Network_ClientManager Instance;
 
         [SerializeField] private static NetworkRunner _networkRunner;
-        [SerializeField] private static Network_GameManager _networkGameManager;
+        public static Network_GameManager _networkGameManager;
         [SerializeField] private static NetworkSceneManagerDefault _networkSceneManagerDefault;
 
         [SerializeField] private static SceneDefs _currentScene;
@@ -159,6 +159,10 @@ namespace SH.Multiplayer
             MoveToRoom(SceneDefs.scene_station);
         }
 
+        public static async void LeaveRom() {
+            await _networkGameManager.LeaveRom();
+        }
+
         public static async void MoveToRoom(SceneDefs sceneDefs)
         {
             UIManager.Instance.ShowLoadScene(false);
@@ -173,7 +177,6 @@ namespace SH.Multiplayer
             await _networkGameManager.LeaveRom();
 
             Instance.StartCoroutine(StartGameAsync((SceneDefs)SceneManager.GetActiveScene().buildIndex));
-
         }
 
 
