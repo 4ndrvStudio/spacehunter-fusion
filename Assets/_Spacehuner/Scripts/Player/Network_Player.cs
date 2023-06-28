@@ -50,6 +50,15 @@ namespace SH.Multiplayer
         //fortest  
         public Network_AnimatorHook AnimatorHook;
 
+        //SUIIIIIII
+        public GameObject GlassOB;
+
+        public void EquipGlass(bool isEquip) {
+            Debug.Log("Glass Called + " + isEquip);
+            if(GlassOB == null) return;
+            GlassOB.SetActive(isEquip);
+        }
+
         public override void Spawned()
         {
             if (Object.HasInputAuthority)
@@ -112,7 +121,7 @@ namespace SH.Multiplayer
             changed.Behaviour.OnBodyChanged();
         }
 
-        private void OnBodyChanged()
+        private async void OnBodyChanged()
         {
             this._body =  Instantiate(_bodyList[(int)Body -1 ],this.transform);
 
@@ -140,9 +149,9 @@ namespace SH.Multiplayer
             
            
             _weaponManager.SetupWeapon(weaponHook.WeaponHolder, AnimatorHook);
-            
+            GlassOB = weaponHook.Glasses;
+            await InventoryManager.Instance.GetInventoryData();
           
-            
         }
         [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_SetBody(int body, RpcInfo info = default)

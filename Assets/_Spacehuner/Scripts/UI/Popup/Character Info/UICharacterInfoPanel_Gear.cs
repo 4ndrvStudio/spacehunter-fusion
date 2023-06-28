@@ -10,6 +10,7 @@ using System.Linq;
 using PlayFab.ClientModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SH.Multiplayer;
 
 namespace SH.UI
 {
@@ -263,9 +264,13 @@ namespace SH.UI
                 Debug.Log("Called Here");
                 ProcessState();
                 SuiTxSuccessModel txSuccessModel = new SuiTxSuccessModel();
-                txSuccessModel.Message = "Your hunter has been equipped with a weapon!";
+                txSuccessModel.Message = "Your hunter has been equipped with a Glasses!";
                 txSuccessModel.ObjectID = rpcResult.Result.Digest;
                 UIManager.Instance.ShowPopup(PopupName.SuiTxSuccess, txSuccessModel);
+                
+                if(Network_Player.Local != null) {
+                    Network_Player.Local.EquipGlass(true);
+                }
 
             } else {
                 UIManager.Instance.ShowAlert("Some thing wrong. Please recheck", AlertType.Warning);
@@ -312,9 +317,13 @@ namespace SH.UI
             if(rpcResult.IsSuccess == true) {
                 ProcessState();
                 SuiTxSuccessModel txSuccessModel = new SuiTxSuccessModel();
-                txSuccessModel.Message = "Your hunter has unequipped the weapon!";
+                txSuccessModel.Message = "Your hunter has unequipped the Glasses!";
                 txSuccessModel.ObjectID = rpcResult.Result.Digest;
                 UIManager.Instance.ShowPopup(PopupName.SuiTxSuccess, txSuccessModel);
+                 if(Network_Player.Local != null) {
+                    Network_Player.Local.EquipGlass(false);
+                }
+
             } else {
                 UIManager.Instance.ShowAlert("Some thing wrong. Please recheck", AlertType.Warning);
             }

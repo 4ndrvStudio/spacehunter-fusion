@@ -7,6 +7,7 @@ namespace SH
     public class Network_WeaponHook : MonoBehaviour
     {
         public GameObject WeaponHolder;
+        public GameObject Glasses;
 
     }
 

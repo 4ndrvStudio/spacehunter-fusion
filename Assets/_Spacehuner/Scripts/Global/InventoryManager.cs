@@ -138,6 +138,7 @@ namespace SH
                     {
                         if (equipNFT.Result.Data.ToList().Count > 0)
                         {
+                            bool hasGlass = false;
                             equipNFT.Result.Data.ToList().ForEach(data =>
                             {
                                 if (data.ObjectType.Type.Contains($"{SuiPackageId}::sword::Sword"))
@@ -164,8 +165,14 @@ namespace SH
                                      };
                                     item.CustomData = itemCustomData;
                                     this._items.Add(item);
+                                    hasGlass = true;
+                                   
                                 }
                             });
+
+                            if(Network_Player.Local != null) {
+                                Network_Player.Local.EquipGlass(hasGlass);
+                            }
                         }
                     }
 
