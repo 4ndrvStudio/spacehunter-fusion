@@ -3,7 +3,8 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-      //   _offset ("Offset", float) = 0.5
+        _MainTex_TexelSize ("MainTex Texel Size", Vector) = (1, 1, 0, 0)
+        _Offset ("Offset", Range(0, 1)) = 0.5
     }
 
     SubShader
@@ -13,10 +14,15 @@
 
         Pass
         {
+            ZWrite Off
+            Blend SrcAlpha OneMinusSrcAlpha
+            Cull Off
+            Offset -1, -1
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
+            #pragma target 4.0
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
@@ -35,35 +41,33 @@
             };
 
             sampler2D _MainTex;
-            // sampler2D _CameraOpaqueTexture;
             float4 _MainTex_TexelSize;
-            float4 _MainTex_ST;
-            
-            float _offset;
+            float _Offset;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = v.uv;
+                UNITY_TRANSFER_FOG(o, o.vertex);
                 return o;
             }
 
-            fixed4 frag (v2f input) : SV_Target
-            {
-                float2 res = _MainTex_TexelSize.xy;
-                float i = _offset;
-    
-                fixed4 col;                
-                col.rgb = tex2D( _MainTex, input.uv ).rgb;
-                col.rgb += tex2D( _MainTex, input.uv + float2( i, i ) * res ).rgb;
-                col.rgb += tex2D( _MainTex, input.uv + float2( i, -i ) * res ).rgb;
-                col.rgb += tex2D( _MainTex, input.uv + float2( -i, i ) * res ).rgb;
-                col.rgb += tex2D( _MainTex, input.uv + float2( -i, -i ) * res ).rgb;
-                col.rgb /= 5.0f;
-                
-                return col;
-            }
+            fixed4 frag (v2f i) : SV_Target
+{
+    float2 res = _MainTex_TexelSize.xy;
+    float offset = _Offset;
+
+    fixed4 col;
+    col.rgb = tex2D(_MainTex, i.uv).rgb;
+    col.rgb += tex2D(_MainTex, i.uv + float2(offset, offset) * res).rgb;
+    col.rgb += tex2D(_MainTex, i.uv + float2(offset, -offset) * res).rgb;
+    col.rgb += tex2D(_MainTex, i.uv + float2(-offset, offset) * res).rgb;
+    col.rgb += tex2D(_MainTex, i.uv + float2(-offset, -offset) * res).rgb;
+    col.rgb /= 5.0f;
+
+    return col;
+}
             ENDCG
         }
     }
