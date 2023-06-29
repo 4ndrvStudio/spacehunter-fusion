@@ -92,6 +92,7 @@ namespace SH.Account
 
         public void OnSendCodeClick()
         {
+            Debug.Log("OnSend code Send");
             string email = _inputEmail.text;
             if (!RegisterAccountUtils.IsValidEmail(email))
             {

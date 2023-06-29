@@ -88,6 +88,7 @@ namespace SH.Account
             string email = _inputEmail.text;
             string password = _inputPassword.text;
             string confirmPassword = _inputConfirmPassword.text;
+            
 
             _tmpNotice.text = string.Empty;
 
@@ -122,6 +123,7 @@ namespace SH.Account
                 {
                     if (!string.IsNullOrEmpty(result.Error))
                     {
+                        Debug.Log("Error! In Playfab");
                         _tmpNotice.SetText(result.Error);
                         return;
                     }
