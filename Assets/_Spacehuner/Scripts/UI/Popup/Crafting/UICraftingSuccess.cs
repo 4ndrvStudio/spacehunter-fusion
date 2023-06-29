@@ -11,12 +11,16 @@ namespace SH.UI
         [SerializeField] private Sprite _glassesSprite;
         [SerializeField] private Sprite _swordSprite;
         [SerializeField] private Button _closeButton;
+        [SerializeField] private Button _checkExplorerButton;
         [SerializeField] private Image _itemIcon;
+   
 
         private void Awake() {
             _closeButton.onClick.AddListener(() => {
                 _craftingPopop.CloseCrafting();
             });
+
+            _checkExplorerButton.onClick.AddListener(OnCheckSuiExplorerClick);
         }
 
         public void SetupNotify(ECraftingType craftingType) {
@@ -28,6 +32,13 @@ namespace SH.UI
                     _itemIcon.sprite = _glassesSprite;
                     break;
             }
+            
+            
+        }
+
+        public void OnCheckSuiExplorerClick() {
+            string txblock = _craftingPopop.TxBlock;
+            Application.OpenURL($"https://suiexplorer.com/txblock/{txblock}?network=testnet");
         }
         
     }

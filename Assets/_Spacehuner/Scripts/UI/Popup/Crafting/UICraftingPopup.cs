@@ -16,7 +16,10 @@ namespace SH.UI
         public ECraftingType _currentCraftType;
         [SerializeField] private GameObject _craftingChooseCraftPanel;
         [SerializeField] private GameObject _craftingPanel;
-        [SerializeField] private GameObject _craftingSuccessPanel;
+        [SerializeField] private GameObject _craftingSuccessPanel; 
+
+        //For Test
+        public string TxBlock;
 
         public override void Show(object customProperties = null)
         {
@@ -62,6 +65,7 @@ namespace SH.UI
 
         public void CloseCrafting()
         {
+            TxBlock = string.Empty;
             _craftingChooseCraftPanel.SetActive(false);
             _craftingSuccessPanel.SetActive(false);
             _craftingPanel.SetActive(false);

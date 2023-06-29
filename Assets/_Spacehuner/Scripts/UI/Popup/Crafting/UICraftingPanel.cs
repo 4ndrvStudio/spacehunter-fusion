@@ -236,6 +236,8 @@ namespace SH.UI
                                 Debug.Log(rpcResult2.RawRpcResponse);
                                 ResetPanel();
                                 _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.Weapon);
+                                //fortest
+                                _craftingPopup.TxBlock = rpcResult2.Result.Digest;
                             } else {
                                 UIManager.Instance.ShowAlert(rpcResult2.ErrorMessage, AlertType.Error);
                                 ResetPanel();
@@ -301,6 +303,8 @@ namespace SH.UI
                                 Debug.Log(rpcResult2.RawRpcResponse);
                                 ResetPanel();
                                 _craftingPopup.ProcessNextStep(ECraftingState.Complete, ECraftingType.Glass);
+                                //fortest
+                                _craftingPopup.TxBlock = rpcResult2.Result.Digest;
                             } else {
                                 UIManager.Instance.ShowAlert(rpcResult2.ErrorMessage, AlertType.Error);
                                 ResetPanel();

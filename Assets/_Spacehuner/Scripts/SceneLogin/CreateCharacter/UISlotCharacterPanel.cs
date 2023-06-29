@@ -26,6 +26,7 @@ namespace SH.Account
         {
             _loginPanel.SetActive(true);
             SHLocalData.Instance.RemoveLoginData();
+            SuiWallet.Logout();
             _loginPanel.GetComponent<CanvasGroup>().alpha = 1;
             gameObject.SetActive(false);
         }

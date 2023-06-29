@@ -160,8 +160,8 @@ namespace SH.UI
             bool hasHunter = false;
 
             var allNft = await SuiWalletManager.GetAllNFT();
+           
             
-            UIManager.Instance.HideWaiting();
 
             allNft.Result.Data.ForEach(nft =>
             {
@@ -174,7 +174,7 @@ namespace SH.UI
                 }
 
                 PlayerData.PlayerDataManager.Character.Data.Characters[0].CharacterType = Define.CharacterType.MutasFemale;
-
+               
             });
             
             if(hasHunter == false) {
@@ -182,8 +182,14 @@ namespace SH.UI
             }
 
             this.gameObject.SetActive(false);
+            
+            await InventoryManager.Instance.GetInventoryData();
+
+            UIManager.Instance.HideWaiting();
             _slotCharacterPanel.SetActive(true);
-            InventoryManager.Instance.GetInventoryData();
+    
+
+           
         }
 
 

@@ -30,6 +30,13 @@ namespace SH
                 DestroyImmediate(_character);
             _characterType = characterType;
             var character = Resources.Load<GameObject>($"Characters/{_characterType}");
+            
+            //for Test
+            if(characterType == CharacterType.MutasFemale) {
+                
+            }
+
+
             _character = Instantiate(character, transform);
             _character.transform.localPosition = _pos;
             _character.transform.localRotation = new Quaternion(_rot.x, _rot.y, _rot.z, 0);

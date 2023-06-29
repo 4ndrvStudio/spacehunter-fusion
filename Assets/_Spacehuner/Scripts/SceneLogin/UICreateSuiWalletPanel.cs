@@ -51,7 +51,7 @@ namespace SH
             StartCoroutine(ActiveContinueButton());
         }
 
-        private void Continue() {
+        private async void Continue() {
             _newWalletMnemonicsText.gameObject.SetActive(false);
             _newWalletMnemonicsText.text = "Create and save your 12 password phases";
             _createButton.gameObject.SetActive(true);
