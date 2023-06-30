@@ -77,20 +77,23 @@ namespace SH
         [SerializeField] private TextMeshProUGUI _expText;
         [SerializeField] private Image _expBar;
 
-        private bool IsExecutingGoToMining;
+        public bool IsExecutingGoToMining;
 
         //sui 
         private RpcResult<TransactionBlockBytes> _currentTx;
         public static UnityAction ConfirmGasFeesAction { get; set; }
+        public static UnityAction CancelGasFeesAction {get; set;}
         public static UnityAction ExitMiningAction { get; set; }
 
         private void OnEnable()
         {
             ConfirmGasFeesAction += GotoMining;
+            CancelGasFeesAction += () => IsExecutingGoToMining = false;
         }
         private void OnDisble()
         {
             ConfirmGasFeesAction -= GotoMining;
+            CancelGasFeesAction -= () => IsExecutingGoToMining = false;
         }
 
         void Awake()
@@ -123,7 +126,6 @@ namespace SH
 
             _attackBtn.Interactable = isActive;
             _attackBtn.GetComponent<Button>().interactable = isActive;
-
             _attackBtn.GetComponent<CanvasGroup>().alpha = isActive ? 1 : 0.5f;
 
         }
@@ -271,7 +273,7 @@ namespace SH
                 else
                     gasFeesModel.EstimatedGasFees = "Can not estimated gas fees";
                 UIManager.Instance.HideWaiting();
-                UIManager.Instance.ShowPopupWithCallback(PopupName.SuiEstimatedGas, gasFeesModel, ConfirmGasFeesAction);
+                UIManager.Instance.ShowPopupWithCallback(PopupName.SuiEstimatedGas, gasFeesModel, ConfirmGasFeesAction,CancelGasFeesAction);
             }
             else
             {

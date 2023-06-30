@@ -138,6 +138,7 @@ namespace SH.Multiplayer
                 if(hit.distance < 0.4f) moveDistance = 0;
             };
             _rigid.Rigidbody.MovePosition(_rigid.Rigidbody.position + moveDirection.normalized * moveDistance);
+       
         }
 
 

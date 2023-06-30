@@ -15,12 +15,13 @@ namespace SH
 
 
         private UnityAction _callback;
+        private UnityAction _cancelCallback;
         private string _currentTx;
         private bool IsMinted;
 
-        public override void ShowWithCallback(object customProperties, UnityAction callback = null)
+        public override void ShowWithCallback(object customProperties, UnityAction callback = null, UnityAction cancelCallback =null)
         {
-            base.ShowWithCallback(customProperties, callback);
+            base.ShowWithCallback(customProperties, callback,cancelCallback);
 
             SuiEstimatedGasFeesModel suiEstimatedGasFeesModel = customProperties as SuiEstimatedGasFeesModel;
 
@@ -33,6 +34,8 @@ namespace SH
                 _callback = callback;
                 _currentTx = suiEstimatedGasFeesModel.Tx;
                 IsMinted = suiEstimatedGasFeesModel.CanExcute;
+                _cancelCallback = cancelCallback;
+                
             }
             else
             {
@@ -46,7 +49,14 @@ namespace SH
         void Start()
         {
             _confirmBtn.onClick.AddListener(() => ConfirmClick());
-            _rejectBtn.onClick.AddListener(() => Hide());
+            _rejectBtn.onClick.AddListener(() => CancelClick());
+        }
+        void CancelClick() {
+
+            if(_cancelCallback != null) {
+                _cancelCallback?.Invoke();
+            }
+            Hide();
         }
         void ConfirmClick()
         {

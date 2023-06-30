@@ -75,9 +75,9 @@ namespace SH.UI
         }
 
 
-        public override void ShowWithCallback(object customProperties, UnityAction callback = null)
+        public override void ShowWithCallback(object customProperties, UnityAction callback = null, UnityAction cancelCallback = null)
         {
-            base.ShowWithCallback(customProperties, callback);
+            base.ShowWithCallback(customProperties, callback,cancelCallback);
              _callback = callback;
 
             //List<ItemInstance> items = customProperties as List<ItemInstance>;

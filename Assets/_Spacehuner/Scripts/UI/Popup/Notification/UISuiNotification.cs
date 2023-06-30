@@ -29,9 +29,9 @@ namespace SH
         private string _objectID;
         private UnityAction _callback;
         private bool IsMinted;
-        public override async void ShowWithCallback(object customProperties, UnityAction callback = null)
+        public override async void ShowWithCallback(object customProperties, UnityAction callback = null, UnityAction cancelCallback = null)
         {
-            base.ShowWithCallback(customProperties, callback);
+            base.ShowWithCallback(customProperties, callback,cancelCallback);
 
             SuiNotificationModel suiNotificationModel = customProperties as SuiNotificationModel;
  

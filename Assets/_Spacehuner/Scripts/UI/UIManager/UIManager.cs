@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
 
         popup.Show(customProperties);
     }
-     public void ShowPopupWithCallback(PopupName name, object customProperties = null, UnityAction callback = null)
+     public void ShowPopupWithCallback(PopupName name, object customProperties = null, UnityAction callback = null, UnityAction cancelCallback = null)
     {
         var popup = _lstPopup.FirstOrDefault((popup) => popup.PopupName == name);
         if(popup == null)
@@ -66,7 +66,7 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        popup.ShowWithCallback(customProperties, callback);
+        popup.ShowWithCallback(customProperties, callback,cancelCallback);
     }
 
 

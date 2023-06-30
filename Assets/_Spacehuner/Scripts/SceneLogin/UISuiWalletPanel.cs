@@ -159,9 +159,7 @@ namespace SH.UI
             UIManager.Instance.ShowWaiting();
             bool hasHunter = false;
 
-            var allNft = await SuiWalletManager.GetAllNFT();
-           
-            
+            var allNft = await SuiWalletManager.GetAllNFT();            
 
             allNft.Result.Data.ForEach(nft =>
             {

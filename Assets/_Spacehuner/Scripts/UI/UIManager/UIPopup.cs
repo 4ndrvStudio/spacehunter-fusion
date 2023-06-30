@@ -15,7 +15,7 @@ public class UIPopup : MonoBehaviour
         this._customProperties = customProperties;
         gameObject.SetActive(true);
     }
-    public virtual void ShowWithCallback(object customProperties = null, UnityAction callback = null) {
+    public virtual void ShowWithCallback(object customProperties = null, UnityAction callback = null, UnityAction cancelCallback =null) {
         this._customProperties = customProperties;
         gameObject.SetActive(true);
     }

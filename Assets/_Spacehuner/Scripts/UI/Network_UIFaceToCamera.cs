@@ -7,7 +7,7 @@ namespace SH.Multiplayer
 {
     public class Network_UIFaceToCamera : MonoBehaviour
     {
-        void Update()
+        void LateUpdate()
         {
             if (Application.isBatchMode == false)
             {

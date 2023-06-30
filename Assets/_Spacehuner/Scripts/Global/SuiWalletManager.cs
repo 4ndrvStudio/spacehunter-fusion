@@ -10,11 +10,9 @@ using Suinet.NftProtocol;
 using Suinet.Rpc;
 using Suinet.Rpc.Client;
 using Suinet.Rpc.Signer;
-using Suinet.Rpc.Types;
 using Suinet.Wallet;
 
 using BigInteger = System.Numerics.BigInteger;
-using Suinet.Wallet;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Text;
@@ -66,6 +64,7 @@ namespace SH
 
         public async static Task<RpcResult<TransactionBlockResponse>> Execute(RpcResult<TransactionBlockBytes> result)
         {
+            UIManager.Instance.ShowWaiting();
             var rpcResult = new RpcResult<TransactionBlockResponse>();
 
             if (result.IsSuccess)
@@ -85,6 +84,7 @@ namespace SH
             }
 
             Debug.Log(rpcResult.RawRpcResponse);
+            UIManager.Instance.HideWaiting();
 
             return rpcResult;
         }
@@ -147,10 +147,57 @@ namespace SH
             return rpcResult2;
 
         }
+        public async static Task<bool> CheckInFarming() {
+            bool result = false;
+            var rpcResult =  await SuiApi.Client.GetObjectAsync("0xb2b02c51794af3250094b527047b86d8ad0df9b889cff4af8e336d0941dea148", new ObjectDataOptions { ShowContent = true});
+            string farmerData = JsonConvert.SerializeObject(rpcResult.Result.Data.Content, Formatting.Indented);
+           
+            JObject farmerDataObject = JObject.Parse(farmerData);
+            JArray famerDataArray =(JArray) farmerDataObject.SelectToken("fields.farmers.fields.contents");
+            
+            foreach(JObject farmer in famerDataArray) {
+                
+                if(farmer.SelectToken("fields.key").ToString().Contains(SuiWallet.GetActiveAddress())) {
+                    if(bool.Parse(farmer.SelectToken("fields.value.fields.farming").ToString())) 
+                       result = true;
+                }
+            }
+            return result;
+        }
+
+        public async static Task<RpcResult<TransactionBlockResponse>> CancelFarming() {
+            
+            var signer = SuiWallet.GetActiveAddress();
+
+            var module = "farming";
+            var function = "cancel_farming";
+            var typeArgs = System.Array.Empty<string>();
+            var args = new object[] {
+                _farmerDataAddress,
+                _clockAddress
+            };
+           
+            var gasBudget = BigInteger.Parse("10000000");
+
+            var rpcResult = await SuiApi.Client.MoveCallAsync(signer, _packageAddress, module, function, typeArgs, args, gasBudget);
+
+            var executeResult =  await Execute(rpcResult);
+
+            return executeResult;
+
+        }
 
         public async static Task<RpcResult<TransactionBlockBytes>> StartFarming()
         {
-           
+            //Check In Farming End remove it;
+            bool isFarming = await CheckInFarming();
+            if(isFarming == true) {
+                var cancelFarmingResult = await CancelFarming();
+                if(cancelFarmingResult.IsSuccess == false) {
+                    UIManager.Instance.ShowAlert("You don't have enough SUI balance for gas fees !",AlertType.Warning);
+                }
+            }
+
             var exchangerTest = await Add_Exchanger();
 
             var signer = SuiWallet.GetActiveAddress();
