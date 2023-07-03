@@ -448,11 +448,6 @@ namespace SH
         }
         
 
-
-
-
-    
-
         public async static Task<RpcResult<TransactionBlockBytes>> EquipWeapon(string address, string type) {
            
             var weaponObjectResult = await SuiApi.Client.GetObjectAsync(address,ObjectDataOptions.ShowAll());
@@ -549,6 +544,31 @@ namespace SH
             Debug.Log(allObject.RawRpcResponse);
             return allObject;
         }
+
+
+        public async static Task<RpcResult<TransactionBlockResponse>> UpgradeHunter(string functionName, ulong amountPoint) {
+            
+            var signer = SuiWallet.GetActiveAddress();
+            var module = "hunter";
+            var function = functionName;
+            var typeArgs = System.Array.Empty<string>();
+            var args = new object[] {
+                InventoryManager.Instance.CurrentHunterAddressInUse,
+                amountPoint
+            };
+
+            var gasBudget = BigInteger.Parse("10000000");
+
+            var rpcResult = await SuiApi.Client.MoveCallAsync(signer, _packageAddress, module, function, typeArgs, args, gasBudget);
+
+            var executeResult =  await Execute(rpcResult);
+
+            return executeResult;
+
+        }
+
+
+        
 
 
     }

@@ -51,8 +51,6 @@ namespace SH.Account
     public class UICreateCharacterPanel : MonoBehaviour
     {
 
-        [SerializeField] private TextMeshProUGUI _tmpSex = default;
-
         [SerializeField] private TextMeshProUGUI _tmpName = default;
 
         [SerializeField] private List<UICharacterSelect> _lstCharacterType = default;
@@ -104,7 +102,7 @@ namespace SH.Account
         private async void SetupBalance()
         {
             string balance = await SuiWalletManager.GetSuiWalletBalance();
-            _suiBalanceText.text = $"{balance} SUI";
+            _suiBalanceText.text = balance;
         }
 
 
@@ -113,6 +111,7 @@ namespace SH.Account
             OnAllClick();
             MintNFTComplete += OnSaveCharacter;
             ConfirmGasFeesAction += OnConfirmMintHunter;
+            _tmpName.text = PlayerDataManager.DisplayName;
         }
         private void OnDisable()
         {
@@ -285,7 +284,7 @@ namespace SH.Account
         {
             _lstCharacterType.ForEach(item => item.gameObject.SetActive(true));
             _lstBtnRace.ForEach(item => item.color = Color.white);
-            _lstCharacterType[2].OnItemClick();
+            _lstCharacterType[8].OnItemClick();
         }
 
         public void OnVasinClick()
@@ -356,12 +355,12 @@ namespace SH.Account
 
         public void SetSex(string sex)
         {
-            _tmpSex.SetText(sex);
+            //_tmpSex.SetText(sex);
         }
 
         public void SetName(string name)
         {
-            _tmpName.SetText(name);
+            //_tmpName.SetText(name);
         }
     }
 }
