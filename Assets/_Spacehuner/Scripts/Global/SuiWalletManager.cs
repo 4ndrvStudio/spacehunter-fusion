@@ -564,7 +564,6 @@ namespace SH
             var executeResult =  await Execute(rpcResult);
 
             return executeResult;
-
         }
 
 
