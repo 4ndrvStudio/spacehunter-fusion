@@ -39,16 +39,23 @@ namespace SH.Multiplayer
                 Instance = this;
             }
 
-            _touchField = UIControllerManager.Instance.GetTouchField();
+          //  _touchField = UIControllerManager.Instance.GetTouchField();
 
         }
         void Update() {
             if(_rotatePoint != null) {
-            
+                if(_touchField != null) {
                 _xInput += _touchField.TouchDist.x * _touchSpeedSensitivityX;
                 _yInput += _touchField.TouchDist.y * -_touchSpeedSensitivityY;
-                _yInput = Mathf.Clamp(_yInput, _MinX, _MaxX);
+               
+                } else  {
+                    _xInput += Input.GetAxis("Mouse X") * _touchSpeedSensitivityX;
+                    _yInput += Input.GetAxis("Mouse Y") * -_touchSpeedSensitivityY;
+                }
+
+                 _yInput = Mathf.Clamp(_yInput, _MinX, _MaxX);
                 _rotatePoint.rotation = Quaternion.Euler(_yInput, _xInput, 0f);
+              
             }
         }
 

@@ -38,17 +38,11 @@ namespace SH.Multiplayer
             set { Buttons.Set((int)EInputButtons.DashAttack, value); }
         }
    
-
-
-
     }
     public class Network_PlayerInputProvider : SimulationBehaviour, ISpawned, IDespawned, IBeforeUpdate
     {
-
-
         private PlayerInput _cachedInput;
         private bool _resetCachedInput;
-
 
 
         // NETWORK INTERFACES
